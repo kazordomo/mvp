@@ -17,7 +17,6 @@ export default () => {
 }
 
 const Nav = styled.nav`
-    padding: 20px;
     width: calc(100% - 40px);
 
     a {

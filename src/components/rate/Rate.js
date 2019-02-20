@@ -7,10 +7,19 @@ class Rate extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
+        this.initialState = {
             pointsGiven: [],
+            players: props.players,
         }
+
+        this.state = this.initialState;
     }
+
+    onRatePlayer = player => {
+        console.log(player);
+    }
+
+    onReset = () => this.setState(this.initialState);
 
     render() {
         return (
