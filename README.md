@@ -1,1 +1,3 @@
-# mvp
+# MVP
+
+## Mobile web app (mobile first).
