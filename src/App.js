@@ -25,12 +25,14 @@ class App extends Component {
 		if(!firebase.apps.length)
 			firebase.initializeApp(keys.firebaseConfig);
 
-        firebase
-            .database()
-            .ref('players')
-            .once('value')
-            .then(snapshot => this.setState({ players: snapshot.val(), isLoading: false, }))
-            .catch(err => console.log(err));
+		// TODO: check firebase console - create admin accounts? - add new database.
+
+        // firebase
+        //     .database()
+        //     .ref('players')
+        //     .once('value')
+        //     .then(snapshot => this.setState({ players: snapshot.val(), isLoading: false, }))
+        //     .catch(err => console.log(err));
     }
 
 	render() {
