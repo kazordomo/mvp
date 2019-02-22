@@ -16,30 +16,30 @@ class App extends Component {
 		super(props);
 
 		this.state = {
-			isLoggedIn: false,
-			players: {},
+			isLoggedIn: true,
+			isFetching: true,
+			players: [],
 		}
 	}
 
-	componentDidMount() {
-		if(!firebase.apps.length)
+	async componentDidMount() {
+		if (!firebase.apps.length)
 			firebase.initializeApp(keys.firebaseConfig);
 
-		// TODO: check firebase console - create admin accounts? - add new database.
+		// This func gets called every time a user logs in/logs out.
+		firebase.auth().onAuthStateChanged(user => console.log(user));
 
-        // firebase
-        //     .database()
-        //     .ref('players')
-        //     .once('value')
-        //     .then(snapshot => this.setState({ players: snapshot.val(), isLoading: false, }))
-        //     .catch(err => console.log(err));
+		const initPlayers = [];
+		const snapshot = await firebase.firestore().collection('players').get();
+		snapshot.forEach(doc => initPlayers.push(doc.data()));
+		this.setState({ players: initPlayers, isFetching: false });
     }
 
 	render() {
-		if(this.state.isLoading)
+		if (this.state.isFetching)
             return <Loading />
 
-		if(!this.state.isLoggedIn)
+		if (!this.state.isLoggedIn)
 			return <Login />
 
 		return (

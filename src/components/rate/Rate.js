@@ -32,7 +32,7 @@ class Rate extends Component {
 }
 
 Rate.propTypes = {
-    players: PropTypes.object,
+    players: PropTypes.array,
 }
 
 export default Rate;

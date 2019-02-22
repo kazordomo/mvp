@@ -29,6 +29,8 @@ class Login extends Component {
                         .style.display = this.state.register ? 'block' : 'none';
                 });
             })
+
+        document.querySelector('#signOut').addEventListener('click', this.signOut);
     }
 
     onSubmit = e => {
@@ -58,12 +60,18 @@ class Login extends Component {
         const { email, password } = this.getFormValues();
 
         try {
-            const cred = await firebase.auth().signInWithEmailAndPassword(email, password);
-            console.log(cred);
+            await firebase.auth().signInWithEmailAndPassword(email, password);
         } catch(err) {
             // TODO: Handle error.
             console.log(err);
         }
+    }
+
+    // Will not be used in prod.
+    signOut = async e => {
+        e.preventDefault();
+        await firebase.auth().signOut();
+        console.log('The user has signed out');
     }
 
     getFormValues() {
@@ -98,6 +106,7 @@ class Login extends Component {
                             <div id="changeAuth">
                                 { register ? <p>Du har redan ett konto?</p> : <p>Du har inte ett konto?</p> }
                             </div>
+                            <Button id="signOut" onClick={this.signOut}>Logga ut</Button>
                         </form>
                     </Animation>
                 </CenteredWrapper>

@@ -4,24 +4,20 @@ import Nav from '../_shared/Nav';
 
 const Leaderboard = ({ players }) => {
 
-    let sortedPlayers = [];
-    for (let key in players) {
-        sortedPlayers.push([players[key].name, players[key].totalScore]);
-    }
-    sortedPlayers = sortedPlayers.sort((a, b) => b[1] - a[1]);
+    const sortedPlayers = players.sort((a, b) => b.totalScore - a.totalScore);
 
     return (
         <div>
             <Nav />
             { sortedPlayers.map((player, i) => (
-                <div key={player[0]}>{i + 1}: {player[0]} {player[1]}</div> 
+                <div key={player.name}>{i + 1}: {player.name} {player.totalScore}</div> 
             )) }
         </div>
     )
 }
 
 Leaderboard.propTypes = {
-    players: PropTypes.object,
+    players: PropTypes.array,
 }
 
 export default Leaderboard;
