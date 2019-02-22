@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import keys from './config/keys';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import styled from 'styled-components';
 import Login from './components/login/Login';
 import Home from './components/home/Home';
 import Rate from './components/rate/Rate';
@@ -44,19 +43,15 @@ class App extends Component {
 
 		return (
 			<Router>
-				<Container>
+				<div>
 					<Route exact path='/' component={Home}/>
 					<Route path='/rate' render={() => <Rate players={this.state.players} />}/>
 					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} />}/>
 					<Route path='/statistics' render={() => <Statistics />}/>
-				</Container>
+				</div>
 			</Router>
 		)
 	}
 }
-
-const Container = styled.div`
-	padding: 20px;
-`;
 
 export default App;

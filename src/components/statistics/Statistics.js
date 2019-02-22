@@ -5,6 +5,8 @@ import Nav from '../_shared/Nav';
 /* TODO:
 Who voted for who at what game? Display some statistics about the voting
 done in the past.
+
+Show statistics of who has the most 3 points etc.
 */
 
 const Statistics = () => {
