@@ -13,6 +13,7 @@ const defaultStyle = {
     border: 'none',
     color: '#fff',
     cursor: 'pointer',
+    fontFamily: '"Josefin Sans", sans-serif',
     height: '50px',
     lineHeight: '50px',
     minWidth: '150px',

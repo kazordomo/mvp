@@ -11,12 +11,16 @@ export default ({ pos, player }) => {
         return (
             <Animation type="fadeIn">
                 <LeaderRow>
-                    <LeaderPos>
-                        #22
-                        <div><MdGrade /></div>
-                    </LeaderPos>
-                    <Name>{player.name}</Name>
-                    <Points><div>{player.totalScore}</div><div>poäng</div></Points>
+                    <Col>
+                        <LeaderPos>
+                            #22
+                            <div><MdGrade /></div>
+                        </LeaderPos>
+                        <Name>{player.name}</Name>
+                    </Col>
+                    <Col>
+                        <Points><div>{player.totalScore}</div><div>poäng</div></Points>
+                    </Col>
                 </LeaderRow>
             </Animation>
         )
@@ -25,12 +29,16 @@ export default ({ pos, player }) => {
     return (
         <Animation type="fadeIn" sec={2}>
             <Row>
-                <Pos>
-                    #22
-                    <div>{pos}</div>
-                </Pos>
-                <Name>{player.name}</Name>
-                <Points><div>{player.totalScore}</div><div>poäng</div></Points>
+                <Col>
+                    <Pos>
+                        #22
+                        <div>{pos}</div>
+                    </Pos>
+                    <Name>{player.name}</Name>
+                </Col>
+                <Col>
+                    <Points><div>{player.totalScore}</div><div>poäng</div></Points>
+                </Col>
             </Row>
         </Animation>
     );
@@ -48,10 +56,16 @@ const Row = styled.div`
     padding 20px;
 `;
 
+const Col = styled.div`
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+`;
+
 const LeaderRow = styled(Row)`
-    -webkit-box-shadow: -1px 1px 10px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: -1px 1px 10px 0px rgba(0,0,0,0.75);
-    box-shadow: -1px 1px 10px 0px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.75);
+    box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.75);
     margin: 20px 0 15px -5px;
     padding: 40px 20px;
     width: calc(100% - 30px);
@@ -88,7 +102,7 @@ const LeaderPos = styled(Pos)`
 `;
 
 const Name = styled.div`
-
+    margin-left: 20px;
 `;
 
 const Points = styled.div`
