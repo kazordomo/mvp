@@ -10,6 +10,7 @@ class PlayerRow extends Component {
     state = {
         activateFill: false,
     }
+    
 
     componentDidMount() {
         setTimeout(() => this.setState({ activateFill: true }), 150);

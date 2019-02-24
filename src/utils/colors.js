@@ -6,4 +6,5 @@ export default {
     greenish: (a = 1) => `rgba(78,204,69,${a})`,
     grayish: (a = 1) => `rgba(58,68,84,${a})`,
     navish: (a = 1) => `rgba(83,104,126,${a})`,
+    spacegrayish: (a = 1) => `rgba(40,49,61,${a})`,
 }

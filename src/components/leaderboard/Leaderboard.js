@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import colors from '../../utils/colors';
-import styled from 'styled-components';
+import Container from '../_shared/Container';
 import Nav from '../_shared/Nav';
 import PlayerRow from './PlayerRow';
 
@@ -11,7 +11,7 @@ const Leaderboard = ({ players }) => {
     // const totalPoints = sortedPlayers.reduce((sum, player) => sum += player.totalScore, 0);
 
     return (
-        <Container>
+        <Container brColor={colors.spacegrayish()}>
             <Nav title="POÄNGLIGA" />
             { sortedPlayers.map((player, i) => (
                 <PlayerRow 
@@ -24,10 +24,6 @@ const Leaderboard = ({ players }) => {
         </Container>
     )
 }
-
-const Container = styled.div`
-    background-color: rgb(40, 49, 61);
-`;
 
 Leaderboard.propTypes = {
     players: PropTypes.array,
