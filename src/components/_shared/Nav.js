@@ -21,6 +21,7 @@ const Nav = styled.nav`
     color: #fff;
     height: 75px;
     line-height: 75px;
+    padding: 20px 0;
     position: relative;
     text-align: center;
 
@@ -28,12 +29,16 @@ const Nav = styled.nav`
         color: #fff;
         position: absolute;
         left: 0;
-        top: 70%;
+        top: 62%;
         text-align: left;
         transform: translateY(-50%);
         width: 0;
         svg {
-            font-size: 50px;
+            font-size: 44px;
         }
+    }
+
+    h2 {
+        margin: 0;
     }
 `;

@@ -1,104 +1,71 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import colors from '../../utils/colors';
 import { MdGrade } from 'react-icons/md'
-import Animation from '../_shared/Animation';
 
-export default ({ pos, player }) => {
+const getFillColor = pos => `rgba(232,${56 + (pos * 12)},20,1)`;
 
-    // TODO: refactor.
-    if (pos === 1) {
-        return (
-            <Animation type="fadeIn">
-                <LeaderRow>
-                    <Col>
-                        <LeaderPos>
-                            #22
-                            <div><MdGrade /></div>
-                        </LeaderPos>
-                        <Name>{player.name}</Name>
-                    </Col>
-                    <Col>
-                        <Points><div>{player.totalScore}</div><div>poäng</div></Points>
-                    </Col>
-                </LeaderRow>
-            </Animation>
-        )
+class PlayerRow extends Component {
+
+    state = {
+        activateFill: false,
     }
-    
-    return (
-        <Animation type="fadeIn" sec={2}>
+
+    componentDidMount() {
+        setTimeout(() => this.setState({ activateFill: true }), 150);
+    }
+
+    getFillWidth = () => {
+        const { player, maxPoint } = this.props;
+        if (!this.state.activateFill || player.totalScore === 0) return 0;
+        if (maxPoint === player.totalScore) return 100;
+        return player.totalScore / maxPoint * 100;
+    }    
+
+    render() {
+        const { pos, player } = this.props;
+        
+        return (
             <Row>
+                <Fill pos={pos} width={this.getFillWidth()} />
                 <Col>
-                    <Pos>
-                        #22
-                        <div>{pos}</div>
-                    </Pos>
+                    <div>{ (pos === 1) ? <MdGrade /> : pos }</div>
                     <Name>{player.name}</Name>
                 </Col>
                 <Col>
                     <Points><div>{player.totalScore}</div><div>poäng</div></Points>
                 </Col>
             </Row>
-        </Animation>
-    );
+        );
+    }
 }
 
 const Row = styled.div`
-    background-color: ${colors.darkish(.35)};
-    border-radius: 10px;
-    color: #fff;
     align-items: center;
+    color: #fff;
     display: flex;
     flex-direction: row;
+    height: 100px;
     justify-content: space-between;
-    margin-bottom: 10px;
-    padding 20px;
+    line-height: 100px;
+    position: relative;
+`;
+
+const Fill = styled.div`
+    background-color: ${props=>getFillColor(props.pos)};
+    height: 100%;
+    position: absolute;
+    transition: 1000ms width ease-in-out;
+    width: ${props=>props.width}%;
 `;
 
 const Col = styled.div`
     align-items: center;
     display: flex;
     flex-direction: row;
-`;
-
-const LeaderRow = styled(Row)`
-    -webkit-box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.75);
-    box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.75);
-    margin: 20px 0 15px -5px;
-    padding: 40px 20px;
-    width: calc(100% - 30px);
-`;
-
-const Pos = styled.div`
-    background-color: ${colors.darkish()};
-    border: 4px solid ${colors.yellowish()};
-    border-radius: 50%;
-    box-sizing: border-box;
-    font-weight: 700;
-    line-height: 75px;
-    height: 75px;
+    padding: 0 20px;
     position: relative;
-    text-align: center;
-    width: 75px;
-
-    div {
-        background-color: ${colors.orangeish()};
-        border-radius: 50%;
-        bottom: -5px;
-        line-height: 30px;
-        position: absolute;
-        right: -5px;
-        height: 30px;
-        width: 30px;
-    }
-`;
-
-const LeaderPos = styled(Pos)`
-    height: 95px;
-    line-height: 95px;
-    width: 95px;
+    z-index: 2;
 `;
 
 const Name = styled.div`
@@ -107,4 +74,13 @@ const Name = styled.div`
 
 const Points = styled.div`
     text-align: center;
+    line-height: 1.1;
 `;
+
+PlayerRow.propTypes = {
+    pos: PropTypes.number,
+    player: PropTypes.object,
+    maxPoint: PropTypes.number,
+}
+
+export default PlayerRow;
