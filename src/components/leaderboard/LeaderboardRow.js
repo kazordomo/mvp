@@ -5,7 +5,7 @@ import { MdGrade } from 'react-icons/md'
 
 const getFillColor = pos => `rgba(232,${56 + (pos * 12)},20,1)`;
 
-class PlayerRow extends Component {
+class LeaderboardRow extends Component {
 
     state = {
         activateFill: false,
@@ -13,7 +13,7 @@ class PlayerRow extends Component {
     
 
     componentDidMount() {
-        setTimeout(() => this.setState({ activateFill: true }), 150);
+        setTimeout(() => this.setState({ activateFill: true }), 75);
     }
 
     getFillWidth = () => {
@@ -78,10 +78,10 @@ const Points = styled.div`
     line-height: 1.1;
 `;
 
-PlayerRow.propTypes = {
+LeaderboardRow.propTypes = {
     pos: PropTypes.number,
     player: PropTypes.object,
     maxPoint: PropTypes.number,
 }
 
-export default PlayerRow;
+export default LeaderboardRow;

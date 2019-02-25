@@ -4,7 +4,7 @@ import * as firebase from 'firebase';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import colors from '../../utils/colors';
-import { MdCheckCircle } from 'react-icons/md'
+import { MdCheckCircle, MdLock, MdLockOpen } from 'react-icons/md'
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
 import Wrapper from '../_shared/Wrapper';
@@ -52,6 +52,7 @@ class Rate extends Component {
         this.state.pointsGiven.find(point => point.name === player.name);
     onReset = () => this.setState(this.initialState);
     handleRedirect = () => setTimeout(() => this.setState({ redirectToReferrer: true }), 1050);
+    checkIfAllRatesUsed = () => this.state.pointsGiven.length === 3;
 
     render() {
 
@@ -60,22 +61,30 @@ class Rate extends Component {
 
         return (
             <Container brColor={colors.spacegrayish()}>
-                <Fade show={this.state.isDoneRating}/>
-                <CheckMark show={this.state.isDoneRating}><MdCheckCircle /></CheckMark>
+                <Fade show={this.state.isDoneRating || this.checkIfAllRatesUsed()}/>
+                <HiddenIcon show={this.state.isDoneRating}>
+                    <MdCheckCircle color={colors.greenish()} /> : 
+                </HiddenIcon>
+                <HiddenIcon show={this.checkIfAllRatesUsed() && !this.state.isDoneRating}>
+                    <MdLock color='#fff'/>
+                </HiddenIcon>
                 <Nav title="RÖSTNING" />
                 <Wrapper>
-                    { this.state.players.map((player, i) => 
-                        <RateRow 
-                            key={player.name} 
-                            onPlayerRate={this.onPlayerRate} 
-                            player={player} 
-                            pos={i + 1} 
-                            rating={this.getRating(player)}    
-                        />) }
+                    { this.state.players
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map((player, i) => 
+                            <RateRow 
+                                key={player.name} 
+                                onPlayerRate={this.onPlayerRate} 
+                                player={player} 
+                                pos={i + 1} 
+                                rating={this.getRating(player)}    
+                            />) 
+                    }
                 </Wrapper>
                 <HandleRatingButtons show={this.state.pointsGiven.length}>
-                    <Btn danger onClick={this.onReset}>Reset</Btn>
-                    { (this.state.pointsGiven.length === 3) ? <Btn onClick={this.onDoneRating}>Skicka</Btn> : '' }
+                    <Btn danger onClick={this.onReset}>Reset <MdLockOpen /></Btn>
+                    { this.checkIfAllRatesUsed() ? <Btn onClick={this.onDoneRating}>Skicka <MdCheckCircle /></Btn> : '' }
                 </HandleRatingButtons>
             </Container>
         )
@@ -84,38 +93,47 @@ class Rate extends Component {
 
 const HandleRatingButtons = styled.div`
     align-items: center;
-    background-color: ${props=>props.show ? 'rgba(0,0,0,0.55)' : 'transparent'};
     bottom: 0px;
     display: ${props=>props.show ? 'flex' : 'none'};
     height: 75px;
     justify-content: center;
     position: fixed;
+    pointer-events: none;
     width: 100%;
+    z-index: 4;
 `;
 
 const Btn = styled.div`
+    align-items: center;
     background-color: ${props=>props.danger?colors.redish():colors.greenish()};
     border-radius: 25px;
     bottom: 20px;
     box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.75);
     color: #fff;
+    display: flex;
     height: 50px;
-    margin-left: ${props=>props.danger?'0':'20px'};
+    justify-content: center;
     line-height: 50px;
+    margin-left: ${props=>props.danger?'0':'20px'};
+    pointer-events: all;
     text-align: center;
     width: 150px;
+
+    svg {
+        font-size: 18px;
+        margin-left: 5px;
+    }
 `;
 
-const CheckMark = styled.div`
+const HiddenIcon = styled.div`
     left: ${props=>props.show?'50%':'-60px'};
     top: 50%;
-    position: absolute;
+    position: fixed;
     transform: translate(-50%, -50%);
     transition: left 350ms ease-in-out;
     z-index: 3;
 
     svg {
-        color: ${colors.greenish()};
         font-size: 60px;
     }
 `;

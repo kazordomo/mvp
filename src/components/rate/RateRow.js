@@ -14,22 +14,33 @@ class RateRow extends Component {
     }
 
     getRowMargin = () => this.state.activateRow ? '0' : '-400px';
+    
+    getRateButtonColor = pos => {
+        if (pos === 1)
+            return 'rgba(232,74,20,1)';
+        else if (pos === 2)
+            return 'rgba(232,94,20,1)';
+        else if (pos === 3)
+            return 'rgba(232,114,20,1)';
+        
+        return false;
+    }
 
     render() {
-        const { player, onPlayerRate } = this.props;
+        const { player, onPlayerRate, rating } = this.props;
         
         return (
-            <Row marginLeft={this.getRowMargin()}>
+            <Row marginLeft={this.getRowMargin()} brColor={rating ? this.getRateButtonColor(rating.value) : false}>
                 <Name>
                     {player.name}
                 </Name>
                 { 
-                    this.props.rating ?
-                        <RateButton isRated>{ this.props.rating.value }</RateButton> :
+                    rating ?
+                        <RateButton isRated>{ rating.value }</RateButton> :
                         <RateButtons>
-                            <RateButton v={74} onClick={() => onPlayerRate(player, 1)}>1</RateButton>
-                            <RateButton v={88} onClick={() => onPlayerRate(player, 2)}>2</RateButton>
-                            <RateButton v={102} onClick={() => onPlayerRate(player, 3)}>3</RateButton>
+                            <RateButton brColor={this.getRateButtonColor(1)} onClick={() => onPlayerRate(player, 1)}>1</RateButton>
+                            <RateButton brColor={this.getRateButtonColor(2)} onClick={() => onPlayerRate(player, 2)}>2</RateButton>
+                            <RateButton brColor={this.getRateButtonColor(3)} onClick={() => onPlayerRate(player, 3)}>3</RateButton>
                         </RateButtons>
 
                 }
@@ -40,7 +51,7 @@ class RateRow extends Component {
 
 const Row = styled.div`
     align-items: center;
-    background-color: rgba(232,56,20,1);
+    background-color: ${props=>props.brColor ? props.brColor : 'rgba(232,56,20,1)'};
     border-radius: 2px;
     color: #fff;
     display: flex;
@@ -52,7 +63,7 @@ const Row = styled.div`
     width: 100%;
 
     :last-child {
-        margin-bottom: 0;
+        margin-bottom: 55px;
     }
 `;
 
@@ -70,8 +81,9 @@ const RateButtons = styled.div`
 
 const RateButton = styled.div`
     align-items: center
-    background-color: ${props=>props.isRated ? colors.spacegrayish() : `rgba(232,${props.v},20,1)`};
+    background-color: ${props=>props.isRated ? colors.spacegrayish() : props.brColor};
     display: flex;
+    font-size: ${props=>props.isRated ? '24px' : '16px'};
     justify-content: center;
     height: 80px;
     width: 75px;
