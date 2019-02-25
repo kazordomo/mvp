@@ -18,7 +18,7 @@ class Home extends Component {
                 <CenteredWrapper>
                     <Animation type='bounceIn'>
                         <Link to={'/rate'}>
-                            <Button customStyle={buttonStyle}>
+                            <Button customStyle={btnStyle}>
                                 <span>Rösta</span>
                                 <MdGrade color={colors.yellowish()} />
                             </Button>
@@ -26,7 +26,7 @@ class Home extends Component {
                     </Animation>
                     <Animation type='bounceIn'>
                         <Link to={'/leaderboard'}>
-                            <Button customStyle={buttonStyle}>
+                            <Button customStyle={btnStyle}>
                                 <span>Poängliga</span>
                                 <MdFormatListNumbered color={colors.yellowish()} />
                             </Button>
@@ -34,7 +34,7 @@ class Home extends Component {
                     </Animation>
                     <Animation type='bounceIn'>
                         <Link to={'/statistics'}>
-                            <Button customStyle={buttonStyle}>
+                            <Button customStyle={btnStyle}>
                                 <span>Statistik</span>
                                 <MdShowChart color={colors.yellowish()} />
                             </Button>
@@ -46,7 +46,7 @@ class Home extends Component {
     }
 }
 
-const buttonStyle = {
+const btnStyle = {
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'space-between',

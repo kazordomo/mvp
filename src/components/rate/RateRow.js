@@ -10,13 +10,13 @@ class RateRow extends Component {
     }
 
     componentDidMount() {
-        setTimeout(() => this.setState({ activateRow: true }), 75 * this.props.pos);
+        setTimeout(() => this.setState({ activateRow: true }), 50 * this.props.pos);
     }
 
-    getRowMargin = () => this.state.activateRow ? '0' : '-1200px';
+    getRowMargin = () => this.state.activateRow ? '0' : '-400px';
 
     render() {
-        const { player, onRate } = this.props;
+        const { player, onPlayerRate } = this.props;
         
         return (
             <Row marginLeft={this.getRowMargin()}>
@@ -25,11 +25,11 @@ class RateRow extends Component {
                 </Name>
                 { 
                     this.props.rating ?
-                        <RateButton isRated>{ this.props.rating.point }</RateButton> :
+                        <RateButton isRated>{ this.props.rating.value }</RateButton> :
                         <RateButtons>
-                            <RateButton v={74} onClick={() => onRate(player, 1)}>1</RateButton>
-                            <RateButton v={88} onClick={() => onRate(player, 2)}>2</RateButton>
-                            <RateButton v={102} onClick={() => onRate(player, 3)}>3</RateButton>
+                            <RateButton v={74} onClick={() => onPlayerRate(player, 1)}>1</RateButton>
+                            <RateButton v={88} onClick={() => onPlayerRate(player, 2)}>2</RateButton>
+                            <RateButton v={102} onClick={() => onPlayerRate(player, 3)}>3</RateButton>
                         </RateButtons>
 
                 }
@@ -48,8 +48,12 @@ const Row = styled.div`
     height: 80px;
     margin-bottom: 10px;
     margin-left: ${props=>props.marginLeft};
-    transition: margin 1000ms ease-in-out;
-    width: 100%
+    transition: margin 450ms ease-in-out;
+    width: 100%;
+
+    :last-child {
+        margin-bottom: 0;
+    }
 `;
 
 const Name = styled.div`

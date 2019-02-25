@@ -14,11 +14,11 @@ const defaultStyle = {
     color: '#fff',
     cursor: 'pointer',
     fontFamily: '"Josefin Sans", sans-serif',
-    height: '50px',
-    lineHeight: '50px',
-    minWidth: '150px',
+    height: '65px',
+    lineHeight: '65px',
+    minWidth: '175px',
     outline: 'none',
-    padding: '0 20px',
+    padding: '0 30px',
 }
 
 const getBrColor = props => {

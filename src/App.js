@@ -10,6 +10,9 @@ import Leaderboard from './components/leaderboard/Leaderboard';
 import Statistics from './components/statistics/Statistics';
 import Loading from './components/_shared/Loading';
 
+// TODO: Setup rules so that everyone can check the leaderboard and stats, but onlt logged in
+// users will be able to see and use the rating.
+
 class App extends Component {
 
 	constructor(props) {
@@ -31,8 +34,10 @@ class App extends Component {
 
 		const initPlayers = [];
 		const snapshot = await firebase.firestore().collection('players').get();
-		snapshot.forEach(doc => initPlayers.push(doc.data()));
+		snapshot.forEach(doc => initPlayers.push({ id: doc.id, ...doc.data() }));
 		this.setState({ players: initPlayers, isFetching: false });
+		// firebase.firestore().collection('players').onSnapshot(snapshot => {
+		// });
     }
 
 	render() {
