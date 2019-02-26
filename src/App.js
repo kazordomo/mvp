@@ -10,16 +10,13 @@ import Leaderboard from './components/leaderboard/Leaderboard';
 import Statistics from './components/statistics/Statistics';
 import Loading from './components/_shared/Loading';
 
-// TODO: Setup rules so that everyone can check the leaderboard and stats, but onlt logged in
-// users will be able to see and use the rating.
-
 class App extends Component {
 
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			isLoggedIn: true,
+			isLoggedIn: false,
 			isFetching: true,
 			players: [],
 		}
@@ -29,28 +26,33 @@ class App extends Component {
 		if (!firebase.apps.length)
 			firebase.initializeApp(keys.firebaseConfig);
 
-		// This func gets called every time a user logs in/logs out.
-		firebase.auth().onAuthStateChanged(user => console.log(user));
+		// This func gets called when the app is fired up or when a user signs in/out.
+		firebase.auth().onAuthStateChanged(user => {
+			if (user)
+				this.setState({ isLoggedIn: true }, this.populatePlayers);
+			else
+				this.setState({ isFetching: false });
+		});
+	}
 
+	async populatePlayers() {
 		const initPlayers = [];
 		const snapshot = await firebase.firestore().collection('players').get();
 		snapshot.forEach(doc => initPlayers.push({ id: doc.id, ...doc.data() }));
 		this.setState({ players: initPlayers, isFetching: false });
-		// firebase.firestore().collection('players').onSnapshot(snapshot => {
-		// });
-    }
+	}
 
 	render() {
 		if (this.state.isFetching)
             return <Loading />
-
+		
 		if (!this.state.isLoggedIn)
 			return <Login />
 
 		return (
 			<Router>
 				<AppContainer>
-					<Route exact path='/' component={Home}/>
+					<Route exact path='/' render={() => <Home isLoggedIn={this.state.isLoggedIn} />} />
 					<Route path='/rate' render={() => <Rate players={this.state.players} />}/>
 					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} />}/>
 					<Route path='/statistics' render={() => <Statistics />}/>

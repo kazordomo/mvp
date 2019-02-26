@@ -1,5 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import colors from '../../utils/colors'
 import Nav from '../_shared/Nav';
+import Container from '../_shared/Container';
+import Wrapper from '../_shared/Wrapper';
+
 // import PropTypes from 'prop-types';
 
 /* TODO:
@@ -11,13 +16,15 @@ Show statistics of who has the most 3 points etc.
 
 const Statistics = () => {
     return (
-        <div>
-            <Nav />
-        </div>
+        <Container brColor={colors.spacegrayish()}>
+            <Nav title="STATISTIK" />
+            <Wrapper></Wrapper>
+        </Container>
     )
 }
 
-export default Statistics;
-// Statistics.propTypes = {
+Statistics.propTypes = {
 
-// }
+}
+
+export default Statistics;

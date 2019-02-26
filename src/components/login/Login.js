@@ -29,8 +29,6 @@ class Login extends Component {
                         .style.display = this.state.register ? 'block' : 'none';
                 });
             })
-
-        document.querySelector('#signOut').addEventListener('click', this.signOut);
     }
 
     onSubmit = e => {
@@ -90,25 +88,21 @@ class Login extends Component {
         //     <Redirect to={'/'} />
 
         const { register } = this.state;
-        console.log(register);
 
         return (
             <div>
                 <ImageBr url={brImage} />
                 <GradientBr />
                 <CenteredWrapper>
-                    <Animation type="fadeIn">
-                        <form>
-                            <Input type="email" id="email" placeholder="someone@example.com" />
-                            <Input type="password" id="password" placeholder="Password" />
-                            <Input type="password" id="retypePassword" placeholder="Retype Password" />
-                            <Button long onClick={this.onRegister}>{ register ? 'Registrera' : 'Logga in' }</Button>
-                            <div id="changeAuth">
-                                { register ? <p>Du har redan ett konto?</p> : <p>Du har inte ett konto?</p> }
-                            </div>
-                            <Button id="signOut" onClick={this.signOut}>Logga ut</Button>
-                        </form>
-                    </Animation>
+                    <form>
+                        <Input type="email" id="email" placeholder="someone@example.com" />
+                        <Input type="password" id="password" placeholder="Password" />
+                        <Input type="password" id="retypePassword" placeholder="Retype Password" />
+                        <Button long onClick={this.onRegister}>{ register ? 'Registrera' : 'Logga in' }</Button>
+                        <div id="changeAuth">
+                            { register ? <p>Du har redan ett konto?</p> : <p>Du har inte ett konto?</p> }
+                        </div>
+                    </form>
                 </CenteredWrapper>
             </div>
         )

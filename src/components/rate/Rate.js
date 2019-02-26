@@ -17,7 +17,6 @@ class Rate extends Component {
 
         this.initialState = {
             pointsGiven: [],
-            players: props.players,
             isDoneRating: false,
             redirectToReferrer: false,
         }
@@ -27,7 +26,6 @@ class Rate extends Component {
 
     onPlayerRate = (player, point) => {
         try {
-            player.totalScore += point;
             this.setState({ pointsGiven: [...this.state.pointsGiven, { 
                 id: player.id, 
                 name: player.name, 
@@ -40,8 +38,8 @@ class Rate extends Component {
     onDoneRating = () => {
         try {
             this.state.pointsGiven.forEach(point => {
-                const player = this.state.players.find(player => player.id === point.id);
-                firebase.firestore().collection('players').doc(point.id).update({ totalScore: player.totalScore });
+                const player = this.props.players.find(player => player.id === point.id);
+                firebase.firestore().collection('players').doc(point.id).update({ totalScore: player.totalScore += point.value });
             });
             this.setState({ isDoneRating: true }, this.handleRedirect);
         } catch(err) {
@@ -70,7 +68,7 @@ class Rate extends Component {
                 </HiddenIcon>
                 <Nav title="RÖSTNING" />
                 <Wrapper>
-                    { this.state.players
+                    { this.props.players
                         .sort((a, b) => a.name.localeCompare(b.name))
                         .map((player, i) => 
                             <RateRow 

@@ -16,14 +16,18 @@ class Home extends Component {
                 <ImageBr url={brImage} />
                 <GradientBr />
                 <CenteredWrapper>
-                    <Animation type='bounceIn'>
-                        <Link to={'/rate'}>
-                            <Button customStyle={btnStyle}>
-                                <span>Rösta</span>
-                                <MdGrade color={colors.yellowish()} />
-                            </Button>
-                        </Link>
-                    </Animation>
+                    {
+                        this.props.isLoggedIn ?
+                        <Animation type='bounceIn'>
+                            <Link to={'/rate'}>
+                                <Button customStyle={btnStyle}>
+                                    <span>Rösta</span>
+                                    <MdGrade color={colors.yellowish()} />
+                                </Button>
+                            </Link>
+                        </Animation> :
+                        ''
+                    }
                     <Animation type='bounceIn'>
                         <Link to={'/leaderboard'}>
                             <Button customStyle={btnStyle}>
