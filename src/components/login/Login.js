@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
-import { Redirect } from 'react-router-dom';
+import colors from '../../utils/colors';
+import Container from '../_shared/Container'
 import CenteredWrapper from '../_shared/CenteredWrapper';
 import brImage from '../../images/broddshow.jpeg';
 import ImageBr from '../_shared/ImageBr';
-import GradientBr from '../_shared/GradientBr';
-import Animation from '../_shared/Animation';
 import Button from '../_basic/Button';
 import Input from '../_basic/Input';
 
@@ -14,21 +13,6 @@ class Login extends Component {
     state = {
         register: true,
         redirectToReferrer: false,
-    }
-
-    componentDidMount() {
-        document
-            .querySelector('form')
-            .addEventListener('submit', this.onSubmit);
-
-        document.querySelector('#changeAuth')
-            .addEventListener('click', () => {
-                this.setState(prevState => { return { register: !prevState.register } }, () => {
-                    document
-                        .querySelector('#retypePassword')
-                        .style.display = this.state.register ? 'block' : 'none';
-                });
-            })
     }
 
     onSubmit = e => {
@@ -40,14 +24,20 @@ class Login extends Component {
     }
 
     register = async () => {
-        const { email, password, retypePass } = this.getFormValues();
+        const { email, password, retypePass, firstName, authCode, } = this.getFormValues();
 
         if (!this.passwordCheck(password, retypePass)) 
             return console.log('The passwords did not match!');
 
         try {
             const cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
-            this.setState({ redirectToReferrer: true });
+            // Creates a user in the users schema, using the unique ID gotten from the authed user.
+            firebase.firestore().collection('users').doc(cred.user.uid).set({
+                name: firstName,
+                authCode
+            })
+            .then(() => this.setState({ redirectToReferrer: true }))
+            .catch(err => console.log(err));
         } catch(err) {
             // TODO: Handle error.
             console.log(err);
@@ -65,6 +55,20 @@ class Login extends Component {
         }
     }
 
+    onChangeAuth = () => {
+        this.setState(prevState => { return { register: !prevState.register } }, () => {
+            document
+                .querySelector('#retypePassword')
+                .style.display = this.state.register ? 'block' : 'none';
+            document
+                .querySelector('#firstName')
+                .style.display = this.state.register ? 'block' : 'none';
+            document
+                .querySelector('#authCode')
+                .style.display = this.state.register ? 'block' : 'none';
+        });
+    }
+
     // Will not be used in prod.
     signOut = async e => {
         e.preventDefault();
@@ -77,6 +81,8 @@ class Login extends Component {
             email: document.querySelector('#email').value,
             password: document.querySelector('#password').value,
             retypePass: document.querySelector('#retypePassword').value,
+            firstName: document.querySelector('#firstName').value,
+            authCode: document.querySelector('#authCode').value,
         }
     }
 
@@ -84,27 +90,26 @@ class Login extends Component {
 
     render() {
 
-        // if (this.state.redirectToReferrer)
-        //     <Redirect to={'/'} />
-
         const { register } = this.state;
 
         return (
-            <div>
-                <ImageBr url={brImage} />
-                <GradientBr />
+            <Container brColor={colors.spacegrayish()} style={{height: '100vh'}}>
+                {/* <ImageBr url={brImage} /> */}
+                {/* <GradientBr /> */}
                 <CenteredWrapper>
                     <form>
                         <Input type="email" id="email" placeholder="someone@example.com" />
-                        <Input type="password" id="password" placeholder="Password" />
-                        <Input type="password" id="retypePassword" placeholder="Retype Password" />
-                        <Button long onClick={this.onRegister}>{ register ? 'Registrera' : 'Logga in' }</Button>
+                        <Input type="text" id="firstName" placeholder="Förnamn" />
+                        <Input type="text" id="authCode" placeholder="Lösenkod" />
+                        <Input type="password" id="password" placeholder="Lösenord" />
+                        <Input type="password" id="retypePassword" placeholder="Lösenord igen" />
+                        <Button long onClick={this.onSubmit}>{ register ? 'Registrera' : 'Logga in' }</Button>
                         <div id="changeAuth">
-                            { register ? <p>Du har redan ett konto?</p> : <p>Du har inte ett konto?</p> }
+                            <p onClick={this.onChangeAuth}>{ register ? 'Du har redan ett konto?' : 'Inge konto?' }</p>
                         </div>
                     </form>
                 </CenteredWrapper>
-            </div>
+            </Container>
         )
     }
 }

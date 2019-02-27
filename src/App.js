@@ -18,6 +18,7 @@ class App extends Component {
 		this.state = {
 			isLoggedIn: false,
 			isFetching: true,
+			user: false,
 			players: [],
 		}
 	}
@@ -27,12 +28,18 @@ class App extends Component {
 			firebase.initializeApp(keys.firebaseConfig);
 
 		// This func gets called when the app is fired up or when a user signs in/out.
-		firebase.auth().onAuthStateChanged(user => {
-			if (user)
-				this.setState({ isLoggedIn: true }, this.populatePlayers);
+		firebase.auth().onAuthStateChanged(async user => {
+			if (user) {
+				const snapshot = await firebase.firestore().collection('users').doc(user.uid).get();
+				this.setState({ isLoggedIn: true, user: snapshot.data() }, this.populatePlayers);
+			}
 			else
 				this.setState({ isFetching: false });
 		});
+
+		setTimeout(() => console.log(this.state.user), 3000);
+
+		// firebase.auth().signOut();
 	}
 
 	async populatePlayers() {
