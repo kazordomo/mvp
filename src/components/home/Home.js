@@ -18,7 +18,7 @@ class Home extends Component {
                 <GradientBr />
                 <CenteredWrapper>
                     {
-                        this.props.user.isAdmin ?
+                        (this.props.user.isAdmin && this.props.isRatingOpen) ?
                         <Animation type='bounceIn'>
                             <Link to={'/rate'}>
                                 <Button customStyle={btnStyle}>
@@ -53,12 +53,11 @@ class Home extends Component {
                     {
                         this.props.user.isAdmin ?
                         <Animation type='bounceIn'>
-                            <Button 
-                                customStyle={btnStyle} 
-                                onClick={() => this.props.onAddAdminRole(document.querySelector('#adminEmail').value)}>
-                                <span>//Only for super admin</span>
-                            </Button>
-                            <Input type="text" id="adminEmail" placeholder="someone@example.com" />
+                            <Link to={'/admin'}>
+                                <Button customStyle={btnStyle}>
+                                    <span>Admin Area</span>
+                                </Button>
+                            </Link>
                         </Animation> :
                         ''
                     }

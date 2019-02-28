@@ -4,6 +4,7 @@ import keys from './config/keys';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Login from './components/login/Login';
+import Admin from './components/admin/Admin';
 import Home from './components/home/Home';
 import Rate from './components/rate/Rate';
 import Leaderboard from './components/leaderboard/Leaderboard';
@@ -18,6 +19,7 @@ class App extends Component {
 		this.state = {
 			isLoggedIn: false,
 			isFetching: true,
+			isRatingOpen: false,
 			user: false,
 			players: [],
 		}
@@ -45,9 +47,13 @@ class App extends Component {
 				this.setState({ isFetching: false });
 		});
 
+		const snapshot = await firebase.firestore().collection('wall').doc('isRatingOpen').get();
+		this.setState({ isRatingOpen: snapshot.data().isRatingOpen });
+
 		// firebase.auth().signOut();
 	}
 
+	// TODO: Move out fetch funcs.
 	async populatePlayers() {
 		const initPlayers = [];
 		const snapshot = await firebase.firestore().collection('players').get();
@@ -62,7 +68,17 @@ class App extends Component {
         addAdminRole({ email }).then(result => {
             console.log(result);
         }).catch(err => console.log(err));
-    }
+	}
+	
+	onOpenCloseRating = async () => {
+		try {
+			const isRatingOpenBool = this.state.isRatingOpen;
+			await firebase.firestore().collection('wall').doc('isRatingOpen').update({ isRatingOpen: !isRatingOpenBool });
+			this.setState({ isRatingOpen: !isRatingOpenBool });
+		} catch(err) {
+			console.log(err);
+		}
+	}
 
 	render() {
 		if (this.state.isFetching)
@@ -74,10 +90,18 @@ class App extends Component {
 		return (
 			<Router>
 				<AppContainer>
-					<Route exact path='/' render={() => <Home onAddAdminRole={this.onAddAdminRole} user={this.state.user} />} />
+					<Route exact path='/' render={() => <Home user={this.state.user} isRatingOpen={this.state.isRatingOpen} />} />
 					<Route path='/rate' render={() => <Rate players={this.state.players} />}/>
 					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} />}/>
 					<Route path='/statistics' render={() => <Statistics />}/>
+					<Route path='/admin' render={() => 
+						<Admin 
+							onAddAdminRole={this.onAddAdminRole} 
+							user={this.state.user}
+							isRatingOpen={this.state.isRatingOpen}
+							onOpenCloseRating={this.onOpenCloseRating}
+						/>}
+					/>
 				</AppContainer>
 			</Router>
 		)

@@ -10,18 +10,17 @@ class LeaderboardRow extends Component {
     state = {
         activateFill: false,
     }
-    
 
     componentDidMount() {
         setTimeout(() => this.setState({ activateFill: true }), 75);
     }
 
     getFillWidth = () => {
-        const { player, maxPoint } = this.props;
-        if (!this.state.activateFill || player.totalScore === 0) return 0;
-        if (maxPoint === player.totalScore) return 100;
-        return player.totalScore / maxPoint * 100;
-    }    
+        const { player, maxPoint, getTotalScore } = this.props;
+        if (!this.state.activateFill || getTotalScore(player) === 0) return 0;
+        if (maxPoint === getTotalScore(player)) return 100;
+        return getTotalScore(player) / maxPoint * 100;
+    }
 
     render() {
         const { pos, player } = this.props;
@@ -34,7 +33,7 @@ class LeaderboardRow extends Component {
                     <Name>{player.name}</Name>
                 </Col>
                 <Col>
-                    <Points><div>{player.totalScore}</div><div>poäng</div></Points>
+                    <Points><div>{this.props.getTotalScore(player)}</div><div>poäng</div></Points>
                 </Col>
             </Row>
         );

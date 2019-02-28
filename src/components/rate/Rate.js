@@ -39,7 +39,8 @@ class Rate extends Component {
         try {
             this.state.pointsGiven.forEach(point => {
                 const player = this.props.players.find(player => player.id === point.id);
-                firebase.firestore().collection('players').doc(point.id).update({ totalScore: player.totalScore += point.value });
+                const updatedRates = [...player.rates, point.value];
+                firebase.firestore().collection('players').doc(point.id).update({ rates: updatedRates });
             });
             this.setState({ isDoneRating: true }, this.handleRedirect);
         } catch(err) {

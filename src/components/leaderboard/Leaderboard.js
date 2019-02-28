@@ -7,7 +7,8 @@ import LeaderboardRow from './LeaderboardRow';
 
 const Leaderboard = ({ players }) => {
 
-    const sortedPlayers = players.sort((a, b) => b.totalScore - a.totalScore);
+    const getTotalScore = player => player.rates.reduce((total, a) => total += a, 0);
+    const sortedPlayers = players.sort((a, b) => getTotalScore(b) - getTotalScore(a));
 
     return (
         <Container brColor={colors.spacegrayish()}>
@@ -17,7 +18,8 @@ const Leaderboard = ({ players }) => {
                     key={player.name}
                     pos={i + 1}
                     player={player}
-                    maxPoint={sortedPlayers[0].totalScore}
+                    getTotalScore={getTotalScore}
+                    maxPoint={getTotalScore(sortedPlayers[0])}
                 />
             )) }
         </Container>
