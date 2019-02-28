@@ -30,14 +30,20 @@ class App extends Component {
 		// This func gets called when the app is fired up or when a user signs in/out.
 		firebase.auth().onAuthStateChanged(async user => {
 			if (user) {
+				const idTokenResult = await user.getIdTokenResult();
 				const snapshot = await firebase.firestore().collection('users').doc(user.uid).get();
-				this.setState({ isLoggedIn: true, user: snapshot.data() }, this.populatePlayers);
+				const userData ={
+					...snapshot.data(),
+					isAdmin: idTokenResult.claims.admin ? idTokenResult.claims.admin : false,
+				};
+				this.setState({ 
+					isLoggedIn: true, 
+					user: userData,
+				}, this.populatePlayers);
 			}
 			else
 				this.setState({ isFetching: false });
 		});
-
-		setTimeout(() => console.log(this.state.user), 3000);
 
 		// firebase.auth().signOut();
 	}
@@ -49,6 +55,15 @@ class App extends Component {
 		this.setState({ players: initPlayers, isFetching: false });
 	}
 
+	onAddAdminRole = email => {
+        const addAdminRole = firebase.functions().httpsCallable('addAdminRole');
+        if (!email)
+            return console.log('Skriv en e-post!');
+        addAdminRole({ email }).then(result => {
+            console.log(result);
+        }).catch(err => console.log(err));
+    }
+
 	render() {
 		if (this.state.isFetching)
             return <Loading />
@@ -59,7 +74,7 @@ class App extends Component {
 		return (
 			<Router>
 				<AppContainer>
-					<Route exact path='/' render={() => <Home isLoggedIn={this.state.isLoggedIn} />} />
+					<Route exact path='/' render={() => <Home onAddAdminRole={this.onAddAdminRole} user={this.state.user} />} />
 					<Route path='/rate' render={() => <Rate players={this.state.players} />}/>
 					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} />}/>
 					<Route path='/statistics' render={() => <Statistics />}/>

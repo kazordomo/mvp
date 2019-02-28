@@ -8,6 +8,7 @@ import Button from '../_basic/Button';
 import Animation from '../_shared/Animation';
 import ImageBr from '../_shared/ImageBr';
 import GradientBr from '../_shared/GradientBr';
+import Input from '../_basic/Input';
 
 class Home extends Component {
     render() {
@@ -17,7 +18,7 @@ class Home extends Component {
                 <GradientBr />
                 <CenteredWrapper>
                     {
-                        this.props.isLoggedIn ?
+                        this.props.user.isAdmin ?
                         <Animation type='bounceIn'>
                             <Link to={'/rate'}>
                                 <Button customStyle={btnStyle}>
@@ -26,7 +27,12 @@ class Home extends Component {
                                 </Button>
                             </Link>
                         </Animation> :
-                        ''
+                        <Animation type='bounceIn'>
+                            <Button customStyle={disabledBtnStyle}>
+                                <span>Rösta</span>
+                                <MdGrade color={colors.yellowish()} />
+                            </Button>
+                        </Animation>
                     }
                     <Animation type='bounceIn'>
                         <Link to={'/leaderboard'}>
@@ -44,6 +50,18 @@ class Home extends Component {
                             </Button>
                         </Link>
                     </Animation>
+                    {
+                        this.props.user.isAdmin ?
+                        <Animation type='bounceIn'>
+                            <Button 
+                                customStyle={btnStyle} 
+                                onClick={() => this.props.onAddAdminRole(document.querySelector('#adminEmail').value)}>
+                                <span>//Only for super admin</span>
+                            </Button>
+                            <Input type="text" id="adminEmail" placeholder="someone@example.com" />
+                        </Animation> :
+                        ''
+                    }
                 </CenteredWrapper>
             </div>
         )
@@ -56,6 +74,12 @@ const btnStyle = {
     justifyContent: 'space-between',
     marginBottom: '20px',
     minWidth: '200px',
+}
+
+const disabledBtnStyle = {
+    backgroundColor: 'pink',
+    ...btnStyle,
+
 }
 
 export default Home;
