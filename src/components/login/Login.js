@@ -33,8 +33,10 @@ class Login extends Component {
             const cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
             // Creates a user in the users schema, using the unique ID gotten from the authed user.
             firebase.firestore().collection('users').doc(cred.user.uid).set({
+                id: cred.user.uid,
                 name: firstName,
-                authCode
+                ratings: [],
+                // userRef: firebase.firestore().doc(`users/${cred.user.uid}`)
             })
             .then(() => this.setState({ redirectToReferrer: true }))
             .catch(err => console.log(err));

@@ -7,7 +7,7 @@ import LeaderboardRow from './LeaderboardRow';
 
 const Leaderboard = ({ players }) => {
 
-    const getTotalScore = player => player.rates.reduce((total, a) => total += a, 0);
+    const getTotalScore = player => player.ratings.reduce((total, a) => total += a.value, 0);
     const sortedPlayers = players.sort((a, b) => getTotalScore(b) - getTotalScore(a));
 
     return (

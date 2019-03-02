@@ -27,7 +27,7 @@ class Rate extends Component {
     onPlayerRate = (player, point) => {
         try {
             this.setState({ pointsGiven: [...this.state.pointsGiven, { 
-                id: player.id, 
+                toId: player.id, 
                 name: player.name, 
                 value: point 
             }] });
@@ -38,9 +38,9 @@ class Rate extends Component {
     onDoneRating = () => {
         try {
             this.state.pointsGiven.forEach(point => {
-                const player = this.props.players.find(player => player.id === point.id);
-                const updatedRates = [...player.rates, point.value];
-                firebase.firestore().collection('players').doc(point.id).update({ rates: updatedRates });
+                const player = this.props.players.find(player => player.id === point.toId);
+                const updatedRates = [...player.ratings, { from: firebase.firestore().doc(`users/${this.props.user.id}`), value: point.value, }];
+                firebase.firestore().collection('users').doc(point.toId).update({ ratings: updatedRates });
             });
             this.setState({ isDoneRating: true }, this.handleRedirect);
         } catch(err) {
@@ -51,7 +51,7 @@ class Rate extends Component {
         this.state.pointsGiven.find(point => point.name === player.name);
     onReset = () => this.setState(this.initialState);
     handleRedirect = () => setTimeout(() => this.setState({ redirectToReferrer: true }), 1050);
-    checkIfAllRatesUsed = () => this.state.pointsGiven.length === 3;
+    checkIfAllRatesUsed = () => this.state.pointsGiven.length === 1;
 
     render() {
 

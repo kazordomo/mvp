@@ -56,10 +56,30 @@ class App extends Component {
 	// TODO: Move out fetch funcs.
 	async populatePlayers() {
 		const initPlayers = [];
-		const snapshot = await firebase.firestore().collection('players').get();
+		const snapshot = await firebase.firestore().collection('users').get();
 		snapshot.forEach(doc => initPlayers.push({ id: doc.id, ...doc.data() }));
 		this.setState({ players: initPlayers, isFetching: false });
 	}
+
+	// TODO:
+	// Reduce players arr to obj - use id as key.
+	// *********************
+	// players {
+	// 	*id*: {
+	// 		id: *id*,
+	// 		name: 'Zak',
+	// 		rating: [],
+	// 	}
+	// }
+
+	// from: player[*id*].name
+	// *********************
+	
+
+	// DONT USE THE CODE BELOW, USE THE CODE ABOVE
+	// TODO: Use this to get the data from the "point-giver".
+	// const player = this.state.players[0];
+	// player.ratings[0].from.get().then(res => console.log(res.data()));
 
 	onAddAdminRole = email => {
         const addAdminRole = firebase.functions().httpsCallable('addAdminRole');
@@ -91,7 +111,7 @@ class App extends Component {
 			<Router>
 				<AppContainer>
 					<Route exact path='/' render={() => <Home user={this.state.user} isRatingOpen={this.state.isRatingOpen} />} />
-					<Route path='/rate' render={() => <Rate players={this.state.players} />}/>
+					<Route path='/rate' render={() => <Rate user={this.state.user} players={this.state.players} />}/>
 					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} />}/>
 					<Route path='/statistics' render={() => <Statistics />}/>
 					<Route path='/admin' render={() => 

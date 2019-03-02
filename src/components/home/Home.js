@@ -18,7 +18,8 @@ class Home extends Component {
                 <GradientBr />
                 <CenteredWrapper>
                     {
-                        (this.props.user.isAdmin && this.props.isRatingOpen) ?
+                        // (this.props.user.isAdmin && this.props.isRatingOpen) ?
+                        true ?
                         <Animation type='bounceIn'>
                             <Link to={'/rate'}>
                                 <Button customStyle={btnStyle}>
@@ -51,7 +52,8 @@ class Home extends Component {
                         </Link>
                     </Animation>
                     {
-                        this.props.user.isAdmin ?
+                        // this.props.user.isAdmin ?
+                        true ?
                         <Animation type='bounceIn'>
                             <Link to={'/admin'}>
                                 <Button customStyle={btnStyle}>
