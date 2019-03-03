@@ -1,13 +1,15 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import colors from '../../utils/colors';
+import brImage from '../../images/broddshow.jpeg';
+import ImageBr from '../_shared/ImageBr';
+import GradientBr from '../_shared/GradientBr';
 import logo from '../../images/logo.png';
 import { pulse } from 'react-animations';
 
 const pulseAnimation =  keyframes`${pulse}`;
 
-const Br = styled.div`
-    background-color: ${colors.spacegrayish()};
+const LoadingContainer = styled.div`
     position: fixed;
     height: 100%;
     width: 100%;
@@ -25,9 +27,11 @@ const Logo = styled.div`
 `
 
 export default () => (
-    <Br>
+    <LoadingContainer>
+        <ImageBr url={brImage} />
+        <GradientBr />
         <Logo src={logo}>
             <img src={logo} />
         </Logo>
-    </Br>
+    </LoadingContainer>
 )

@@ -9,19 +9,15 @@ import {
 } from 'react-icons/md'
 import styled from 'styled-components';
 import colors from '../../utils/colors';
-import brImage from '../../images/broddshow.jpeg';
+import Container from '../_shared/Container'
 import CenteredWrapper from '../_shared/CenteredWrapper';
 import Button from '../_basic/Button';
 import Animation from '../_shared/Animation';
-import ImageBr from '../_shared/ImageBr';
-import GradientBr from '../_shared/GradientBr';
 
 class Home extends Component {
     render() {
         return (
-            <div>
-                <ImageBr url={brImage} />
-                <GradientBr />
+            <Container brColor={colors.spacegrayish()}>
                 <Icons>
                     <Animation type="fadeIn">
                         <Link to={`/profile/${this.props.user.id}`}>
@@ -44,7 +40,7 @@ class Home extends Component {
                         true ?
                         <Animation type='bounceIn'>
                             <Link to={'/rate'}>
-                                <Button customStyle={btnStyle}>
+                                <Button customStyle={{...btnStyle, backgroundColor: 'rgba(232,74,20,1)'}}>
                                     <span>Rösta</span>
                                     <MdGrade color={colors.yellowish()} />
                                 </Button>
@@ -59,7 +55,7 @@ class Home extends Component {
                     }
                     <Animation type='bounceIn'>
                         <Link to={'/leaderboard'}>
-                            <Button customStyle={btnStyle}>
+                            <Button customStyle={{...btnStyle, backgroundColor: 'rgba(232,94,20,1)'}}>
                                 <span>Poängliga</span>
                                 <MdFormatListNumbered color={colors.yellowish()} />
                             </Button>
@@ -67,20 +63,21 @@ class Home extends Component {
                     </Animation>
                     <Animation type='bounceIn'>
                         <Link to={'/statistics'}>
-                            <Button customStyle={btnStyle}>
+                            <Button customStyle={{...btnStyle, backgroundColor: 'rgba(232,114,20,1)'}}>
                                 <span>Statistik</span>
                                 <MdShowChart color={colors.yellowish()} />
                             </Button>
                         </Link>
                     </Animation>
                 </CenteredWrapper>
-            </div>
+            </Container>
         )
     }
 }
 
 const btnStyle = {
     alignItems: 'center',
+    boxShadow: '-3px 1px 18px 0px rgba(0,0,0,0.75)',
     display: 'flex',
     justifyContent: 'space-between',
     marginBottom: '20px',
@@ -98,7 +95,7 @@ const Icons = styled.div`
     z-index: 5;
 
     svg {
-        color: #fff;
+        color: ${colors.yellowish()};
         cursor: pointer;
         font-size: 36px;
         float: right;

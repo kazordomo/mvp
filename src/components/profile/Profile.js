@@ -44,7 +44,7 @@ class Profile extends Component {
                 <Wrapper>
                     <Points>
                         <div>Totala Poäng: { getTotalValue(player) }</div>
-                        <div>Totala Poäng från individer:</div>
+                        <div>Totala Poäng per användare:</div>
                         <div>{ Object.keys(structuredRatings).map(key => 
                             <div key={key}> { structuredRatings[key].name } - { structuredRatings[key].totalValue } </div>) }
                         </div>
@@ -66,7 +66,7 @@ const Points = styled.div`
 
 const btnStyle = {
     bottom: '20px',
-    boxShadow: '0px 1px 10px 0px rgba(0,0,0,0.75)',
+    boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',
     left: '50%',
     transform: 'translateX(-50%)',
     position: 'absolute',

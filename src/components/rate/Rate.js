@@ -53,7 +53,7 @@ class Rate extends Component {
         this.state.pointsGiven.find(point => point.name === player.name);
     onReset = () => this.setState(this.initialState);
     handleRedirect = () => setTimeout(() => this.setState({ redirectToReferrer: true }), 1050);
-    checkIfAllRatesUsed = () => this.state.pointsGiven.length === 1;
+    checkIfAllRatesUsed = () => this.state.pointsGiven.length === 3;
 
     render() {
 
