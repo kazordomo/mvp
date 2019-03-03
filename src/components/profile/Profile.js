@@ -19,11 +19,6 @@ class Profile extends Component {
         this.filterRatingsByUser();
     }
 
-    onSignOut = () => {
-        signOut();
-        // TODO: redirect to login page.
-    }
-
     filterRatingsByUser = () => {
         const player = arrayToObj(this.props.players)[this.props.match.params.id];
         const ratingsObj = {};
@@ -49,14 +44,14 @@ class Profile extends Component {
                 <Wrapper>
                     <Points>
                         <div>Totala Poäng: { getTotalValue(player) }</div>
-                        <div>Poäng Från Individer</div>
+                        <div>Totala Poäng från individer:</div>
                         <div>{ Object.keys(structuredRatings).map(key => 
                             <div key={key}> { structuredRatings[key].name } - { structuredRatings[key].totalValue } </div>) }
                         </div>
                     </Points>
                     {
                         (this.props.user.id === this.props.match.params.id) ?
-                            <Button danger onClick={this.onSignOut} customStyle={btnStyle} >Logga ut</Button> :
+                            <Button danger onClick={this.props.onSignOut} customStyle={btnStyle} >Logga ut</Button> :
                             ''
                     }
                 </Wrapper>

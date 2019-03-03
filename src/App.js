@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import keys from './config/keys';
-import { getAll, getById, updateById } from './utils/fetch';
+import { getAll, getById, updateById, signOut } from './utils/fetch';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Login from './components/login/Login';
@@ -61,6 +61,11 @@ class App extends Component {
 		this.setState({ players: initPlayers, isFetching: false });
 	}
 
+	onSignOut = () => {
+		signOut();
+		this.setState({ isLoggedIn: false });
+	}
+
 	// TODO:
 	// Reduce players arr to obj - use id as key.
 	// *********************
@@ -111,7 +116,9 @@ class App extends Component {
 			<Router>
 				<AppContainer>
 					<Route exact path='/' render={() => <Home user={this.state.user} isRatingOpen={this.state.isRatingOpen} />} />
-					<Route path='/profile/:id' render={props => <Profile {...props} user={this.state.user} players={this.state.players} />}/>
+					{/* <Route exact path='/home' render={() => <Home user={this.state.user} isRatingOpen={this.state.isRatingOpen} />} />
+					<Route path='/login' component={Login}> */}
+					<Route path='/profile/:id' render={props => <Profile {...props} user={this.state.user} players={this.state.players} onSignOut={this.onSignOut} />}/>
 					<Route path='/rate' render={() => <Rate user={this.state.user} players={this.state.players} />}/>
 					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} />}/>
 					<Route path='/statistics' render={() => <Statistics />}/>
