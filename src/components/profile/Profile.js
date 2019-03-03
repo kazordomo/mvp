@@ -45,7 +45,7 @@ class Profile extends Component {
 
         return (
             <Container brColor={colors.spacegrayish()}>
-                <Nav title={player.name} />
+                <Nav title={player.name} goBack={this.props.history.goBack} />
                 <Wrapper>
                     <Points>
                         <div>Totala Poäng: { getTotalValue(player) }</div>
@@ -54,7 +54,11 @@ class Profile extends Component {
                             <div key={key}> { structuredRatings[key].name } - { structuredRatings[key].totalValue } </div>) }
                         </div>
                     </Points>
-                    <Button danger onClick={this.onSignOut}>Logga ut</Button>
+                    {
+                        (this.props.user.id === this.props.match.params.id) ?
+                            <Button danger onClick={this.onSignOut} customStyle={btnStyle} >Logga ut</Button> :
+                            ''
+                    }
                 </Wrapper>
             </Container>
         )
@@ -64,6 +68,14 @@ class Profile extends Component {
 const Points = styled.div`
     color: #fff;
 `;
+
+const btnStyle = {
+    bottom: '20px',
+    boxShadow: '0px 1px 10px 0px rgba(0,0,0,0.75)',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    position: 'absolute',
+}
 
 Profile.propTypes = {
     user: PropTypes.object,

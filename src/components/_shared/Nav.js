@@ -4,14 +4,19 @@ import colors from '../../utils/colors';
 import { MdChevronLeft } from 'react-icons/md'
 import { Link } from 'react-router-dom';
 
-export default ({ title }) => {
+export default props => {
 
     return (
         <Nav>
-            <Link to={'/'}>
-                <MdChevronLeft />
-            </Link>
-            <h2>{title}</h2>
+            { props.goBack ?
+                <a>
+                    <MdChevronLeft onClick={props.goBack} />
+                </a> :
+                <Link to={'/'}>
+                    <MdChevronLeft />
+                </Link>
+            }
+            <h2>{props.title}</h2>
         </Nav>
     )
 

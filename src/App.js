@@ -94,7 +94,7 @@ class App extends Component {
 		try {
 			const isRatingOpenBool = this.state.isRatingOpen;
 			await updateById('wall', 'isRatingOpen', { isRatingOpen: !isRatingOpenBool });
-			this.setState({ isRatingOpen: !isRatingOpenBool }, () => console.log(this.state.isRatingOpen));
+			this.setState({ isRatingOpen: !isRatingOpenBool });
 		} catch(err) {
 			console.log(err);
 		}
@@ -111,7 +111,7 @@ class App extends Component {
 			<Router>
 				<AppContainer>
 					<Route exact path='/' render={() => <Home user={this.state.user} isRatingOpen={this.state.isRatingOpen} />} />
-					<Route path='/profile/:id' render={props => <Profile {...props} players={this.state.players} />}/>
+					<Route path='/profile/:id' render={props => <Profile {...props} user={this.state.user} players={this.state.players} />}/>
 					<Route path='/rate' render={() => <Rate user={this.state.user} players={this.state.players} />}/>
 					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} />}/>
 					<Route path='/statistics' render={() => <Statistics />}/>

@@ -11,7 +11,6 @@ class Login extends Component {
 
     state = {
         register: true,
-        redirectToReferrer: false,
     }
 
     onSubmit = e => {
@@ -32,7 +31,6 @@ class Login extends Component {
             const cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
             // Creates a user in the users schema, using the unique ID gotten from the authed user.
             await setById('users', cred.user.uid, { id: cred.user.uid, name: firstName, ratings: [], });
-            this.setState({ redirectToReferrer: true })
         } catch(err) {
             // TODO: Handle error.
             console.log(err);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { MdGrade } from 'react-icons/md'
 import { getTotalValue } from '../../utils/funcs';
 
@@ -27,16 +28,18 @@ class LeaderboardRow extends Component {
         const { pos, player } = this.props;
         
         return (
-            <Row>
-                <Fill pos={pos} width={this.getFillWidth()} />
-                <Col>
-                    <div>{ (pos === 1) ? <MdGrade /> : pos }</div>
-                    <Name>{player.name}</Name>
-                </Col>
-                <Col>
-                    <Points><div>{getTotalValue(player)}</div><div>poäng</div></Points>
-                </Col>
-            </Row>
+            <Link to={`/profile/${player.id}`}>
+                <Row>
+                    <Fill pos={pos} width={this.getFillWidth()} />
+                    <Col>
+                        <div>{ (pos === 1) ? <MdGrade /> : pos }</div>
+                        <Name>{player.name}</Name>
+                    </Col>
+                    <Col>
+                        <Points><div>{getTotalValue(player)}</div><div>poäng</div></Points>
+                    </Col>
+                </Row>
+            </Link>
         );
     }
 }

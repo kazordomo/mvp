@@ -36,11 +36,12 @@ class Rate extends Component {
         }
     }
     onDoneRating = () => {
-        // firebase.firestore().doc(`users/${this.props.user.id}`),
         try {
             this.state.pointsGiven.forEach(point => {
                 const player = this.props.players.find(player => player.id === point.toId);
                 const updatedRates = [...player.ratings, { from: this.props.user.id, value: point.value, }];
+                // Update the players list to get the new rating calculated in the Leaderboard
+                player.ratings.push({ from: this.props.user.id, value: point.value, });
                 updateById('users', point.toId, { ratings: updatedRates });
             });
             this.setState({ isDoneRating: true }, this.handleRedirect);
