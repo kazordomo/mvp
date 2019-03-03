@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import keys from './config/keys';
+import { getAll, getById, updateById } from './utils/fetch';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Login from './components/login/Login';
 import Admin from './components/admin/Admin';
+import Profile from './components/profile/Profile';
 import Home from './components/home/Home';
 import Rate from './components/rate/Rate';
 import Leaderboard from './components/leaderboard/Leaderboard';
@@ -33,7 +35,7 @@ class App extends Component {
 		firebase.auth().onAuthStateChanged(async user => {
 			if (user) {
 				const idTokenResult = await user.getIdTokenResult();
-				const snapshot = await firebase.firestore().collection('users').doc(user.uid).get();
+				const snapshot = await getById('users', user.uid);
 				const userData ={
 					...snapshot.data(),
 					isAdmin: idTokenResult.claims.admin ? idTokenResult.claims.admin : false,
@@ -47,16 +49,14 @@ class App extends Component {
 				this.setState({ isFetching: false });
 		});
 
-		const snapshot = await firebase.firestore().collection('wall').doc('isRatingOpen').get();
+		const snapshot = await getById('wall', 'isRatingOpen');
 		this.setState({ isRatingOpen: snapshot.data().isRatingOpen });
-
-		// firebase.auth().signOut();
 	}
 
 	// TODO: Move out fetch funcs.
 	async populatePlayers() {
 		const initPlayers = [];
-		const snapshot = await firebase.firestore().collection('users').get();
+		const snapshot = await getAll('users');
 		snapshot.forEach(doc => initPlayers.push({ id: doc.id, ...doc.data() }));
 		this.setState({ players: initPlayers, isFetching: false });
 	}
@@ -93,8 +93,8 @@ class App extends Component {
 	onOpenCloseRating = async () => {
 		try {
 			const isRatingOpenBool = this.state.isRatingOpen;
-			await firebase.firestore().collection('wall').doc('isRatingOpen').update({ isRatingOpen: !isRatingOpenBool });
-			this.setState({ isRatingOpen: !isRatingOpenBool });
+			await updateById('wall', 'isRatingOpen', { isRatingOpen: !isRatingOpenBool });
+			this.setState({ isRatingOpen: !isRatingOpenBool }, () => console.log(this.state.isRatingOpen));
 		} catch(err) {
 			console.log(err);
 		}
@@ -111,6 +111,7 @@ class App extends Component {
 			<Router>
 				<AppContainer>
 					<Route exact path='/' render={() => <Home user={this.state.user} isRatingOpen={this.state.isRatingOpen} />} />
+					<Route path='/profile/:id' render={props => <Profile {...props} players={this.state.players} />}/>
 					<Route path='/rate' render={() => <Rate user={this.state.user} players={this.state.players} />}/>
 					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} />}/>
 					<Route path='/statistics' render={() => <Statistics />}/>

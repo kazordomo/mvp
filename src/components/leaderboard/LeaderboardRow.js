@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { MdGrade } from 'react-icons/md'
+import { getTotalValue } from '../../utils/funcs';
 
 const getFillColor = pos => `rgba(232,${56 + (pos * 12)},20,1)`;
 
@@ -16,10 +17,10 @@ class LeaderboardRow extends Component {
     }
 
     getFillWidth = () => {
-        const { player, maxPoint, getTotalScore } = this.props;
-        if (!this.state.activateFill || getTotalScore(player) === 0) return 0;
-        if (maxPoint === getTotalScore(player)) return 100;
-        return getTotalScore(player) / maxPoint * 100;
+        const { player, maxPoint } = this.props;
+        if (!this.state.activateFill || getTotalValue(player) === 0) return 0;
+        if (maxPoint === getTotalValue(player)) return 100;
+        return getTotalValue(player) / maxPoint * 100;
     }
 
     render() {
@@ -33,7 +34,7 @@ class LeaderboardRow extends Component {
                     <Name>{player.name}</Name>
                 </Col>
                 <Col>
-                    <Points><div>{this.props.getTotalScore(player)}</div><div>poäng</div></Points>
+                    <Points><div>{getTotalValue(player)}</div><div>poäng</div></Points>
                 </Col>
             </Row>
         );

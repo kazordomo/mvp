@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import colors from '../../utils/colors';
+import { getTotalValue } from '../../utils/funcs';
 import Container from '../_shared/Container';
 import Nav from '../_shared/Nav';
 import LeaderboardRow from './LeaderboardRow';
 
 const Leaderboard = ({ players }) => {
-
-    const getTotalScore = player => player.ratings.reduce((total, a) => total += a.value, 0);
-    const sortedPlayers = players.sort((a, b) => getTotalScore(b) - getTotalScore(a));
+    const sortedPlayers = players.sort((a, b) => getTotalValue(b) - getTotalValue(a));
 
     return (
         <Container brColor={colors.spacegrayish()}>
@@ -18,8 +17,7 @@ const Leaderboard = ({ players }) => {
                     key={player.name}
                     pos={i + 1}
                     player={player}
-                    getTotalScore={getTotalScore}
-                    maxPoint={getTotalScore(sortedPlayers[0])}
+                    maxPoint={getTotalValue(sortedPlayers[0])}
                 />
             )) }
         </Container>

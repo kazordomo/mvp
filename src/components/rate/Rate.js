@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import * as firebase from 'firebase';
+import { updateById } from '../../utils/fetch';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import colors from '../../utils/colors';
@@ -36,11 +36,12 @@ class Rate extends Component {
         }
     }
     onDoneRating = () => {
+        // firebase.firestore().doc(`users/${this.props.user.id}`),
         try {
             this.state.pointsGiven.forEach(point => {
                 const player = this.props.players.find(player => player.id === point.toId);
-                const updatedRates = [...player.ratings, { from: firebase.firestore().doc(`users/${this.props.user.id}`), value: point.value, }];
-                firebase.firestore().collection('users').doc(point.toId).update({ ratings: updatedRates });
+                const updatedRates = [...player.ratings, { from: this.props.user.id, value: point.value, }];
+                updateById('users', point.toId, { ratings: updatedRates });
             });
             this.setState({ isDoneRating: true }, this.handleRedirect);
         } catch(err) {

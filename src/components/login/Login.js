@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
+import { setById } from '../../utils/fetch';
 import colors from '../../utils/colors';
 import Container from '../_shared/Container'
 import CenteredWrapper from '../_shared/CenteredWrapper';
-import brImage from '../../images/broddshow.jpeg';
-import ImageBr from '../_shared/ImageBr';
 import Button from '../_basic/Button';
 import Input from '../_basic/Input';
 
@@ -24,7 +23,7 @@ class Login extends Component {
     }
 
     register = async () => {
-        const { email, password, retypePass, firstName, authCode, } = this.getFormValues();
+        const { email, password, retypePass, firstName, } = this.getFormValues();
 
         if (!this.passwordCheck(password, retypePass)) 
             return console.log('The passwords did not match!');
@@ -32,14 +31,8 @@ class Login extends Component {
         try {
             const cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
             // Creates a user in the users schema, using the unique ID gotten from the authed user.
-            firebase.firestore().collection('users').doc(cred.user.uid).set({
-                id: cred.user.uid,
-                name: firstName,
-                ratings: [],
-                // userRef: firebase.firestore().doc(`users/${cred.user.uid}`)
-            })
-            .then(() => this.setState({ redirectToReferrer: true }))
-            .catch(err => console.log(err));
+            await setById('users', cred.user.uid, { id: cred.user.uid, name: firstName, ratings: [], });
+            this.setState({ redirectToReferrer: true })
         } catch(err) {
             // TODO: Handle error.
             console.log(err);
@@ -96,8 +89,6 @@ class Login extends Component {
 
         return (
             <Container brColor={colors.spacegrayish()} style={{height: '100vh'}}>
-                {/* <ImageBr url={brImage} /> */}
-                {/* <GradientBr /> */}
                 <CenteredWrapper>
                     <form>
                         <Input type="email" id="email" placeholder="someone@example.com" />

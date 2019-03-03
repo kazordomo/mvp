@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { MdGrade, MdFormatListNumbered, MdShowChart } from 'react-icons/md'
+import { 
+    MdGrade, 
+    MdFormatListNumbered, 
+    MdShowChart, 
+    MdAccountCircle, 
+    MdSupervisorAccount 
+} from 'react-icons/md'
+import styled from 'styled-components';
 import colors from '../../utils/colors';
 import brImage from '../../images/broddshow.jpeg';
 import CenteredWrapper from '../_shared/CenteredWrapper';
@@ -8,7 +15,6 @@ import Button from '../_basic/Button';
 import Animation from '../_shared/Animation';
 import ImageBr from '../_shared/ImageBr';
 import GradientBr from '../_shared/GradientBr';
-import Input from '../_basic/Input';
 
 class Home extends Component {
     render() {
@@ -16,6 +22,22 @@ class Home extends Component {
             <div>
                 <ImageBr url={brImage} />
                 <GradientBr />
+                <Icons>
+                    <Animation type="fadeIn">
+                        <Link to={`/profile/${this.props.user.id}`}>
+                            <MdAccountCircle />
+                        </Link>
+                    </Animation>
+                    {
+                        // this.props.user.isAdmin ?
+                        true ?
+                        <Animation type="fadeIn">
+                            <Link to={'/admin'}>
+                                <MdSupervisorAccount />
+                            </Link>
+                        </Animation> : ''
+                    }
+                </Icons>
                 <CenteredWrapper>
                     {
                         // (this.props.user.isAdmin && this.props.isRatingOpen) ?
@@ -51,18 +73,6 @@ class Home extends Component {
                             </Button>
                         </Link>
                     </Animation>
-                    {
-                        // this.props.user.isAdmin ?
-                        true ?
-                        <Animation type='bounceIn'>
-                            <Link to={'/admin'}>
-                                <Button customStyle={btnStyle}>
-                                    <span>Admin Area</span>
-                                </Button>
-                            </Link>
-                        </Animation> :
-                        ''
-                    }
                 </CenteredWrapper>
             </div>
         )
@@ -80,7 +90,20 @@ const btnStyle = {
 const disabledBtnStyle = {
     backgroundColor: 'pink',
     ...btnStyle,
-
 }
+
+const Icons = styled.div`
+    padding: 20px;
+    position: relative;
+    z-index: 5;
+
+    svg {
+        color: #fff;
+        cursor: pointer;
+        font-size: 36px;
+        float: right;
+        margin-left: 10px;
+    }
+`;
 
 export default Home;
