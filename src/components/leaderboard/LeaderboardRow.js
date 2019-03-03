@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { MdGrade } from 'react-icons/md'
-import { getTotalValue } from '../../utils/funcs';
-
-const getFillColor = pos => `rgba(232,${56 + (pos * 12)},20,1)`;
+import { getTotalValue, getFillWidth, getFillColor } from '../../utils/funcs';
 
 class LeaderboardRow extends Component {
 
@@ -17,20 +15,16 @@ class LeaderboardRow extends Component {
         setTimeout(() => this.setState({ activateFill: true }), 75);
     }
 
-    getFillWidth = () => {
-        const { player, maxPoint } = this.props;
-        if (!this.state.activateFill || getTotalValue(player) === 0) return 0;
-        if (maxPoint === getTotalValue(player)) return 100;
-        return getTotalValue(player) / maxPoint * 100;
-    }
-
     render() {
-        const { pos, player } = this.props;
+        const { pos, player, maxPoint } = this.props;
         
         return (
             <Link to={`/profile/${player.id}`}>
                 <Row>
-                    <Fill pos={pos} width={this.getFillWidth()} />
+                    <Fill pos={pos} width={
+                        (this.state.activateFill && getTotalValue(player) !== 0) ? 
+                        getFillWidth(player, maxPoint) : 0} 
+                    />
                     <Col>
                         <div>{ (pos === 1) ? <MdGrade /> : pos }</div>
                         <Name>{player.name}</Name>

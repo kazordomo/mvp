@@ -8,6 +8,7 @@ import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
 import Wrapper from '../_shared/Wrapper';
 import Button from '../_basic/Button';
+import Chart from './Chart';
 
 class Profile extends Component {
 
@@ -37,18 +38,14 @@ class Profile extends Component {
     render() {
         const player = arrayToObj(this.props.players)[this.props.match.params.id];
         const { structuredRatings } = this.state;
+        const sortedPlayers = this.props.players.sort((a, b) => getTotalValue(b) - getTotalValue(a));
 
         return (
             <Container brColor={colors.spacegrayish()}>
                 <Nav title={player.name} goBack={this.props.history.goBack} />
                 <Wrapper>
-                    <Points>
-                        <div>Totala Poäng: { getTotalValue(player) }</div>
-                        <div>Totala Poäng per användare:</div>
-                        <div>{ Object.keys(structuredRatings).map(key => 
-                            <div key={key}> { structuredRatings[key].name } - { structuredRatings[key].totalValue } </div>) }
-                        </div>
-                    </Points>
+                    <Chart title='Poäng från användare' ratings={this.state.structuredRatings} />
+                    <Chart title='Uttelade poäng' ratings={this.state.structuredRatings} />
                     {
                         (this.props.user.id === this.props.match.params.id) ?
                             <Button danger onClick={this.props.onSignOut} customStyle={btnStyle} >Logga ut</Button> :
