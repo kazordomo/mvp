@@ -42,14 +42,14 @@ class Home extends Component {
                             <Link to={'/rate'}>
                                 <Button customStyle={{...btnStyle, backgroundColor: 'rgba(232,74,20,1)'}}>
                                     <span>Rösta</span>
-                                    <MdGrade color={colors.yellowish()} />
+                                    <MdGrade color={colors.dirtpinkish()} />
                                 </Button>
                             </Link>
                         </Animation> :
                         <Animation type='bounceIn'>
                             <Button customStyle={disabledBtnStyle}>
                                 <span>Rösta</span>
-                                <MdGrade color={colors.yellowish()} />
+                                <MdGrade color={colors.dirtpinkish()} />
                             </Button>
                         </Animation>
                     }
@@ -57,7 +57,7 @@ class Home extends Component {
                         <Link to={'/leaderboard'}>
                             <Button customStyle={{...btnStyle, backgroundColor: 'rgba(232,94,20,1)'}}>
                                 <span>Poängliga</span>
-                                <MdFormatListNumbered color={colors.yellowish()} />
+                                <MdFormatListNumbered color={colors.dirtpinkish()} />
                             </Button>
                         </Link>
                     </Animation>
@@ -65,7 +65,7 @@ class Home extends Component {
                         <Link to={'/statistics'}>
                             <Button customStyle={{...btnStyle, backgroundColor: 'rgba(232,114,20,1)'}}>
                                 <span>Statistik</span>
-                                <MdShowChart color={colors.yellowish()} />
+                                <MdShowChart color={colors.dirtpinkish()} />
                             </Button>
                         </Link>
                     </Animation>
@@ -95,7 +95,7 @@ const Icons = styled.div`
     z-index: 5;
 
     svg {
-        color: ${colors.yellowish()};
+        color: ${colors.dirtpinkish()};
         cursor: pointer;
         font-size: 36px;
         float: right;
