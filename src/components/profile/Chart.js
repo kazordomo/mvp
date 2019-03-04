@@ -74,11 +74,6 @@ const Chart = ({ title, ratings, maxPoint }) => {
     )
 }
 
-const Title = styled.div`
-    color: #fff;
-    margin-bottom: 10px;
-`;
-
 const ChartRowWrapper = styled.div`
     height: 60px;
     position: relative;
@@ -112,7 +107,6 @@ const FillWrapper = styled.div`
     width: 90%;
 
     span {
-        color: #fff;
         left: 20px;
         position: absolute;
         top: 50%;
@@ -124,6 +118,7 @@ const Fill = styled.div`
     align-items: center;
     background-color: ${props=>props.brColor};
     bottom: 0;
+    color: #F8B195;
     display: flex;
     height: 100%;
     justify-content: center;

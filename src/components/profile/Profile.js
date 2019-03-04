@@ -14,8 +14,8 @@ import SubTitle from '../_shared/SubTitle';
 class Profile extends Component {
 
     state = {
-        ratingsGotten: {},
-        ratingsGiven: {},
+        ratingsGotten: [],
+        ratingsGiven: [],
     }
 
     componentDidMount() {
@@ -58,26 +58,36 @@ class Profile extends Component {
 
     render() {
         const player = arrayToObj(this.props.players)[this.props.match.params.id];
-        const { ratingsGotten } = this.state;
+        const { ratingsGotten, ratingsGiven } = this.state;
 
         return (
             <Container brColor={colors.spacegrayish()}>
                 <Nav title={player.name} goBack={this.props.history.goBack} />
-                <Wrapper>
-                    <Info>
-                        <div>1p: <span></span></div>
-                        <div>2p: <span></span></div>
-                        <div>3p: <span></span></div>
-                    </Info>
-                    <SubTitle>Poäng från användare</SubTitle>
-                    { 
-                        Object.keys(this.state.ratingsGotten).length ? 
-                        <Chart title='Poäng från användare' ratings={ratingsGotten} maxPoint={ratingsGotten[0].totalValue} />
-                        : <div>{ this.getQuote() }</div>
-                    }
-                    {/* <br />
-                    <Chart title='Uttelade poäng' ratings={this.state.ratingsGiven} /> */}
-                </Wrapper>
+                <Info>
+                    <div>1p: <span></span></div>
+                    <div>2p: <span></span></div>
+                    <div>3p: <span></span></div>
+                </Info>
+                <Col>
+                    <Wrapper>
+                        <SubTitle>Poäng från användare</SubTitle>
+                        { 
+                            Object.keys(this.state.ratingsGotten).length ? 
+                            <Chart title='Poäng från användare' ratings={ratingsGotten} maxPoint={ratingsGotten[0].totalValue} />
+                            : <div>{ this.getQuote() }</div>
+                        }
+                    </Wrapper>
+                </Col>
+                <Col>
+                    <Wrapper>
+                        <SubTitle>Utdelade Poäng</SubTitle>
+                        { 
+                            Object.keys(this.state.ratingsGiven).length ? 
+                            <Chart title='Poäng från användare' ratings={ratingsGiven} maxPoint={ratingsGiven[0].totalValue} />
+                            : <div>Inget utdelat än.</div>
+                        }
+                    </Wrapper>
+                </Col>
                 {
                     (this.props.user.id === this.props.match.params.id) ?
                         <ButtonWrapper><Button danger onClick={this.props.onSignOut} customStyle={btnStyle} >Logga ut</Button></ButtonWrapper> :
@@ -88,11 +98,22 @@ class Profile extends Component {
     }
 }
 
+const Col = styled.div`
+    background-color: rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    padding: 20px 0 40px 0;
+
+    div {
+        color: #fff;
+    }
+`;
+
 const Info = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 30px;
+    padding: 0 20px;
 
     div {
         align-items: center;
