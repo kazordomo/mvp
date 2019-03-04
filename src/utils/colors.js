@@ -7,4 +7,7 @@ export default {
     grayish: (a = 1) => `rgba(58,68,84,${a})`,
     navish: (a = 1) => `rgba(83,104,126,${a})`,
     spacegrayish: (a = 1) => `rgba(40,49,61,${a})`,
+    lightpinkish: (a = 1) => `rgba(246,114,128,${a})`,
+    darkpinkish: (a = 1) => `rgba(192,108,132,${a})`,
+    purplish: (a = 1) => `rgba(108,91,123,${a})`,
 }

@@ -7,7 +7,7 @@ import Nav from '../_shared/Nav';
 import LeaderboardRow from './LeaderboardRow';
 
 const Leaderboard = ({ players }) => {
-    const sortedPlayers = players.sort((a, b) => getTotalValue(b) - getTotalValue(a));
+    const sortedPlayers = players.sort((a, b) => getTotalValue(b.ratings) - getTotalValue(a.ratings));
 
     return (
         <Container brColor={colors.spacegrayish()}>
@@ -17,7 +17,7 @@ const Leaderboard = ({ players }) => {
                     key={player.name}
                     pos={i + 1}
                     player={player}
-                    maxPoint={getTotalValue(sortedPlayers[0])}
+                    maxPoint={getTotalValue(sortedPlayers[0].ratings)}
                 />
             )) }
         </Container>

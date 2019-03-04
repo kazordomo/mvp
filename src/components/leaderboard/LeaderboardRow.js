@@ -22,15 +22,15 @@ class LeaderboardRow extends Component {
             <Link to={`/profile/${player.id}`}>
                 <Row>
                     <Fill pos={pos} width={
-                        (this.state.activateFill && getTotalValue(player) !== 0) ? 
-                        getFillWidth(player, maxPoint) : 0} 
+                        (this.state.activateFill && getTotalValue(player.ratings) !== 0) ? 
+                        getFillWidth(maxPoint, getTotalValue(player.ratings)) : 0} 
                     />
                     <Col>
                         <div>{ (pos === 1) ? <MdGrade /> : pos }</div>
                         <Name>{player.name}</Name>
                     </Col>
                     <Col>
-                        <Points><div>{getTotalValue(player)}</div><div>poäng</div></Points>
+                        <Points><div>{getTotalValue(player.ratings)}</div><div>poäng</div></Points>
                     </Col>
                 </Row>
             </Link>

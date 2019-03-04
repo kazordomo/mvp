@@ -1,77 +1,149 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import colors from '../../utils/colors';
-import { getFillWidth, getFillColor } from '../../utils/funcs';
+import { getFillWidth, getTotalValue } from '../../utils/funcs';
 
-const Chart = ({ title, ratings }) => {
+const Chart = ({ title, ratings, maxPoint }) => {
 
+    const fadeInFill = () => {
+        const fillWrappers = document.querySelectorAll('.fillWrapper');
+        let delay = 200;
+
+        for (let fillWrapper of fillWrappers) {
+            for (let [i, fill] of fillWrapper.querySelectorAll('.fill').entries()) {
+                setTimeout(() => fill.setAttribute('style', 'opacity: 1'), i * delay);
+            }
+        }
+    }
+
+    // Making sure this will run after the page is rendered.
+    setTimeout(() => fadeInFill(), 0);
+        
     return (
-        <Outer>
-            <Title>{ title }</Title>
-            <Inner>
-                { Object.keys(ratings).map((key, i) => 
-                    <Pile key={key}>
-                        <Fill pos={i}></Fill>
-                        <span>{ ratings[key].name }</span>
-                    </Pile>) }
-            </Inner>
-        </Outer>
-    );
-}
+        <div>
+            { ratings.map((rating, i) => {
 
-const Outer = styled.div`
-    height: 175px;
-    margin-bottom: 50px;
-    overflow: hidden;
-    position: relative;
-    width: 100%;
-`;
+                // Each rate-value (1, 2, 3) will have its own "pile". The width of the pile will be all the values added together 
+                // of the type and calculated against the total value of all values of each type added together. valueOfType / totalValue * 100.
+                // The left-attribute will be the prior "value-type-pile" to fit in the chart-row.
+                const firstFillWidth = getTotalValue(rating['1']) ? getFillWidth(maxPoint, getTotalValue(rating['1'])) : 0;
+                const secondFillWidth = getTotalValue(rating['2']) ? getFillWidth(maxPoint, getTotalValue(rating['2'])) : 0;
+                const thirdFillWidth = getTotalValue(rating['3']) ? getFillWidth(maxPoint, getTotalValue(rating['3'])) : 0;
+
+                return (
+                    <ChartRowWrapper>
+                        <ChartRow key={i}>
+                            <span>{ rating.name }</span>
+                            <FillWrapper className='fillWrapper'>
+                                { firstFillWidth ? 
+                                    <Fill 
+                                        className='fill'
+                                        pos={i} 
+                                        width={firstFillWidth} 
+                                        left={0} 
+                                        brColor={colors.lightpinkish()}
+                                    >{rating['1'].length ? rating['1'].length + 'st' : ''}</Fill> : '' 
+                                }
+                                { secondFillWidth ? 
+                                    <Fill 
+                                        className='fill'
+                                        pos={i} 
+                                        width={secondFillWidth} 
+                                        left={firstFillWidth} 
+                                        brColor={colors.darkpinkish()} 
+                                    >{rating['2'].length ? rating['2'].length + 'st' : ''}</Fill> : '' 
+                                }
+                                { thirdFillWidth ? 
+                                    <Fill 
+                                        className='fill'
+                                        pos={i} 
+                                        width={thirdFillWidth} 
+                                        left={firstFillWidth + secondFillWidth} 
+                                        brColor={colors.purplish()} 
+                                    >{rating['3'].length ? rating['3'].length + 'st' : ''}</Fill> : '' 
+                                }
+                            </FillWrapper>
+                            <div>{ rating.totalValue ? rating.totalValue : '0' }p</div>
+                        </ChartRow>
+                    </ChartRowWrapper>
+                )
+            }
+        )}
+        </div>
+    )
+}
 
 const Title = styled.div`
     color: #fff;
     margin-bottom: 10px;
 `;
 
-const Inner = styled.div`
-    display: flex;
-    flex-row: row;
-    height: 100%;
-    justify-content: space-between;
-    position: absolute;
-    width: auto;
+const ChartRowWrapper = styled.div`
+    height: 60px;
+    position: relative;
+
+    span {
+        position: absolute;
+        top: -20px;
+        left: 0;
+    }
 `;
 
-const Pile = styled.div`
-    background-color: rgba(0,0,0,0.2);
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
-    height: 100%;
-    margin-right: 20px;
+const ChartRow = styled.div`
+    align-items: center;
+    bottom: 0;
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+
+    span {
+        position: absolute;
+    }
+`;
+
+const FillWrapper = styled.div`
+    background-color: rgba(0,0,0,0.1);
+    height: 30px;
     position: relative;
-    width: 25px;
+    width: 90%;
 
     span {
         color: #fff;
-        display: block;
-        left: 50%;
-        top: 50%;
+        left: 20px;
         position: absolute;
-        transform: translate(-50%, -50%) rotate(-90deg);
+        top: 50%;
+        transform: translateY(-50%);
     }
 `;
 
 const Fill = styled.div`
-    background-color: ${props=>getFillColor(props.pos)};
+    align-items: center;
+    background-color: ${props=>props.brColor};
     bottom: 0;
-    height: ${props=>props.height ? props.height : 75}%;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    left: ${props=>props.left}%;
+    opacity: 0;
     position: absolute;
     transition: 1000ms width ease-in-out;
-    width: 25px;
+    transition: opacity 650ms ease-out;
+    width: calc(${props=>props.width}% - 3px);
+    
+    :last-child {
+        border: none;
+        width: ${props=>props.width}%;
+    }
 `;
 
 Chart.propTypes = {
-
+    title: PropTypes.string,
+    ratings: PropTypes.array,
+    maxPoint: PropTypes.number,
 }
 
 export default Chart;
