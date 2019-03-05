@@ -66,26 +66,6 @@ class App extends Component {
 		this.setState({ isLoggedIn: false });
 	}
 
-	// TODO:
-	// Reduce players arr to obj - use id as key.
-	// *********************
-	// players {
-	// 	*id*: {
-	// 		id: *id*,
-	// 		name: 'Zak',
-	// 		rating: [],
-	// 	}
-	// }
-
-	// from: player[*id*].name
-	// *********************
-	
-
-	// DONT USE THE CODE BELOW, USE THE CODE ABOVE
-	// TODO: Use this to get the data from the "point-giver".
-	// const player = this.state.players[0];
-	// player.ratings[0].from.get().then(res => console.log(res.data()));
-
 	onAddAdminRole = email => {
         const addAdminRole = firebase.functions().httpsCallable('addAdminRole');
         if (!email)

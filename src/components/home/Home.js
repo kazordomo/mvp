@@ -5,20 +5,33 @@ import {
     MdFormatListNumbered, 
     MdShowChart, 
     MdAccountCircle, 
-    MdSupervisorAccount 
+    MdSupervisorAccount,
+    MdSettings,
 } from 'react-icons/md'
 import styled from 'styled-components';
 import colors from '../../utils/colors';
+import Settings from './Settings';
 import Container from '../_shared/Container'
 import CenteredWrapper from '../_shared/CenteredWrapper';
 import Button from '../_basic/Button';
 import Animation from '../_shared/Animation';
 
 class Home extends Component {
+
+    state = {
+        showSettings: false,
+    }
+
+    onShowHideSettings = () => this.setState(prevState => { return { showSettings: !prevState.showSettings }});
+
     render() {
         return (
             <Container brColor={colors.spacegrayish()}>
+                <Settings show={this.state.showSettings} onClose={this.onShowHideSettings} />
                 <Icons>
+                    <Animation type="fadeIn">
+                        <MdSettings onClick={this.onShowHideSettings} />
+                    </Animation>
                     <Animation type="fadeIn">
                         <Link to={`/profile/${this.props.user.id}`}>
                             <MdAccountCircle />

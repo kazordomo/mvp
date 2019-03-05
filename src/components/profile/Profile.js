@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { signOut } from '../../utils/fetch';
 import { arrayToObj } from '../../utils/funcs';
 import colors from '../../utils/colors';
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
 import Wrapper from '../_shared/Wrapper';
-import Button from '../_basic/Button';
 import Chart from './Chart';
 import SubTitle from '../_shared/SubTitle';
 
@@ -68,7 +66,7 @@ class Profile extends Component {
                     <div>2p: <span></span></div>
                     <div>3p: <span></span></div>
                 </Info>
-                <Col>
+                <Col margin>
                     <Wrapper>
                         <SubTitle>Poäng från användare</SubTitle>
                         { 
@@ -88,11 +86,6 @@ class Profile extends Component {
                         }
                     </Wrapper>
                 </Col>
-                {
-                    (this.props.user.id === this.props.match.params.id) ?
-                        <ButtonWrapper><Button danger onClick={this.props.onSignOut} customStyle={btnStyle} >Logga ut</Button></ButtonWrapper> :
-                        ''
-                }
             </Container>
         )
     }
@@ -100,7 +93,7 @@ class Profile extends Component {
 
 const Col = styled.div`
     background-color: rgba(0,0,0,0.1);
-    margin-bottom: 20px;
+    margin-bottom: ${props=>props.margin ? '20' : '0'}px;
     padding: 20px 0 40px 0;
 
     div {
@@ -140,17 +133,6 @@ const Info = styled.div`
         width: 50px;
     }
 `;
-
-const ButtonWrapper = styled.div`
-    margin: 0 auto;
-    padding-bottom: 20px;
-    text-align: center;
-`;
-
-const btnStyle = {
-    boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',
-    margin: '0 auto',
-}
 
 Profile.propTypes = {
     user: PropTypes.object,
