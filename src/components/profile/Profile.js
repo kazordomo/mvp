@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { arrayToObj } from '../../utils/funcs';
+import { arrayToObj, uniqueArray } from '../../utils/funcs';
 import colors from '../../utils/colors';
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
@@ -9,40 +9,31 @@ import Wrapper from '../_shared/Wrapper';
 import Chart from './Chart';
 import SubTitle from '../_shared/SubTitle';
 
-class Profile extends Component {
+const Profile = ({ players, match, history }) => {
+    
+    const filterRatingsByUser = () => {
+        const findPlayer = id => 
+            players.find(player => player.id === id);
+        const ratings = [];
 
-    state = {
-        ratingsGotten: [],
-        ratingsGiven: [],
-    }
-
-    componentDidMount() {
-        this.filterRatingsByUser();
-    }
-
-    filterRatingsByUser = () => {
-        const player = arrayToObj(this.props.players)[this.props.match.params.id];
-        const ratingsObj = {};
-        let allRatings = [ ...player.ratings ];
-        for (let rating of allRatings) {
-            let ratingFrom = arrayToObj(this.props.players)[rating.from];
-            let filters = allRatings.filter(r => rating.from === r.from);
-            ratingsObj[ratingFrom.id] = {
+        const player = findPlayer(match.params.id);
+        for (let rating of player.ratings) {
+            const ratingFrom = findPlayer(rating.from);
+            const filtered = 
+                [ ...player.ratings ].filter(r => rating.from === r.from);
+            const ratingObj = {
                 name: ratingFrom.name,
-                totalValue: filters.reduce((total, a) => total += a.value, 0),
-                1: filters.filter(filter => filter.value === 1),
-                2: filters.filter(filter => filter.value === 2),
-                3: filters.filter(filter => filter.value === 3),
+                totalValue: filtered.reduce((total, a) => total += a.value, 0),
+                1: filtered.filter(r => r.value === 1),
+                2: filtered.filter(r => r.value === 2),
+                3: filtered.filter(r => r.value === 3),
             }
+            ratings.push(ratingObj);
         }
-        // Convert to array as well as sort by most points given.
-        const ratingsArr = Object.keys(ratingsObj).sort(function(a,b){
-            return ratingsObj[b].totalValue - ratingsObj[a].totalValue;
-        }).map(key => ratingsObj[key]);
-        this.setState({ ratingsGotten: ratingsArr });
+        return uniqueArray(ratings).sort((a, b) => b.totalValue - a.totalValue);
     }
 
-    getQuote = () => {
+    const getQuote = () => {
         const quoteBegining = 'Inga poäng - ';
         const quoteArr = [
             `${quoteBegining}Lira lite bättre.`,
@@ -54,41 +45,40 @@ class Profile extends Component {
         return quoteArr[ Math.floor(Math.random() * Math.floor(4))];
     }
 
-    render() {
-        const player = arrayToObj(this.props.players)[this.props.match.params.id];
-        const { ratingsGotten, ratingsGiven } = this.state;
+    const player = arrayToObj(players)[match.params.id];
+    const ratingsGotten = filterRatingsByUser();
+    const ratingsGiven = [];
 
-        return (
-            <Container brColor={colors.spacegrayish()}>
-                <Nav title={player.name} goBack={this.props.history.goBack} />
-                <Info>
-                    <div>1p: <span></span></div>
-                    <div>2p: <span></span></div>
-                    <div>3p: <span></span></div>
-                </Info>
-                <Col margin>
-                    <Wrapper>
-                        <SubTitle>Poäng från användare</SubTitle>
-                        { 
-                            Object.keys(this.state.ratingsGotten).length ? 
-                            <Chart title='Poäng från användare' ratings={ratingsGotten} maxPoint={ratingsGotten[0].totalValue} />
-                            : <div>{ this.getQuote() }</div>
-                        }
-                    </Wrapper>
-                </Col>
-                <Col>
-                    <Wrapper>
-                        <SubTitle>Utdelade Poäng</SubTitle>
-                        { 
-                            Object.keys(this.state.ratingsGiven).length ? 
-                            <Chart title='Poäng från användare' ratings={ratingsGiven} maxPoint={ratingsGiven[0].totalValue} />
-                            : <div>Inget utdelat än.</div>
-                        }
-                    </Wrapper>
-                </Col>
-            </Container>
-        )
-    }
+    return (
+        <Container brColor={colors.spacegrayish()}>
+            <Nav title={player.name} goBack={history.goBack} />
+            <Info>
+                <div>1p: <span></span></div>
+                <div>2p: <span></span></div>
+                <div>3p: <span></span></div>
+            </Info>
+            <Col margin>
+                <Wrapper>
+                    <SubTitle>Poäng från användare</SubTitle>
+                    { 
+                        Object.keys(ratingsGotten).length ? 
+                        <Chart title='Poäng från användare' ratings={ratingsGotten} maxPoint={ratingsGotten[0].totalValue} />
+                        : <div>{ getQuote() }</div>
+                    }
+                </Wrapper>
+            </Col>
+            <Col>
+                <Wrapper>
+                    <SubTitle>Utdelade Poäng</SubTitle>
+                    { 
+                        Object.keys(ratingsGiven).length ? 
+                        <Chart title='Poäng från användare' ratings={ratingsGiven} maxPoint={ratingsGiven[0].totalValue} />
+                        : <div>Inget utdelat än.</div>
+                    }
+                </Wrapper>
+            </Col>
+        </Container>
+    )
 }
 
 const Col = styled.div`
@@ -135,7 +125,7 @@ const Info = styled.div`
 `;
 
 Profile.propTypes = {
-    user: PropTypes.object,
+    players: PropTypes.array,
 }
 
 export default Profile;
