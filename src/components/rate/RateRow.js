@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import colors from '../../utils/colors';
+import RateButton from './RateButton';
 
 class RateRow extends Component {
 
     state = {
         activateRow: false,
+        ratingValues: [1, 2, 3],
     }
 
     componentDidMount() {
@@ -27,22 +29,28 @@ class RateRow extends Component {
     }
 
     render() {
-        const { player, onPlayerRate, rating } = this.props;
-        
-        return (
-            <Row marginLeft={this.getRowMargin()} brColor={rating ? this.getRateButtonColor(rating.value) : false}>
-                <Name>
-                    {player.name}
-                </Name>
-                { 
-                    rating ?
-                        <RateButton isRated>{ rating.value }</RateButton> :
-                        <RateButtons>
-                            <RateButton brColor={this.getRateButtonColor(1)} onClick={() => onPlayerRate(player, 1)}>1</RateButton>
-                            <RateButton brColor={this.getRateButtonColor(2)} onClick={() => onPlayerRate(player, 2)}>2</RateButton>
-                            <RateButton brColor={this.getRateButtonColor(3)} onClick={() => onPlayerRate(player, 3)}>3</RateButton>
-                        </RateButtons>
+        const { player, onPlayerRate, rating, checkIfRateValueIsUsed } = this.props;
 
+        return (
+            <Row 
+                marginLeft={this.getRowMargin()} 
+                brColor={rating ? this.getRateButtonColor(rating.value) : false} 
+                used={rating.toId}
+            >
+                <Name> {player.name} </Name>
+                { rating.toId ?
+                    <span>{ rating.value }</span> :
+                    <RateButtons>
+                        {  this.state.ratingValues.map((value, i) => (
+                            <RateButton 
+                                key={i}
+                                rateValue={value} 
+                                rated={checkIfRateValueIsUsed(value)}
+                                onPlayerRate={onPlayerRate}
+                                player={player}
+                            />
+                        )) }
+                    </RateButtons>
                 }
             </Row>
         );
@@ -59,8 +67,14 @@ const Row = styled.div`
     height: 80px;
     margin-bottom: 10px;
     margin-left: ${props=>props.marginLeft};
-    transition: margin 450ms ease-in-out;
+    padding: ${props=>props.used ? '2.5px 0' : '0'};
+    transition: margin 450ms ease-in-out, padding 150ms ease-out;
     width: 100%;
+
+    span {
+        font-size: 22px;
+        padding: 0 20px;
+    }
 
     :last-child {
         margin-bottom: 55px;
@@ -79,19 +93,11 @@ const RateButtons = styled.div`
     justify-content: space-between;
 `;
 
-const RateButton = styled.div`
-    align-items: center
-    background-color: ${props=>props.isRated ? colors.spacegrayish() : props.brColor};
-    display: flex;
-    font-size: ${props=>props.isRated ? '24px' : '16px'};
-    justify-content: center;
-    height: 80px;
-    width: 75px;
-`;
-
 RateRow.propTypes = {
     player: PropTypes.object,
-    onRate: PropTypes.func,
+    onPlayerRate: PropTypes.func,
+    rating: PropTypes.object,
+    checkIfRateValueIsUsed: PropTypes.func,
 }
 
 export default RateRow;

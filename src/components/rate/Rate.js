@@ -9,6 +9,7 @@ import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
 import Wrapper from '../_shared/Wrapper';
 import RateRow from './RateRow';
+import SubTitle from '../_shared/SubTitle';
 
 class Rate extends Component {
 
@@ -16,6 +17,7 @@ class Rate extends Component {
         super(props);
 
         this.initialState = {
+            AMOUNT_OF_RATINGS: 3,
             pointsGiven: [],
             isDoneRating: false,
             redirectToReferrer: false,
@@ -49,11 +51,20 @@ class Rate extends Component {
             console.log(err);
         }
     }
-    getRating = player => 
-        this.state.pointsGiven.find(point => point.name === player.name);
+    getRating = player =>  {
+        const rating =this.state.pointsGiven.find(point => point.name === player.name);
+        return rating ? rating : {};
+    }
+        
+    checkIfRateValueIsUsed = rateValue => {
+        const rating = this.state.pointsGiven.find(point => point.value === rateValue);
+        return rating ? rating : {}
+    }
+
     onReset = () => this.setState(this.initialState);
+    // Let the checkmark-animation be done before redirecting.
     handleRedirect = () => setTimeout(() => this.setState({ redirectToReferrer: true }), 1050);
-    checkIfAllRatesUsed = () => this.state.pointsGiven.length === 3;
+    checkIfAllRatesUsed = () => this.state.pointsGiven.length === this.state.AMOUNT_OF_RATINGS;
 
     render() {
 
@@ -67,7 +78,7 @@ class Rate extends Component {
                     <MdCheckCircle color={colors.greenish()} /> : 
                 </HiddenIcon>
                 <HiddenIcon show={this.checkIfAllRatesUsed() && !this.state.isDoneRating}>
-                    <MdLock color='#fff'/>
+                    <SubTitle>Klar?</SubTitle>
                 </HiddenIcon>
                 <Nav title="RÖSTNING" />
                 <Wrapper>
@@ -79,7 +90,8 @@ class Rate extends Component {
                                 onPlayerRate={this.onPlayerRate} 
                                 player={player} 
                                 pos={i + 1} 
-                                rating={this.getRating(player)}    
+                                rating={this.getRating(player)}
+                                checkIfRateValueIsUsed={this.checkIfRateValueIsUsed}
                             />) 
                     }
                 </Wrapper>
