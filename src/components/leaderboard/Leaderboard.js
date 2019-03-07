@@ -7,7 +7,8 @@ import Nav from '../_shared/Nav';
 import LeaderboardRow from './LeaderboardRow';
 
 const Leaderboard = ({ players }) => {
-    const sortedPlayers = players.sort((a, b) => getTotalValue(b.ratings) - getTotalValue(a.ratings));
+    const sortedPlayers = players.sort((a, b) => 
+        getTotalValue(b.ratings) - getTotalValue(a.ratings));
 
     return (
         <Container brColor={colors.spacegrayish()}>

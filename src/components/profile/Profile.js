@@ -17,10 +17,12 @@ const Profile = ({ players, match, history }) => {
         const ratings = [];
 
         const player = findPlayer(match.params.id);
+        if (!player.ratings) return [];
+
         for (let rating of player.ratings) {
-            const ratingFrom = findPlayer(rating.from);
+            const ratingFrom = findPlayer(rating.fromId);
             const filtered = 
-                [ ...player.ratings ].filter(r => rating.from === r.from);
+                [ ...player.ratings ].filter(r => rating.fromId === r.fromId);
             const ratingObj = {
                 name: ratingFrom.name,
                 totalValue: filtered.reduce((total, a) => total += a.value, 0),

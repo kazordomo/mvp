@@ -95,10 +95,10 @@ class App extends Component {
 		return (
 			<Router>
 				<AppContainer>
-					<Route exact path='/' render={() => <Home user={this.state.user} isRatingOpen={this.state.isRatingOpen} />} />
+					<Route exact path='/' render={() => <Home user={this.state.user} isRatingOpen={this.state.isRatingOpen} onSignOut={this.onSignOut} />} />
 					{/* <Route exact path='/home' render={() => <Home user={this.state.user} isRatingOpen={this.state.isRatingOpen} />} />
 					<Route path='/login' component={Login}> */}
-					<Route path='/profile/:id' render={props => <Profile {...props} user={this.state.user} players={this.state.players} onSignOut={this.onSignOut} />}/>
+					<Route path='/profile/:id' render={props => <Profile {...props} user={this.state.user} players={this.state.players} />}/>
 					<Route path='/rate' render={() => <Rate user={this.state.user} players={this.state.players} />}/>
 					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} />}/>
 					<Route path='/statistics' render={() => <Statistics />}/>

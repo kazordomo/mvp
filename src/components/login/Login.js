@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
+import styled from 'styled-components';
 import { setById } from '../../utils/fetch';
 import colors from '../../utils/colors';
+import { MdFace, MdEmail, MdLock, MdPermIdentity, MdKeyboardArrowRight } from 'react-icons/md'
 import Container from '../_shared/Container'
 import CenteredWrapper from '../_shared/CenteredWrapper';
 import Button from '../_basic/Button';
@@ -11,6 +13,7 @@ class Login extends Component {
 
     state = {
         register: true,
+        showInputs: ['email', 'firstName', 'authCode', 'password', 'retypePassword'],
     }
 
     onSubmit = e => {
@@ -49,16 +52,15 @@ class Login extends Component {
     }
 
     onChangeAuth = () => {
-        this.setState(prevState => { return { register: !prevState.register } }, () => {
-            document
-                .querySelector('#retypePassword')
-                .style.display = this.state.register ? 'block' : 'none';
-            document
-                .querySelector('#firstName')
-                .style.display = this.state.register ? 'block' : 'none';
-            document
-                .querySelector('#authCode')
-                .style.display = this.state.register ? 'block' : 'none';
+        const registerInputs = ['email', 'firstName', 'authCode', 'password', 'retypePassword'];
+        const loginInputs = ['email', 'password'];
+        const showInputs = this.state.register ? loginInputs : registerInputs;
+
+        this.setState(prevState => { 
+            return {
+                register: !prevState.register,
+                showInputs,
+            }
         });
     }
 
@@ -79,6 +81,7 @@ class Login extends Component {
         }
     }
 
+    shouldBeShown = inputId => this.state.showInputs.includes(inputId) ? true : false;
     passwordCheck = (p1, p2) => p1 === p2; 
 
     render() {
@@ -88,21 +91,127 @@ class Login extends Component {
         return (
             <Container brColor={colors.spacegrayish()} style={{height: '100vh'}}>
                 <CenteredWrapper>
+                    <Title>
+                        <h2>MVP</h2>
+                        <div></div>
+                    </Title>
                     <form>
-                        <Input type="email" id="email" placeholder="someone@example.com" />
-                        <Input type="text" id="firstName" placeholder="Förnamn" />
-                        <Input type="text" id="authCode" placeholder="Lösenkod" />
-                        <Input type="password" id="password" placeholder="Lösenord" />
-                        <Input type="password" id="retypePassword" placeholder="Lösenord igen" />
+                        <AuthTypes id="changeAuth">
+                            <Type active={this.state.register} onClick={this.onChangeAuth}>Registrera</Type>
+                            <Type active={!this.state.register} onClick={this.onChangeAuth}>Logga in</Type>
+                        </AuthTypes>
+                        <Input 
+                            type="email" 
+                            id="email" 
+                            placeholder="E-post"
+                            icon={<MdEmail color={colors.orangeish(145)} />}
+                            show={this.shouldBeShown("email")} 
+                        />
+                        <Input 
+                            id="firstName" 
+                            placeholder="Förnamn" 
+                            icon={<MdFace color={colors.orangeish(120)}  />}
+                            show={this.shouldBeShown("firstName")}
+                        />
+                        <Input 
+                            id="authCode" 
+                            placeholder="Spelarkod" 
+                            icon={<MdPermIdentity color={colors.orangeish(95)} />}
+                            show={this.shouldBeShown("authCode")}
+                        />
+                        <Input 
+                            type="password" 
+                            id="password"
+                            placeholder="Lösenord" 
+                             icon={<MdLock color={colors.orangeish(70)} />} 
+                            show={this.shouldBeShown("password")}
+                        />
+                        <Input 
+                            type="password" 
+                            id="retypePassword" 
+                            placeholder="Lösenord igen" 
+                            icon={<MdLock color={colors.orangeish(70)} />}   
+                            show={this.shouldBeShown("retypePassword")}
+                        />
                         <Button long onClick={this.onSubmit}>{ register ? 'Registrera' : 'Logga in' }</Button>
-                        <div id="changeAuth">
-                            <p onClick={this.onChangeAuth}>{ register ? 'Du har redan ett konto?' : 'Inge konto?' }</p>
-                        </div>
+                        {/* <Guest>
+                            <p>Fortsätt som gäst</p> 
+                            <MdKeyboardArrowRight />
+                        </Guest> */}
                     </form>
                 </CenteredWrapper>
             </Container>
         )
     }
 }
+
+const Title = styled.div`
+    color: #fff;
+    font-family: 'Abril Fatface', cursive;
+    font-size: 40px;
+    margin-bottom: 40px;
+    position: relative;
+    text-align: center;
+
+    h2 {
+        font-size: 40px;
+        margin: 0;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+    }
+
+    div {
+        border-bottom: 1px dashed ${colors.orangeish(70)};
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        z-index: 1;
+    }
+`;
+
+const AuthTypes = styled.div`
+    margin-bottom: 10px;
+    height: 38px;
+    position: relative;
+    width: 100%;
+
+    div:first-child {
+        left: 0;
+    }
+    div:last-child {
+        right: 0;
+    }
+`;
+
+const Type = styled.div`
+    background-color: ${colors.orangeish(120)};
+    box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.75);
+    color: #fff;
+    margin-top: ${props=>props.active?'-6px':'0'};
+    opacity: ${props=>props.active?'1':'0.35'};
+    padding: 10px 0;
+    text-align: center;
+    position: absolute;
+    transition: 150ms margin ease-out; 
+    width: 50%;
+`;
+
+const Guest = styled.div`
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    color: #fff;
+
+    p {
+        font-size: 18px;
+        margin-right: 5px;
+    }
+    svg {
+        font-size: 25px;
+    }
+`;
 
 export default Login;

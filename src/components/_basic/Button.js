@@ -27,7 +27,7 @@ const getBrColor = props => {
     else if(props.danger)
         return colors.redish();
     else
-        return colors.darkish();
+        return colors.orangeish();
 }
 
 export default styled('button')({

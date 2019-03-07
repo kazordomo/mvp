@@ -4,7 +4,7 @@ import { updateById } from '../../utils/fetch';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import colors from '../../utils/colors';
-import { MdCheckCircle, MdLock, MdLockOpen } from 'react-icons/md'
+import { MdCheckCircle, MdLockOpen } from 'react-icons/md'
 import Nav from '../_shared/Nav';
 import Fade from '../_shared/Fade'
 import Container from '../_shared/Container';
@@ -30,8 +30,8 @@ class Rate extends Component {
     onPlayerRate = (player, point) => {
         try {
             this.setState({ pointsGiven: [...this.state.pointsGiven, { 
-                to: player.id, 
-                from: this.props.user.id,
+                toId: player.id, 
+                fromId: this.props.user.id,
                 value: point 
             }] });
         } catch(err) {
@@ -42,11 +42,16 @@ class Rate extends Component {
     onDoneRating = () => {
         try {
             this.state.pointsGiven.forEach(point => {
-                const player = this.props.players.find(player => player.id === point.to);
-                const rating = { to: point.to, from: this.props.user.id, value: point.value, };
+                const player = this.props.players.find(player => player.id === point.toId);
+                const rating = { 
+                    toId: point.toId, 
+                    fromId: this.props.user.id, 
+                    value: point.value,
+                    createdAt: new Date(),
+                 };
                 // Update the players list to get the new rating calculated in the Leaderboard
-                player.ratings.push(rating);
-                updateById('users', rating.to, { ratings: player.ratings });
+                player.ratings = player.ratings ? [ ...player.ratings, rating ] : [ rating ];
+                updateById('users', rating.toId, { ratings: player.ratings });
             });
             this.setState({ isDoneRating: true }, this.handleRedirect);
         } catch(err) {
@@ -54,8 +59,8 @@ class Rate extends Component {
         }
     }
 
-    getRating = player =>  {
-        const rating =this.state.pointsGiven.find(point => point.to === player.id);
+    getRating = player =>  { 
+        const rating = this.state.pointsGiven.find(point => point.toId === player.id);
         return rating ? rating : {};
     }
         

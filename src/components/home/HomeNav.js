@@ -22,7 +22,7 @@ class HomeNav extends Component {
     render () {
         return (
             <Icons>
-                <Settings show={this.state.showSettings} onClose={this.onShowHideSettings} />
+                <Settings show={this.state.showSettings} onClose={this.onShowHideSettings} onSignOut={this.props.onSignOut} />
                 <MdSettings onClick={this.onShowHideSettings} />
                 <Link to={`/profile/${this.props.user.id}`}>
                     <MdAccountCircle />

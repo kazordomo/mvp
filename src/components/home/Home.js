@@ -6,10 +6,10 @@ import CenteredWrapper from '../_shared/CenteredWrapper';
 import HomeNav from './HomeNav';
 import HomeButtons from './HomeButtons';
 
-const Home = ({ user }) => {
+const Home = ({ user, onSignOut }) => {
     return (
         <Container brColor={colors.spacegrayish()}>
-            <HomeNav user={user} />
+            <HomeNav user={user} onSignOut={onSignOut} />
             <CenteredWrapper>
                 <HomeButtons />
             </CenteredWrapper>
