@@ -15,13 +15,13 @@ export default () => {
     const Rating = () => {
         return true ? (
             <Link to={'/rate'}>
-                <Button customStyle={{...btnStyle, backgroundColor: colors.orangeish(74)}}>
+                <Button shadow customStyle={{...btnStyle, backgroundColor: colors.orangeish(74)}}>
                     <span>Rösta</span>
                     <MdGrade color={colors.dirtpinkish()} />
                 </Button>
             </Link> 
         ) : (
-            <Button customStyle={disabledBtnStyle}>
+            <Button customStyle={disabledBtnStyle} shadow>
                 <span>Rösta</span>
                 <MdGrade color={colors.dirtpinkish()} />
             </Button>
@@ -32,13 +32,13 @@ export default () => {
         <Links>
             <Rating />
             <Link to={'/leaderboard'}>
-                <Button customStyle={{...btnStyle, backgroundColor: colors.orangeish(94)}}>
+                <Button shadow customStyle={{...btnStyle, backgroundColor: colors.orangeish(94)}}>
                     <span>Poängliga</span>
                     <MdFormatListNumbered color={colors.dirtpinkish()} />
                 </Button>
             </Link>
             <Link to={'/statistics'}>
-                <Button customStyle={{...btnStyle, backgroundColor: colors.orangeish(114)}}>
+                <Button customStyle={{...btnStyle, backgroundColor: colors.orangeish(114)}} shadow>
                     <span>Statistik</span>
                     <MdShowChart color={colors.dirtpinkish()} />
                 </Button>
@@ -57,7 +57,6 @@ const Links = styled.div`
 
 const btnStyle = {
     alignItems: 'center',
-    boxShadow: '-3px 1px 18px 0px rgba(0,0,0,0.75)',
     display: 'flex',
     justifyContent: 'space-between',
     marginBottom: '20px',

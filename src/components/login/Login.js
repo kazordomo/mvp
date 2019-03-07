@@ -90,7 +90,7 @@ class Login extends Component {
 
         return (
             <Container brColor={colors.spacegrayish()} style={{height: '100vh'}}>
-                <CenteredWrapper>
+                <CenteredWrapper bigger>
                     <Title>
                         <h2>MVP</h2>
                         <div></div>

@@ -21,14 +21,16 @@ class Admin extends Component {
                         <Button 
                             success={isRatingOpen?false:true} 
                             danger={isRatingOpen?true:false}
-                            onClick={onOpenCloseRating} >
+                            onClick={onOpenCloseRating} 
+                            shadow >
                             <span>{ isRatingOpen ? 'Stäng Röstning' : 'Öppna Röstning' }</span>
                         </Button>
                     </FormGroup>
                     <FormGroup>
                         <Input type="text" id="adminEmail" placeholder="someone@example.com" />
                         <Button 
-                            onClick={() =>onAddAdminRole(document.querySelector('#adminEmail').value)}>
+                            onClick={() =>onAddAdminRole(document.querySelector('#adminEmail').value)}
+                            shadow >
                             <span>Gör till admin</span>
                         </Button>
                     </FormGroup>

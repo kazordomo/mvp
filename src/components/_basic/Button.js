@@ -16,7 +16,7 @@ const defaultStyle = {
     fontFamily: '"Josefin Sans", sans-serif',
     height: '65px',
     lineHeight: '65px',
-    minWidth: '175px',
+    minWidth: '200px',
     outline: 'none',
     padding: '0 30px',
 }
@@ -35,6 +35,7 @@ export default styled('button')({
 }, props => ({
     backgroundColor: getBrColor(props),
     borderRadius: props.round ? '25px' : '2px',
+    boxShadow: props.shadow ? '-3px 1px 18px 0px rgba(0,0,0,0.75)' : 'none',
     width: props.long ? '100%' : 'auto',
     ...props.customStyle
 }));
