@@ -24,6 +24,7 @@ class App extends Component {
 			isRatingOpen: false,
 			user: false,
 			players: [],
+			ratingOccasions: [],
 		}
 	}
 
@@ -83,6 +84,14 @@ class App extends Component {
 		} catch(err) {
 			console.log(err);
 		}
+	}
+
+	openRating = async () => {
+		
+	}
+
+	closeRating = async () => {
+
 	}
 
 	render() {

@@ -36,6 +36,7 @@ export default styled('button')({
     backgroundColor: getBrColor(props),
     borderRadius: props.round ? '25px' : '2px',
     boxShadow: props.shadow ? '-3px 1px 18px 0px rgba(0,0,0,0.75)' : 'none',
+    opacity: props.disabled ? 0.35 : 1,
     width: props.long ? '100%' : 'auto',
     ...props.customStyle
 }));

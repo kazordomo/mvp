@@ -13,6 +13,7 @@ const Input = props => {
                 type={ props.type ? props.type : 'text' }
                 id={props.id ? props.id : ''}
                 placeholder={props.placeholder}
+                onChange={props.onChange ? props.onChange : () => false}
             />
         </InputWrapper>
     );
