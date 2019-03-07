@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import colors from '../../utils/colors';
 import { MdCheckCircle, MdLock, MdLockOpen } from 'react-icons/md'
 import Nav from '../_shared/Nav';
+import Fade from '../_shared/Fade'
 import Container from '../_shared/Container';
 import Wrapper from '../_shared/Wrapper';
 import RateRow from './RateRow';
@@ -29,30 +30,32 @@ class Rate extends Component {
     onPlayerRate = (player, point) => {
         try {
             this.setState({ pointsGiven: [...this.state.pointsGiven, { 
-                toId: player.id, 
-                name: player.name, 
+                to: player.id, 
+                from: this.props.user.id,
                 value: point 
             }] });
         } catch(err) {
             console.log(err);
         }
     }
+    
     onDoneRating = () => {
         try {
             this.state.pointsGiven.forEach(point => {
-                const player = this.props.players.find(player => player.id === point.toId);
-                const updatedRates = [...player.ratings, { from: this.props.user.id, value: point.value, }];
+                const player = this.props.players.find(player => player.id === point.to);
+                const rating = { to: point.to, from: this.props.user.id, value: point.value, };
                 // Update the players list to get the new rating calculated in the Leaderboard
-                player.ratings.push({ from: this.props.user.id, value: point.value, });
-                updateById('users', point.toId, { ratings: updatedRates });
+                player.ratings.push(rating);
+                updateById('users', rating.to, { ratings: player.ratings });
             });
             this.setState({ isDoneRating: true }, this.handleRedirect);
         } catch(err) {
             console.log(err);
         }
     }
+
     getRating = player =>  {
-        const rating =this.state.pointsGiven.find(point => point.name === player.name);
+        const rating =this.state.pointsGiven.find(point => point.to === player.id);
         return rating ? rating : {};
     }
         
@@ -86,7 +89,7 @@ class Rate extends Component {
                         .sort((a, b) => a.name.localeCompare(b.name))
                         .map((player, i) => 
                             <RateRow 
-                                key={player.name} 
+                                key={player.id} 
                                 onPlayerRate={this.onPlayerRate} 
                                 player={player} 
                                 pos={i + 1} 
@@ -149,17 +152,6 @@ const HiddenIcon = styled.div`
     svg {
         font-size: 60px;
     }
-`;
-
-const Fade = styled.div`
-    background-color: rgba(0,0,0,0.75);
-    bottom: 0;
-    display: ${props=>props.show ? 'block' : 'none'};
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    z-index: 2;
 `;
 
 Rate.propTypes = {

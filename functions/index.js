@@ -1,10 +1,6 @@
-const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const functions = require('firebase-functions');
 admin.initializeApp();
-
-exports.checkPlayerCode = functions.https.onCall((data, context) => {
-    
-});
 
 exports.addAdminRole = functions.https.onCall((data, context) => {
     // Make sure that the req is made by an admin
