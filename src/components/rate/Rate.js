@@ -47,6 +47,7 @@ class Rate extends Component {
                     toId: point.toId, 
                     fromId: this.props.user.id, 
                     value: point.value,
+                    ratingOccasionId: this.props.ratingOccasion.id,
                     createdAt: new Date(),
                  };
                 // Update the players list to get the new rating calculated in the Leaderboard

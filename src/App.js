@@ -44,7 +44,7 @@ class App extends Component {
 				this.setState({ 
 					isLoggedIn: true, 
 					user: userData,
-				}, this.populatePlayers);
+				}, this.populateData);
 			}
 			else
 				this.setState({ isFetching: false });
@@ -54,13 +54,29 @@ class App extends Component {
 		this.setState({ isRatingOpen: snapshot.data().isRatingOpen });
 	}
 
-	// TODO: Move out fetch funcs.
+	async populateData() {
+		const [players, ratingOccasions] = await Promise.all([
+			this.populatePlayers(),
+			this.populateRatingOccasions()
+		]);
+		this.setState({ players, ratingOccasions, isFetching: false });
+	}
+
 	async populatePlayers() {
 		const initPlayers = [];
 		const snapshot = await getAll('users');
 		snapshot.forEach(doc => initPlayers.push({ id: doc.id, ...doc.data() }));
-		this.setState({ players: initPlayers, isFetching: false });
+		return initPlayers;
 	}
+
+	async populateRatingOccasions() {
+		const initRatingOccasions = [];
+		const snapshot = await getAll('ratingOccasions');
+		snapshot.forEach(doc => initRatingOccasions.push({ id: doc.id, ...doc.data() }));
+		return initRatingOccasions;
+	}
+
+	getActiveRatingOccasion = () => this.state.ratingOccasions.find(occasion => occasion.active);
 
 	onSignOut = () => {
 		signOut();
@@ -108,9 +124,9 @@ class App extends Component {
 					{/* <Route exact path='/home' render={() => <Home user={this.state.user} isRatingOpen={this.state.isRatingOpen} />} />
 					<Route path='/login' component={Login}> */}
 					<Route path='/profile/:id' render={props => <Profile {...props} user={this.state.user} players={this.state.players} />}/>
-					<Route path='/rate' render={() => <Rate user={this.state.user} players={this.state.players} />}/>
+					<Route path='/rate' render={() => <Rate user={this.state.user} players={this.state.players} ratingOccasion={this.getActiveRatingOccasion()}/>}/>
 					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} />}/>
-					<Route path='/statistics' render={() => <Statistics />}/>
+					<Route path='/statistics' render={() => <Statistics players={this.state.players} ratingOccasions={this.state.ratingOccasions} />}/>
 					<Route path='/admin' render={() => 
 						<Admin 
 							onAddAdminRole={this.onAddAdminRole} 
