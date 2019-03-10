@@ -2,16 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import colors from '../../utils/colors'
-import { arrayToObj, uniqueArray } from '../../utils/funcs';
+import { MdArrowDropDown } from 'react-icons/md'
+import { arrayToObj } from '../../utils/funcs';
+import SubTitle from '../_shared/SubTitle';
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
 import Wrapper from '../_shared/Wrapper';
+import PointsInfo from '../_shared/PointsInfo';
 import PlayerRatingsRow from './PlayerRatingsRow';
 
 class Statistics extends Component {
 
     state = {
         ratingsByOccasion: {},
+        ratingOccasionsOpen: [],
         playersObj: {},
     }
 
@@ -29,13 +33,27 @@ class Statistics extends Component {
             });
 
             for (let rating of allOccasionRatings) {
-                objs[occasion.id].ratings[rating.fromId] = allOccasionRatings.filter(r => r.fromId == rating.fromId);
+                objs[occasion.id].ratings[rating.fromId] = allOccasionRatings
+                    .filter(r => r.fromId == rating.fromId)
+                    .sort((a, b) => a.value - b.value);
             }
         }
-        this.setState({ ratingsByOccasion: objs, playersObj: arrayToObj(this.props.players) });
+        const latestRatingOccasionId = this.props.ratingOccasions.length ? this.props.ratingOccasions[0].id : '';
+        this.setState({ 
+            ratingsByOccasion: objs, 
+            playersObj: arrayToObj(this.props.players), 
+            ratingOccasionsOpen: [ ...this.state.ratingOccasionsOpen, latestRatingOccasionId ] 
+        });
     }
 
-    // TODO: SORT LISTS!!
+    checkIfOpen = ratingOccasionId => this.state.ratingOccasionsOpen.find(id => id === ratingOccasionId);
+
+    onOpenCloseRates = ratingOccasionId => {
+        if (this.checkIfOpen(ratingOccasionId))
+            this.setState({ ratingOccasionsOpen: [...this.state.ratingOccasionsOpen].filter(id => id !== ratingOccasionId) });
+        else
+            this.setState({ ratingOccasionsOpen: [ ...this.state.ratingOccasionsOpen, ratingOccasionId ] });
+    }
 
     render() {
         const { ratingsByOccasion, playersObj } = this.state;
@@ -43,29 +61,31 @@ class Statistics extends Component {
         return (
             <Container brColor={colors.spacegrayish()}>
                 <Nav title="STATISTIK" />
+                <PointsInfo />
                 <Wrapper>
                     {
                         Object.keys(ratingsByOccasion).map(key => {
                             return (
                                 <RatingOccasion key={ ratingsByOccasion[key].id }>
-                                    <Info>
-                                        <div>{ ratingsByOccasion[key].opponents }</div>
-                                        <div><i>Omgång { ratingsByOccasion[key].round }</i></div>
+                                    <Info onClick={() => this.onOpenCloseRates(ratingsByOccasion[key].id)}>
+                                        <SubTitle noMargin>{ ratingsByOccasion[key].opponents }</SubTitle>
+                                        <span>{ ratingsByOccasion[key].round }</span>
+                                        <MdArrowDropDown />
                                     </Info>
-
-                                    {
-                                        Object.keys(ratingsByOccasion[key].ratings).map(playerKey => { 
-                                            return (
-                                                <PlayerRatingsRow 
-                                                    key={playerKey}
-                                                    ratingFrom={playersObj[playerKey]}
-                                                    ratings={ratingsByOccasion[key].ratings[playerKey]}
-                                                    players={playersObj}
-                                                />
-                                            )
-                                        })
-                                    }
-
+                                    <PlayerRatesOuter isOpen={this.checkIfOpen(ratingsByOccasion[key].id)}>
+                                        <PlayerRatesInner>
+                                            {
+                                                Object.keys(ratingsByOccasion[key].ratings).map(playerKey => (
+                                                    <PlayerRatingsRow 
+                                                        key={playerKey}
+                                                        ratingFrom={playersObj[playerKey]}
+                                                        ratings={ratingsByOccasion[key].ratings[playerKey]}
+                                                        players={playersObj}
+                                                    />
+                                                ))
+                                            }
+                                        </PlayerRatesInner>
+                                    </PlayerRatesOuter>
                                 </RatingOccasion>
                             )
                         })
@@ -81,13 +101,37 @@ const RatingOccasion = styled.div`
 `;
 
 const Info = styled.div`
+    align-items: center;
     border-bottom: 1px solid #fff;
     color: #fff;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
+    margin-bottom: 20px;
+    padding: 0px 5px 5px 5px;
+    position: relative;
+
+    svg {
+        font-size: 28px;
+        left: 50%;
+        position: absolute;
+        bottom: -22px;
+        transform: translateX(-50%);
+    }
+
+    span {
+        color: #F8B195;
+    }
+`;
+
+const PlayerRatesOuter = styled.div`
+    height: ${props=>props.isOpen ? '100' : '0'}px;
+    overflow: hidden;
+    position: relative;
+`;
+
+const PlayerRatesInner = styled.div`
+    position: absolute;
 `;
 
 Statistics.propTypes = {

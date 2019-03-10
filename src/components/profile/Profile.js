@@ -8,6 +8,7 @@ import Container from '../_shared/Container';
 import Wrapper from '../_shared/Wrapper';
 import Chart from './Chart';
 import SubTitle from '../_shared/SubTitle';
+import PointsInfo from '../_shared/PointsInfo';
 
 const Profile = ({ players, match, history }) => {
     
@@ -54,11 +55,7 @@ const Profile = ({ players, match, history }) => {
     return (
         <Container brColor={colors.spacegrayish()}>
             <Nav title={player.name} goBack={history.goBack} />
-            <Info>
-                <div>1p: <span></span></div>
-                <div>2p: <span></span></div>
-                <div>3p: <span></span></div>
-            </Info>
+            <PointsInfo />
             <Col margin>
                 <Wrapper>
                     <SubTitle>Poäng från användare</SubTitle>
@@ -90,39 +87,6 @@ const Col = styled.div`
 
     div {
         color: #fff;
-    }
-`;
-
-const Info = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 30px;
-    padding: 0 20px;
-
-    div {
-        align-items: center;
-        display: flex;
-        color: #fff;
-
-        span {
-            margin-left: 10px;
-        }
-        :nth-child(1) span {
-            background-color: ${colors.lightpinkish()};
-        }
-        :nth-child(2) span {
-            background-color: ${colors.darkpinkish()};
-        }
-        :nth-child(3) span {
-            background-color: ${colors.purplish()};
-        }
-    }
-
-    div span {
-        display: block;
-        height: 15px;
-        width: 50px;
     }
 `;
 

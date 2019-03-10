@@ -11,7 +11,7 @@ const PlayerRatingsRow = ({ ratingFrom, ratings, players }) => {
             {
                 // TODO: The key should be rating.value - (fix that a player only can rate once a week first)
                 ratings.map((rating, i) => {
-                    return <span key={i}>{ players[rating.toId].name } - { rating.value }p</span>
+                    return <span key={i}>{ players[rating.toId].name }</span>
                 })
             }
         </Row>
@@ -27,22 +27,24 @@ const Row = styled.div`
 
     div {
         margin-right: 20px;
+        width: 20%;
     }
 
     span {
-        background-color: pink;
         border-radius: 2px;
-        margin-right: 5px;
+        margin-right: 10px;
         padding: 5px 10px;
+        text-align: center;
+        width: 33%;
     }
     
-    span:nth-child(1) {
+    span:nth-child(2) {
         background-color: ${colors.lightpinkish()};
     }
-    span:nth-child(2) {
+    span:nth-child(3) {
         background-color: ${colors.darkpinkish()};
     }
-    span:nth-child(3) {
+    span:nth-child(4) {
         background-color: ${colors.purplish()};
     }
 `;
