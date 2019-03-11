@@ -1,6 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import colors from '../../utils/colors';
+import { slideInLeft } from 'react-animations';
 
 export default () => (
     <Info>
@@ -10,12 +11,24 @@ export default () => (
     </Info>
 );
 
+const slideInLeftAnimation = keyframes`${slideInLeft}`;
+
 const Info = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 30px;
     padding: 0 20px;
+
+    div:nth-child(1) {
+        animation: 0.8s ${slideInLeftAnimation};
+    }
+    div:nth-child(2) {
+        animation: 0.6s ${slideInLeftAnimation};
+    }
+    div:nth-child(3) {
+        animation: 0.4s ${slideInLeftAnimation};
+    }
 
     div {
         align-items: center;
@@ -26,13 +39,13 @@ const Info = styled.div`
             margin-left: 10px;
         }
         :nth-child(1) span {
-            background-color: ${colors.lightpinkish()};
+            background-color: ${colors.onePoint()};
         }
         :nth-child(2) span {
-            background-color: ${colors.darkpinkish()};
+            background-color: ${colors.twoPoint()};
         }
         :nth-child(3) span {
-            background-color: ${colors.purplish()};
+            background-color: ${colors.threePoint()};
         }
     }
 

@@ -23,19 +23,19 @@ const Chart = ({ ratings, maxPoint }) => {
                                 <Fill 
                                     fillWidth={firstFillWidth} 
                                     left={0} 
-                                    brColor={colors.lightpinkish()}
+                                    brColor={colors.onePoint()}
                                     rateValueLen={rating['1'].length}
                                 />
                                 <Fill 
                                     fillWidth={secondFillWidth} 
                                     left={firstFillWidth} 
-                                    brColor={colors.darkpinkish()} 
+                                    brColor={colors.twoPoint()} 
                                     rateValueLen={rating['2'].length}
                                 />
                                 <Fill 
                                     fillWidth={thirdFillWidth} 
                                     left={firstFillWidth + secondFillWidth} 
-                                    brColor={colors.purplish()} 
+                                    brColor={colors.threePoint()} 
                                     rateValueLen={rating['3'].length}
                                 />
                             </FillWrapper>

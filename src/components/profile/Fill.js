@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import colors from '../../utils/colors';
 
 // Each rate-value (1, 2, 3) will have its own "pile". The width of the pile will be all the values added together 
 // of the type and calculated against the total value of all values of each type added together. 
@@ -55,7 +56,7 @@ const FillRow = styled.div`
     width: calc(${props=>props.width}% - 3px);
 
     div {
-        color: #F8B195 !important;
+        color: ${colors.darkish()} !important;
         opacity: ${props=>props.textOpacity};
         transition: opacity 350ms ease-out;
     }

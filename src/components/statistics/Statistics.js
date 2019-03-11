@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import colors from '../../utils/colors'
 import { MdArrowDropDown } from 'react-icons/md'
+import { fadeIn } from 'react-animations';
 import { arrayToObj } from '../../utils/funcs';
 import SubTitle from '../_shared/SubTitle';
 import Nav from '../_shared/Nav';
@@ -10,6 +11,9 @@ import Container from '../_shared/Container';
 import Wrapper from '../_shared/Wrapper';
 import PointsInfo from '../_shared/PointsInfo';
 import PlayerRatingsRow from './PlayerRatingsRow';
+
+// TODO: Sort the ratingOccasions-ratings by the playerName.
+// We are getting the value from the ratings and "from-name" from the players list.
 
 class Statistics extends Component {
 
@@ -24,8 +28,11 @@ class Statistics extends Component {
     }
 
     setRatingsByOccasion = () => {
+        // Sorting by "round". The latest game (round >) will be shown as default.
+        const sortedRatingOccasions = this.props.ratingOccasions ?
+            [...this.props.ratingOccasions].sort((a, b) => b.round - a.round) : [];
         const objs = {};
-        for (let occasion of this.props.ratingOccasions) {
+        for (let occasion of sortedRatingOccasions) {
             objs[occasion.id] = { ...occasion, ratings: {} };
             const allOccasionRatings = this.props.players.flatMap(player => {
                 if (!player.ratings) return [];
@@ -39,10 +46,10 @@ class Statistics extends Component {
             }
         }
         // '' will be added to the arr, which is fine. This is only to avoid error/crash
-        const latestRatingOccasionId = this.props.ratingOccasions.length ? this.props.ratingOccasions[0].id : '';
+        const latestRatingOccasionId = sortedRatingOccasions.length ? sortedRatingOccasions[0].id : '';
         this.setState({ 
             ratingsByOccasion: objs, 
-            playersObj: arrayToObj(this.props.players), 
+            playersObj: arrayToObj(this.props.players),
             ratingOccasionsOpen: [ ...this.state.ratingOccasionsOpen, latestRatingOccasionId ] 
         });
     }
@@ -98,7 +105,10 @@ class Statistics extends Component {
     }
 }
 
+const fadeInAnimation = keyframes`${fadeIn}`;
+
 const RatingOccasion = styled.div`
+    animation: 1s ${fadeInAnimation};
     margin-bottom: 20px;
 `;
 
