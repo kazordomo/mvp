@@ -38,6 +38,7 @@ class Statistics extends Component {
                     .sort((a, b) => a.value - b.value);
             }
         }
+        // '' will be added to the arr, which is fine. This is only to avoid error/crash
         const latestRatingOccasionId = this.props.ratingOccasions.length ? this.props.ratingOccasions[0].id : '';
         this.setState({ 
             ratingsByOccasion: objs, 
@@ -67,25 +68,26 @@ class Statistics extends Component {
                         Object.keys(ratingsByOccasion).map(key => {
                             return (
                                 <RatingOccasion key={ ratingsByOccasion[key].id }>
-                                    <Info onClick={() => this.onOpenCloseRates(ratingsByOccasion[key].id)}>
+                                    <Info 
+                                        onClick={() => this.onOpenCloseRates(ratingsByOccasion[key].id)} 
+                                        isOpen={this.checkIfOpen(ratingsByOccasion[key].id)}
+                                    >
                                         <SubTitle noMargin>{ ratingsByOccasion[key].opponents }</SubTitle>
                                         <span>{ ratingsByOccasion[key].round }</span>
                                         <MdArrowDropDown />
                                     </Info>
-                                    <PlayerRatesOuter isOpen={this.checkIfOpen(ratingsByOccasion[key].id)}>
-                                        <PlayerRatesInner>
-                                            {
-                                                Object.keys(ratingsByOccasion[key].ratings).map(playerKey => (
-                                                    <PlayerRatingsRow 
-                                                        key={playerKey}
-                                                        ratingFrom={playersObj[playerKey]}
-                                                        ratings={ratingsByOccasion[key].ratings[playerKey]}
-                                                        players={playersObj}
-                                                    />
-                                                ))
-                                            }
-                                        </PlayerRatesInner>
-                                    </PlayerRatesOuter>
+                                    <PlayerRates isOpen={this.checkIfOpen(ratingsByOccasion[key].id)}>
+                                        {
+                                            Object.keys(ratingsByOccasion[key].ratings).map(playerKey => (
+                                                <PlayerRatingsRow 
+                                                    key={playerKey}
+                                                    ratingFrom={playersObj[playerKey]}
+                                                    ratings={ratingsByOccasion[key].ratings[playerKey]}
+                                                    players={playersObj}
+                                                />
+                                            ))
+                                        }
+                                    </PlayerRates>
                                 </RatingOccasion>
                             )
                         })
@@ -116,7 +118,7 @@ const Info = styled.div`
         left: 50%;
         position: absolute;
         bottom: -22px;
-        transform: translateX(-50%);
+        transform: translateX(-50%) rotate(${props=>props.isOpen?'180deg':'0'});
     }
 
     span {
@@ -124,14 +126,10 @@ const Info = styled.div`
     }
 `;
 
-const PlayerRatesOuter = styled.div`
-    height: ${props=>props.isOpen ? '100' : '0'}px;
+const PlayerRates = styled.div`
+    height: ${props=>props.isOpen ? 'auto' : '0px'};
     overflow: hidden;
     position: relative;
-`;
-
-const PlayerRatesInner = styled.div`
-    position: absolute;
 `;
 
 Statistics.propTypes = {

@@ -53,6 +53,10 @@ const Links = styled.div`
     button {
         animation: 1s ${bounceInAnimation};
     }
+
+    svg {
+        font-size: 18px;
+    }
 `;
 
 const btnStyle = {
