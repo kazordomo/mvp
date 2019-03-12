@@ -6,12 +6,14 @@ import colors from '../../utils/colors';
 const PlayerRatingsRow = ({ ratingFrom, ratings, players }) => (
     <Row>
         <div>{ ratingFrom.name }</div>
-        {
-            // TODO: The key should be rating.value - (fix that a player only can rate once a week first)
-            ratings.map((rating, i) => {
-                return <span key={i}>{ players[rating.toId].name }</span>
-            })
-        }
+        <div>
+            {
+                // TODO: The key should be rating.value - (fix that a player only can rate once a week first)
+                ratings.map((rating, i) => {
+                    return <span key={i}>{ players[rating.toId].name }</span>
+                })
+            }
+        </div>
     </Row>
 )
 
@@ -20,28 +22,41 @@ const Row = styled.div`
     color: #fff;
     display: flex;
     flex-direction: row;
+    height: 25px;
     margin-bottom: 10px;
+    justify-content: space-between;
+    overflow: auto;
 
-    div {
+    div:first-child {
         margin-right: 20px;
-        width: 20%;
+        width: 15%;
+    }
+    div:last-child {
+        display: flex;
+        flex-direction: row;
+        width: calc(85% - 20px);
     }
 
-    span {
+    div span {
+        display: block;
         border-radius: 2px;
         margin-right: 10px;
-        padding: 5px 10px;
         text-align: center;
+        padding: 10px 20px;
         width: 33%;
+
+        :last-child {
+            margin-right: 0;
+        }
     }
     
-    span:nth-child(2) {
+    div span:nth-child(1) {
         background-color: ${colors.onePoint()};
     }
-    span:nth-child(3) {
+    div span:nth-child(2) {
         background-color: ${colors.twoPoint()};
     }
-    span:nth-child(4) {
+    div span:nth-child(3) {
         background-color: ${colors.threePoint()};
     }
 `;
