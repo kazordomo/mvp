@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { arrayToObj, uniqueArray } from '../../utils/funcs';
+import { arrayToObj, uniqueArray, findUser } from '../../utils/funcs';
 import colors from '../../utils/colors';
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
@@ -12,16 +12,14 @@ import PointsInfo from '../_shared/PointsInfo';
 
 const Profile = ({ players, match, history }) => {
     
-    const filterRatingsByUser = () => {
-        const findPlayer = id => 
-            players.find(player => player.id === id);
+    const filterRatingsGottenByUser = () => {
         const ratings = [];
 
-        const player = findPlayer(match.params.id);
+        const player = findUser(players, match.params.id);
         if (!player.ratings) return [];
 
         for (let rating of player.ratings) {
-            const ratingFrom = findPlayer(rating.fromId);
+            const ratingFrom = findUser(players, rating.fromId);
             const filtered = 
                 [ ...player.ratings ].filter(r => rating.fromId === r.fromId);
             const ratingObj = {
@@ -31,6 +29,26 @@ const Profile = ({ players, match, history }) => {
                 2: filtered.filter(r => r.value === 2),
                 3: filtered.filter(r => r.value === 3),
             }
+            ratings.push(ratingObj);
+        }
+        return uniqueArray(ratings).sort((a, b) => b.totalValue - a.totalValue);
+    }
+
+    const filterRatingsGivenByUser = () => {
+        const ratings = [];
+
+        for (let player of players) {
+            const ratingsMade = player.ratings.filter(rating => rating.fromId === match.params.id);
+            if (!ratingsMade.length) return [];
+
+            const ratingObj = {
+                name: player.name,
+                totalValue: ratingsMade.reduce((total, a) => total += a.value, 0),
+                1: ratingsMade.filter(r => r.value === 1),
+                2: ratingsMade.filter(r => r.value === 2),
+                3: ratingsMade.filter(r => r.value === 3),
+            }
+
             ratings.push(ratingObj);
         }
         return uniqueArray(ratings).sort((a, b) => b.totalValue - a.totalValue);
@@ -49,8 +67,8 @@ const Profile = ({ players, match, history }) => {
     }
 
     const player = arrayToObj(players)[match.params.id];
-    const ratingsGotten = filterRatingsByUser();
-    const ratingsGiven = [];
+    const ratingsGotten = filterRatingsGottenByUser();
+    const ratingsGiven = filterRatingsGivenByUser();
 
     return (
         <Container brColor={colors.spacegrayish()}>

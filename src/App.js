@@ -91,7 +91,6 @@ class App extends Component {
 	
 	onOpenRating = async opponents => {
 		try {
-			// collection, obj
 			const id = uuid();
 			const round = this.state.ratingOccasions.length ? 
 				(this.state.ratingOccasions.sort((a, b) => b.round - a.round)[0].round + 1) : 1;

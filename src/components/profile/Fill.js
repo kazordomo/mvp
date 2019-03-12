@@ -56,7 +56,6 @@ const FillRow = styled.div`
     width: calc(${props=>props.width}% - 3px);
 
     div {
-        color: ${colors.darkish()} !important;
         opacity: ${props=>props.textOpacity};
         transition: opacity 350ms ease-out;
     }
