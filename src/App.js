@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import keys from './config/keys';
-import { getAll, getById, updateById, signOut } from './utils/fetch';
+import uuid from 'uuid';
+import { getAll, getById, updateById, setById, signOut } from './utils/fetch';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Login from './components/login/Login';
@@ -21,7 +22,6 @@ class App extends Component {
 		this.state = {
 			isLoggedIn: false,
 			isFetching: true,
-			isRatingOpen: false,
 			user: false,
 			players: [],
 			ratingOccasions: [],
@@ -49,9 +49,6 @@ class App extends Component {
 			else
 				this.setState({ isFetching: false });
 		});
-
-		const snapshot = await getById('wall', 'isRatingOpen');
-		this.setState({ isRatingOpen: snapshot.data().isRatingOpen });
 	}
 
 	async populateData() {
@@ -92,22 +89,40 @@ class App extends Component {
         }).catch(err => console.log(err));
 	}
 	
-	onOpenCloseRating = async () => {
+	onOpenRating = async opponents => {
 		try {
-			const isRatingOpenBool = this.state.isRatingOpen;
-			await updateById('wall', 'isRatingOpen', { isRatingOpen: !isRatingOpenBool });
-			this.setState({ isRatingOpen: !isRatingOpenBool });
+			// collection, obj
+			const id = uuid();
+			const round = this.state.ratingOccasions.length ? 
+				(this.state.ratingOccasions.sort((a, b) => b.round - a.round)[0].round + 1) : 1;
+
+			const newRatingOccasion = {
+				id,
+				opponents,
+				round,
+				active: true,
+			}
+			await setById('ratingOccasions', id, newRatingOccasion);
+			this.setState({ 
+				ratingOccasions: [ ...this.state.ratingOccasions, newRatingOccasion ]
+			});
 		} catch(err) {
 			console.log(err);
 		}
 	}
 
-	openRating = async () => {
-		
-	}
-
-	closeRating = async () => {
-
+	onCloseRating = async () => {
+		try {
+			let ratingOccasions = [ ...this.state.ratingOccasions ];
+			let ratingOccasion = this.getActiveRatingOccasion();
+			ratingOccasion.active = false;
+			ratingOccasions[ratingOccasions.indexOf(ratingOccasion)] = ratingOccasion;
+			await updateById('ratingOccasions', ratingOccasion.id, ratingOccasion);
+			this.setState({ ratingOccasions });
+			console.log("Close rating");
+		} catch(err) {
+			console.log(err);
+		}
 	}
 
 	render() {
@@ -120,9 +135,7 @@ class App extends Component {
 		return (
 			<Router>
 				<AppContainer>
-					<Route exact path='/' render={() => <Home user={this.state.user} isRatingOpen={this.state.isRatingOpen} onSignOut={this.onSignOut} />} />
-					{/* <Route exact path='/home' render={() => <Home user={this.state.user} isRatingOpen={this.state.isRatingOpen} />} />
-					<Route path='/login' component={Login}> */}
+					<Route exact path='/' render={() => <Home user={this.state.user} isRatingOpen={!!this.getActiveRatingOccasion()} onSignOut={this.onSignOut} />} />
 					<Route path='/profile/:id' render={props => <Profile {...props} user={this.state.user} players={this.state.players} />}/>
 					<Route path='/rate' render={() => <Rate user={this.state.user} players={this.state.players} ratingOccasion={this.getActiveRatingOccasion()}/>}/>
 					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} />}/>
@@ -131,8 +144,9 @@ class App extends Component {
 						<Admin 
 							onAddAdminRole={this.onAddAdminRole} 
 							user={this.state.user}
-							isRatingOpen={this.state.isRatingOpen}
-							onOpenCloseRating={this.onOpenCloseRating}
+							ratingOccasion={this.getActiveRatingOccasion()}
+							onOpenRating={this.onOpenRating}
+							onCloseRating={this.onCloseRating}
 						/>}
 					/>
 				</AppContainer>

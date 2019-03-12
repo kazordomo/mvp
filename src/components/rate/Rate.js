@@ -91,6 +91,7 @@ class Rate extends Component {
                 </HiddenIcon>
                 <Nav title="RÖSTNING" />
                 <Wrapper>
+                    { this.props.ratingOccasion ? <SubTitle>{ this.props.ratingOccasion.opponents }</SubTitle> : '' }
                     { this.props.players
                         .sort((a, b) => a.name.localeCompare(b.name))
                         .map((player, i) => 

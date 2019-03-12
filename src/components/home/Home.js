@@ -39,13 +39,13 @@ class Home extends Component {
     }
 
     render() {
-        const { user, onSignOut } = this.props;
+        const { user, onSignOut, isRatingOpen } = this.props;
 
         return (
             <Container brColor={colors.spacegrayish()}>
                 <HomeNav user={user} onSignOut={onSignOut} />
                 <CenteredWrapper>
-                    <HomeButtons />
+                    <HomeButtons isRatingOpen={isRatingOpen} />
                 </CenteredWrapper>
                 <button id="A2HS" style={{ display: `${this.state.showA2HS ? 'block' : 'none'}` }}>Add to homescreen</button>
             </Container>

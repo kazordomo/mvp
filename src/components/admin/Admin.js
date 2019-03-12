@@ -38,28 +38,41 @@ class Admin extends Component {
     }
 
     render() {
-        const { isRatingOpen, onOpenCloseRating, onAddAdminRole } = this.props
+        const { ratingOccasion, onOpenRating, onCloseRating, onAddAdminRole } = this.props;
 
         return (
             <Container brColor={colors.spacegrayish()}>
                 <Nav title="ADMIN" />
                 <CenteredWrapper bigger>
                     <div>
-                        <Input 
-                            id="opponents" 
-                            placeholder='Motståndare' 
-                            icon={<MdGroup />} 
-                            onChange={e => this.onInputChange(e.target)}
-                            show 
-                        />
-                        <Button 
-                            success={isRatingOpen?false:true} 
-                            danger={isRatingOpen?true:false}
-                            onClick={isRatingOpen?onOpenCloseRating:() => console.log('Röstning stängd')}
-                            customStyle={btnStyle}
-                            disabled={this.state.opponentsDisabled} >
-                            <span>Öppna röstning</span>
-                        </Button>
+                        {
+                            ratingOccasion ?
+                                <div>
+                                    <RatingInfo>Aktiv röstning: { ratingOccasion.opponents }</RatingInfo>
+                                    <Button 
+                                        danger
+                                        onClick={onCloseRating}
+                                        customStyle={btnStyle} >
+                                        <span>Stäng röstning</span>
+                                    </Button>
+                                </div> :
+                                <div>
+                                    <Input 
+                                        id="opponents" 
+                                        placeholder='Motståndare' 
+                                        icon={<MdGroup />} 
+                                        onChange={e => this.onInputChange(e.target)}
+                                        show 
+                                    />  
+                                    <Button 
+                                        success
+                                        onClick={() => onOpenRating(document.querySelector('#opponents').value)}
+                                        customStyle={btnStyle}
+                                        disabled={this.state.opponentsDisabled} >
+                                        <span>Öppna röstning</span>
+                                    </Button>
+                                </div>
+                        }
                     </div>
                     <Hr />
                     <div>
@@ -89,12 +102,20 @@ const Hr = styled.div`
     width: 100%;
 `;
 
+const RatingInfo = styled.div`
+    color: #fff;
+    margin-bottom: 20px;
+`;
+
 let btnStyle = {
     width: '250px',
 }
 
 Admin.propTypes = {
     onAddAdminRole: PropTypes.func,
+    ratingOccasion: PropTypes.object,
+    onOpenRating: PropTypes.func,
+    onCloseRating: PropTypes.func,
 }
 
 export default Admin;

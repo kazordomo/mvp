@@ -20,7 +20,12 @@ const Input = props => {
 }
 
 Input.propTypes = {
-
+    show: PropTypes.bool,
+    icon: PropTypes.element,
+    type: PropTypes.string,
+    id: PropTypes.string,
+    placeholder: PropTypes.string,
+    onChange: PropTypes.func,
 }
 
 export default Input;
@@ -32,7 +37,6 @@ const InputWrapper = styled.div`
     color: #fff;
     display: ${props=>props.show?'flex':'none'};
     flex-direction: row;
-    padding: 10px 0;
     margin-bottom: 10px;
 `;
 
@@ -41,7 +45,7 @@ const InputField = styled.input`
     border: none;
     color: #fff;
     outline: none;
-    padding 0px 15px;
+    padding 20px 15px;
     width: 90%;
 `;
 
