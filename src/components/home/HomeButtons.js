@@ -10,21 +10,22 @@ import {
 } from 'react-icons/md'
 import Button from '../_basic/Button';
 
-export default ({ isRatingOpen }) => {
+export default ({ ratingOccasion, userAlreadyRated }) => {
+
     return (
         <Links>
             { 
-                isRatingOpen ? 
-                <Link to={'/rate'}>
-                    <Button shadow customStyle={{...btnStyle, backgroundColor: colors.orangeish(74)}}>
-                        <span>Rösta</span>
+                (ratingOccasion && !userAlreadyRated) ? 
+                    <Link to={'/rate'}>
+                        <Button shadow customStyle={{...btnStyle, backgroundColor: colors.orangeish(74)}}>
+                            <span>Rösta</span>
+                            <MdGrade color={colors.dirtpinkish()} />
+                        </Button>
+                    </Link> :
+                    <Button customStyle={disabledBtnStyle} danger shadow>
+                        <span>{ userAlreadyRated ? 'Du har röstat' : 'Rösta (stängd)' }</span>
                         <MdGrade color={colors.dirtpinkish()} />
                     </Button>
-                </Link> :
-                <Button customStyle={disabledBtnStyle} danger shadow>
-                    <span>Rösta (stängd)</span>
-                    <MdGrade color={colors.dirtpinkish()} />
-                </Button>
             }
             <Link to={'/leaderboard'}>
                 <Button shadow customStyle={{...btnStyle, backgroundColor: colors.orangeish(94)}}>

@@ -52,12 +52,12 @@ const FillRow = styled.div`
     justify-content: center;
     left: ${props=>props.left}%;
     position: absolute;
-    transition: 1000ms width ease-in-out;
+    transition: 700ms width ease-in-out;
     width: calc(${props=>props.width}% - 3px);
 
     div {
         opacity: ${props=>props.textOpacity};
-        transition: opacity 350ms ease-out;
+        transition: opacity 150ms ease-out;
     }
     
     :last-child {

@@ -39,13 +39,15 @@ class Home extends Component {
     }
 
     render() {
-        const { user, onSignOut, isRatingOpen } = this.props;
+        const { user, onSignOut, ratingOccasion } = this.props;
 
         return (
             <Container brColor={colors.spacegrayish()}>
                 <HomeNav user={user} onSignOut={onSignOut} />
                 <CenteredWrapper>
-                    <HomeButtons isRatingOpen={isRatingOpen} />
+                    <HomeButtons 
+                        ratingOccasion={ratingOccasion} 
+                        userAlreadyRated={ratingOccasion ? user.ratings.find(rating => rating.ratingOccasionId === ratingOccasion.id) : false} />
                 </CenteredWrapper>
                 <button id="A2HS" style={{ display: `${this.state.showA2HS ? 'block' : 'none'}` }}>Add to homescreen</button>
             </Container>

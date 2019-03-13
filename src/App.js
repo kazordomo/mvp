@@ -118,7 +118,6 @@ class App extends Component {
 			ratingOccasions[ratingOccasions.indexOf(ratingOccasion)] = ratingOccasion;
 			await updateById('ratingOccasions', ratingOccasion.id, ratingOccasion);
 			this.setState({ ratingOccasions });
-			console.log("Close rating");
 		} catch(err) {
 			console.log(err);
 		}
@@ -134,7 +133,7 @@ class App extends Component {
 		return (
 			<Router>
 				<AppContainer>
-					<Route exact path='/' render={() => <Home user={this.state.user} isRatingOpen={!!this.getActiveRatingOccasion()} onSignOut={this.onSignOut} />} />
+					<Route exact path='/' render={() => <Home user={this.state.user} ratingOccasion={this.getActiveRatingOccasion()} onSignOut={this.onSignOut} />} />
 					<Route path='/profile/:id' render={props => <Profile {...props} user={this.state.user} players={this.state.players} />}/>
 					<Route path='/rate' render={() => <Rate user={this.state.user} players={this.state.players} ratingOccasion={this.getActiveRatingOccasion()}/>}/>
 					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} />}/>
