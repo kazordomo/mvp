@@ -10,6 +10,7 @@ class Home extends Component {
 
     state = {
         showA2HS: false,
+        deferredPrompt: null,
     }
 
     componentDidMount () {

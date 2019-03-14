@@ -51,13 +51,13 @@ const Row = styled.div`
     }
     
     div span:nth-child(1) {
-        background-color: ${colors.onePoint()};
+        background-color: ${colors.orangeish(160)};
     }
     div span:nth-child(2) {
-        background-color: ${colors.twoPoint()};
+        background-color: ${colors.orangeish(90)};
     }
     div span:nth-child(3) {
-        background-color: ${colors.threePoint()};
+        background-color: ${colors.orangeish(20)};
     }
 `;
 
