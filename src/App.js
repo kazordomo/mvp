@@ -29,6 +29,7 @@ class App extends Component {
 	}
 
 	async componentDidMount() {
+		console.log(keys);
 		if (!firebase.apps.length)
 			firebase.initializeApp(keys.firebaseConfig);
 
