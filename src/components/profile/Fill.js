@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import colors from '../../utils/colors';
 
 // Each rate-value (1, 2, 3) will have its own "pile". The width of the pile will be all the values added together 
 // of the type and calculated against the total value of all values of each type added together. 

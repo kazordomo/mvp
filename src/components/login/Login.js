@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import styled from 'styled-components';
 import { setById } from '../../utils/fetch';
 import colors from '../../utils/colors';
-import { MdFace, MdEmail, MdLock, MdPermIdentity, MdKeyboardArrowRight } from 'react-icons/md'
+import { MdFace, MdEmail, MdLock, MdPermIdentity } from 'react-icons/md'
 import Container from '../_shared/Container'
 import CenteredWrapper from '../_shared/CenteredWrapper';
 import Button from '../_basic/Button';

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import colors from '../../utils/colors';
 import RateButton from './RateButton';
 
 class RateRow extends Component {

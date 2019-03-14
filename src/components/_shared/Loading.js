@@ -1,6 +1,5 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import colors from '../../utils/colors';
 import brImage from '../../images/broddshow.jpeg';
 import ImageBr from '../_shared/ImageBr';
 import GradientBr from '../_shared/GradientBr';
@@ -31,7 +30,7 @@ export default () => (
         <ImageBr url={brImage} />
         <GradientBr />
         <Logo src={logo}>
-            <img src={logo} />
+            <img src={logo} alt='Loading...' />
         </Logo>
     </LoadingContainer>
 )

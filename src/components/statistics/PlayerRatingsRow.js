@@ -62,7 +62,9 @@ const Row = styled.div`
 `;
 
 PlayerRatingsRow.propTypes = {
-
+    ratingFrom: PropTypes.object,
+    ratings: PropTypes.array,
+    players: PropTypes.object,
 }
 
 export default PlayerRatingsRow;

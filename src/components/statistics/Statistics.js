@@ -41,7 +41,7 @@ class Statistics extends Component {
 
             for (let rating of allOccasionRatings) {
                 objs[occasion.id].ratings[rating.fromId] = allOccasionRatings
-                    .filter(r => r.fromId == rating.fromId)
+                    .filter(r => r.fromId === rating.fromId)
                     .sort((a, b) => a.value - b.value);
             }
         }

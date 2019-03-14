@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import colors from '../../utils/colors';
 import { MdChevronLeft } from 'react-icons/md'
 import { Link } from 'react-router-dom';
 
