@@ -26,13 +26,13 @@ class Home extends Component {
     }
 
     showA2HS = () => {
-        const button = document.querySelector("#A2HS");
+        const button = document.querySelector('#A2HS');
         button.style.display = "block";
         button.addEventListener('click', this.onA2HS);
     }
 
     onA2HS = async () => {  
-        const button = document.querySelector("#A2HS");
+        const button = document.querySelector('#A2HS');
         button.style.display = 'none';
         this.deferredPrompt.prompt(); 
         const choiceResult = await this.deferredPrompt.userChoice();
