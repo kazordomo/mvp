@@ -27,7 +27,7 @@ class Home extends Component {
 
     showA2HS = () => {
         const button = document.querySelector('#A2HS');
-        button.style.display = "block";
+        button.style.display = 'block';
         button.addEventListener('click', this.onA2HS);
     }
 

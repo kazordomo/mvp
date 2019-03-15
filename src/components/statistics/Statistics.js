@@ -144,6 +144,7 @@ const PlayerRates = styled.div`
 
 Statistics.propTypes = {
     ratingOccasions: PropTypes.array,
+    players: PropTypes.array,
 }
 
 export default Statistics;

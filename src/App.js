@@ -29,7 +29,6 @@ class App extends Component {
 	}
 
 	async componentDidMount() {
-		console.log(keys);
 		if (!firebase.apps.length)
 			firebase.initializeApp(keys.firebaseConfig);
 
@@ -126,7 +125,8 @@ class App extends Component {
 
 	render() {
 		if (this.state.isFetching)
-            return <Loading />
+			return 'loading...';
+            // return <Loading />
 		
 		if (!this.state.isLoggedIn)
 			return <Login />

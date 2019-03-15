@@ -8,12 +8,14 @@ import Container from '../_shared/Container'
 import CenteredWrapper from '../_shared/CenteredWrapper';
 import Button from '../_basic/Button';
 import Input from '../_basic/Input';
+import DisplayError from '../_shared/DisplayError';
 
 class Login extends Component {
 
     state = {
         register: true,
         showInputs: ['email', 'firstName', 'authCode', 'password', 'retypePassword'],
+        errorMsg: '',
     }
 
     onSubmit = e => {
@@ -28,15 +30,14 @@ class Login extends Component {
         const { email, password, retypePass, firstName, } = this.getFormValues();
 
         if (!this.passwordCheck(password, retypePass)) 
-            return console.log('The passwords did not match!');
+            return this.setState({ errorMsg: 'The passwords did not match!' });
 
         try {
             const cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
             // Creates a user in the users schema, using the unique ID gotten from the authed user.
             await setById('users', cred.user.uid, { id: cred.user.uid, name: firstName, ratings: [], });
         } catch(err) {
-            // TODO: Handle error.
-            console.log(err);
+            this.setState({ errorMsg: err.message });
         }
     }
 
@@ -46,8 +47,7 @@ class Login extends Component {
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password);
         } catch(err) {
-            // TODO: Handle error.
-            console.log(err);
+            this.setState({ errorMsg: err.message });
         }
     }
 
@@ -90,6 +90,7 @@ class Login extends Component {
 
         return (
             <Container brColor={colors.spacegrayish()} style={{height: '100vh'}}>
+                <DisplayError errorMsg={this.state.errorMsg} />
                 <CenteredWrapper bigger>
                     <Title>
                         <h2>MVP</h2>
@@ -106,12 +107,14 @@ class Login extends Component {
                             placeholder="E-post"
                             icon={<MdEmail color={colors.orangeish(145)} />}
                             show={this.shouldBeShown("email")} 
+                            required
                         />
                         <Input 
                             id="firstName" 
                             placeholder="Förnamn" 
                             icon={<MdFace color={colors.orangeish(120)}  />}
                             show={this.shouldBeShown("firstName")}
+                            required
                         />
                         <Input 
                             id="authCode" 
@@ -123,8 +126,9 @@ class Login extends Component {
                             type="password" 
                             id="password"
                             placeholder="Lösenord" 
-                             icon={<MdLock color={colors.orangeish(70)} />} 
+                            icon={<MdLock color={colors.orangeish(70)} />} 
                             show={this.shouldBeShown("password")}
+                            required
                         />
                         <Input 
                             type="password" 
@@ -132,6 +136,7 @@ class Login extends Component {
                             placeholder="Lösenord igen" 
                             icon={<MdLock color={colors.orangeish(70)} />}   
                             show={this.shouldBeShown("retypePassword")}
+                            required
                         />
                         <Button long onClick={this.onSubmit}>{ register ? 'Registrera' : 'Logga in' }</Button>
                         {/* <Guest>

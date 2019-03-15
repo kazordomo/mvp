@@ -6,6 +6,8 @@ import colors from '../../utils/colors';
     neutral/success/danger: Bool,
     round: Bool,
     long: Bool,
+    shadow: Bool,
+    disabled: Bool,
     customStyle: Object
 */
 
