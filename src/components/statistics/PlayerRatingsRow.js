@@ -22,10 +22,9 @@ const Row = styled.div`
     color: #fff;
     display: flex;
     flex-direction: row;
-    height: 25px;
+    height: 40px;
     margin-bottom: 10px;
     justify-content: space-between;
-    overflow: auto;
     padding: 0px 5px;
 
     div:first-child {
