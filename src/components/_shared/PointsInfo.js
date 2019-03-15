@@ -39,13 +39,13 @@ const Info = styled.div`
             margin-left: 10px;
         }
         :nth-child(1) span {
-            background-color: ${colors.orangeish(160)};
+            background-color: ${colors.pointvalueone()};
         }
         :nth-child(2) span {
-            background-color: ${colors.orangeish(90)};
+            background-color: ${colors.pointvaluetwo()};
         }
         :nth-child(3) span {
-            background-color: ${colors.orangeish(20)};
+            background-color: ${colors.pointvaluethree()};
         }
     }
 

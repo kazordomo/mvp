@@ -8,4 +8,7 @@ export default {
     navish: (a = 1) => `rgba(83,104,126,${a})`,
     spacegrayish: (a = 1) => `rgba(40,49,61,${a})`,
     dirtpinkish: (a = 1) => `rgba(248,177,149,${a})`,
+    pointvalueone: (a = 1) => `rgba(254,150,119,${a})`,
+    pointvaluetwo: (a = 1) => `rgba(246,70,104,${a})`,
+    pointvaluethree: (a = 1) => `rgba(65,67,106,${a})`,
 }

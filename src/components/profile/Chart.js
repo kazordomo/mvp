@@ -6,7 +6,6 @@ import { getFillWidth, getTotalValue } from '../../utils/funcs';
 import Fill from './Fill';
 
 const Chart = ({ ratings, maxPoint }) => {
-     
     return (
         <div>
             { ratings.map(rating => {
@@ -23,19 +22,19 @@ const Chart = ({ ratings, maxPoint }) => {
                                 <Fill 
                                     fillWidth={firstFillWidth} 
                                     left={0} 
-                                    brColor={colors.orangeish(160)}
+                                    brColor={colors.pointvalueone()}
                                     rateValueLen={rating['1'].length}
                                 />
                                 <Fill 
                                     fillWidth={secondFillWidth} 
                                     left={firstFillWidth} 
-                                    brColor={colors.orangeish(90)} 
+                                    brColor={colors.pointvaluetwo()}
                                     rateValueLen={rating['2'].length}
                                 />
                                 <Fill 
                                     fillWidth={thirdFillWidth} 
                                     left={firstFillWidth + secondFillWidth} 
-                                    brColor={colors.orangeish(20)} 
+                                    brColor={colors.pointvaluethree()} 
                                     rateValueLen={rating['3'].length}
                                 />
                             </FillWrapper>

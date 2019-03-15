@@ -85,14 +85,15 @@ class Statistics extends Component {
                                     </Info>
                                     <PlayerRates isOpen={this.checkIfOpen(ratingsByOccasion[key].id)}>
                                         {
-                                            Object.keys(ratingsByOccasion[key].ratings).map(playerKey => (
-                                                <PlayerRatingsRow 
-                                                    key={playerKey}
-                                                    ratingFrom={playersObj[playerKey]}
-                                                    ratings={ratingsByOccasion[key].ratings[playerKey]}
-                                                    players={playersObj}
-                                                />
-                                            ))
+                                            Object.keys(ratingsByOccasion[key].ratings).length ?
+                                                Object.keys(ratingsByOccasion[key].ratings).map(playerKey => (
+                                                    <PlayerRatingsRow 
+                                                        key={playerKey}
+                                                        ratingFrom={playersObj[playerKey]}
+                                                        ratings={ratingsByOccasion[key].ratings[playerKey]}
+                                                        players={playersObj}
+                                                    />
+                                                )) : <span>Inga röstningar registrerade än.</span>
                                         }
                                     </PlayerRates>
                                 </RatingOccasion>
@@ -109,7 +110,7 @@ const fadeInAnimation = keyframes`${fadeIn}`;
 
 const RatingOccasion = styled.div`
     animation: 1s ${fadeInAnimation};
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 `;
 
 const Info = styled.div`
@@ -140,6 +141,11 @@ const PlayerRates = styled.div`
     height: ${props=>props.isOpen ? 'auto' : '0px'};
     overflow: hidden;
     position: relative;
+
+    span {
+        color: #fff;
+        font-style: italic;
+    }
 `;
 
 Statistics.propTypes = {

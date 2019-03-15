@@ -52,7 +52,9 @@ class Home extends Component {
                 <CenteredWrapper>
                     <HomeButtons 
                         ratingOccasion={ratingOccasion} 
-                        userAlreadyRated={ratingOccasion ? user.ratings.find(rating => rating.ratingOccasionId === ratingOccasion.id) : false} />
+                        userAlreadyRated={
+                             false
+                        } />
                 </CenteredWrapper>
                 <button id="A2HS" style={{ display: 'none' }}>Add to homescreen</button>
             </Container>

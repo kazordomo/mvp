@@ -26,6 +26,7 @@ const Row = styled.div`
     margin-bottom: 10px;
     justify-content: space-between;
     overflow: auto;
+    padding: 0px 5px;
 
     div:first-child {
         margin-right: 20px;
@@ -51,13 +52,13 @@ const Row = styled.div`
     }
     
     div span:nth-child(1) {
-        background-color: ${colors.orangeish(160)};
+        background-color: ${colors.pointvalueone()};
     }
     div span:nth-child(2) {
-        background-color: ${colors.orangeish(90)};
+        background-color: ${colors.pointvaluetwo()};
     }
     div span:nth-child(3) {
-        background-color: ${colors.orangeish(20)};
+        background-color: ${colors.pointvaluethree()};
     }
 `;
 
