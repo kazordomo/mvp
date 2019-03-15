@@ -125,8 +125,7 @@ class App extends Component {
 
 	render() {
 		if (this.state.isFetching)
-			return 'loading...';
-            // return <Loading />
+            return <Loading />
 		
 		if (!this.state.isLoggedIn)
 			return <Login />
