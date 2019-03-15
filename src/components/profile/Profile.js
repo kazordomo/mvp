@@ -31,6 +31,7 @@ const Profile = ({ players, match, history }) => {
             }
             ratings.push(ratingObj);
         }
+        console.log(ratings);
         return uniqueArray(ratings).sort((a, b) => b.totalValue - a.totalValue);
     }
 
@@ -39,14 +40,17 @@ const Profile = ({ players, match, history }) => {
 
         for (let player of players) {
             const ratingsMade = player.ratings.filter(rating => rating.fromId === match.params.id);
-            if (!ratingsMade.length) return [];
+            console.log(ratingsMade);
+            let ratingObj = {};
 
-            const ratingObj = {
-                name: player.name,
-                totalValue: ratingsMade.reduce((total, a) => total += a.value, 0),
-                1: ratingsMade.filter(r => r.value === 1),
-                2: ratingsMade.filter(r => r.value === 2),
-                3: ratingsMade.filter(r => r.value === 3),
+            if (ratingsMade) {
+                ratingObj = {
+                    name: player.name,
+                    totalValue: ratingsMade.reduce((total, a) => total += a.value, 0),
+                    1: ratingsMade.filter(r => r.value === 1),
+                    2: ratingsMade.filter(r => r.value === 2),
+                    3: ratingsMade.filter(r => r.value === 3),
+                }
             }
 
             ratings.push(ratingObj);
