@@ -10,18 +10,18 @@ import Chart from './Chart';
 import SubTitle from '../_shared/SubTitle';
 import PointsInfo from '../_shared/PointsInfo';
 
-const Profile = ({ players, match, history }) => {
+const Profile = ({ users, match, history }) => {
     
     const filterRatingsGottenByUser = () => {
         const ratings = [];
 
-        const player = findUser(players, match.params.id);
-        if (!player.ratings) return [];
+        const user = findUser(users, match.params.id);
+        if (!user.ratings) return [];
 
-        for (let rating of player.ratings) {
-            const ratingFrom = findUser(players, rating.fromId);
+        for (let rating of user.ratings) {
+            const ratingFrom = findUser(users, rating.fromId);
             const filtered = 
-                [ ...player.ratings ].filter(r => rating.fromId === r.fromId);
+                [ ...user.ratings ].filter(r => rating.fromId === r.fromId);
             const ratingObj = {
                 name: ratingFrom.name,
                 totalValue: filtered.reduce((total, a) => total += a.value, 0),
@@ -37,14 +37,14 @@ const Profile = ({ players, match, history }) => {
     const filterRatingsGivenByUser = () => {
         const ratings = [];
 
-        for (let player of players) {
-            if (player.ratings) {
-                const ratingsMade = player.ratings.filter(rating => rating.fromId === match.params.id);
+        for (let user of users) {
+            if (user.ratings) {
+                const ratingsMade = user.ratings.filter(rating => rating.fromId === match.params.id);
                 let ratingObj = {};
     
                 if (ratingsMade.length > 0) {
                     ratingObj = {
-                        name: player.name,
+                        name: user.name,
                         totalValue: ratingsMade.reduce((total, a) => total += a.value, 0),
                         1: ratingsMade.filter(r => r.value === 1),
                         2: ratingsMade.filter(r => r.value === 2),
@@ -70,13 +70,13 @@ const Profile = ({ players, match, history }) => {
         return quoteArr[ Math.floor(Math.random() * Math.floor(4))];
     }
 
-    const player = arrayToObj(players)[match.params.id];
+    const user = arrayToObj(users)[match.params.id];
     const ratingsGotten = filterRatingsGottenByUser();
     const ratingsGiven = filterRatingsGivenByUser();
 
     return (
         <Container brColor={colors.spacegrayish()}>
-            <Nav title={player.name} goBack={history.goBack} />
+            <Nav title={user.name} goBack={history.goBack} />
             <PointsInfo />
             <Col margin>
                 <Wrapper>
@@ -113,7 +113,7 @@ const Col = styled.div`
 `;
 
 Profile.propTypes = {
-    players: PropTypes.array,
+    users: PropTypes.array,
 }
 
 export default Profile;

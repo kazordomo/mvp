@@ -23,6 +23,7 @@ class App extends Component {
 			isLoggedIn: false,
 			isFetching: true,
 			user: false,
+			users: [],
 			players: [],
 			ratingOccasions: [],
 		}
@@ -49,19 +50,28 @@ class App extends Component {
 			else
 				this.setState({ isFetching: false });
 		});
+
 	}
 
 	async populateData() {
-		const [players, ratingOccasions] = await Promise.all([
+		const [users, players, ratingOccasions] = await Promise.all([
+			this.populateUsers(),
 			this.populatePlayers(),
-			this.populateRatingOccasions()
+			this.populateRatingOccasions(),
 		]);
-		this.setState({ players, ratingOccasions, isFetching: false });
+		this.setState({ users, players, ratingOccasions, isFetching: false });
+	}
+
+	async populateUsers() {
+		const initUsers = [];
+		const snapshot = await getAll('users');
+		snapshot.forEach(doc => initUsers.push({ id: doc.id, ...doc.data() }));
+		return initUsers;
 	}
 
 	async populatePlayers() {
 		const initPlayers = [];
-		const snapshot = await getAll('users');
+		const snapshot = await getAll('players');
 		snapshot.forEach(doc => initPlayers.push({ id: doc.id, ...doc.data() }));
 		return initPlayers;
 	}
@@ -134,7 +144,7 @@ class App extends Component {
 			<Router>
 				<AppContainer>
 					<Route exact path='/' render={() => <Home user={this.state.user} ratingOccasion={this.getActiveRatingOccasion()} onSignOut={this.onSignOut} />} />
-					<Route path='/profile/:id' render={props => <Profile {...props} user={this.state.user} players={this.state.players} />}/>
+					<Route path='/profile/:id' render={props => <Profile {...props} users={this.state.users} />}/>
 					<Route path='/rate' render={() => <Rate user={this.state.user} players={this.state.players} ratingOccasion={this.getActiveRatingOccasion()}/>}/>
 					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} />}/>
 					<Route path='/statistics' render={() => <Statistics players={this.state.players} ratingOccasions={this.state.ratingOccasions} />}/>

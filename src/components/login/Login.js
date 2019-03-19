@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
-import styled from 'styled-components';
+import styled  from 'styled-components';
 import { setById } from '../../utils/fetch';
 import colors from '../../utils/colors';
 import { MdFace, MdEmail, MdLock, MdPermIdentity } from 'react-icons/md'
@@ -14,7 +14,7 @@ class Login extends Component {
 
     state = {
         register: true,
-        showInputs: ['email', 'firstName', 'authCode', 'password', 'retypePassword'],
+        showInputs: ['email', 'firstName', 'authCode', 'playerNumber', 'password', 'retypePassword'],
         errorMsg: '',
     }
 
@@ -27,7 +27,7 @@ class Login extends Component {
     }
 
     register = async () => {
-        const { email, password, retypePass, firstName, } = this.getFormValues();
+        const { email, password, retypePass, firstName, playerNumber } = this.getFormValues();
 
         if (!this.passwordCheck(password, retypePass)) 
             return this.setState({ errorMsg: 'The passwords did not match!' });
@@ -35,7 +35,12 @@ class Login extends Component {
         try {
             const cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
             // Creates a user in the users schema, using the unique ID gotten from the authed user.
-            await setById('users', cred.user.uid, { id: cred.user.uid, name: firstName, ratings: [], });
+            await setById('users', cred.user.uid, { 
+                id: cred.user.uid, 
+                name: firstName, 
+                ratings: [], 
+                playerNumber: playerNumber ? playerNumber : null 
+            });
         } catch(err) {
             this.setState({ errorMsg: err.message });
         }
@@ -52,7 +57,7 @@ class Login extends Component {
     }
 
     onChangeAuth = () => {
-        const registerInputs = ['email', 'firstName', 'authCode', 'password', 'retypePassword'];
+        const registerInputs = ['email', 'firstName', 'authCode', 'playerNumber', 'password', 'retypePassword'];
         const loginInputs = ['email', 'password'];
         const showInputs = this.state.register ? loginInputs : registerInputs;
 
@@ -77,7 +82,7 @@ class Login extends Component {
             password: document.querySelector('#password').value,
             retypePass: document.querySelector('#retypePassword').value,
             firstName: document.querySelector('#firstName').value,
-            authCode: document.querySelector('#authCode').value,
+            playerNumber: document.querySelector('#playerNumber').value,
         }
     }
 
@@ -117,10 +122,10 @@ class Login extends Component {
                             required
                         />
                         <Input 
-                            id="authCode" 
-                            placeholder="Spelarkod" 
+                            id="playerNumber"
+                            placeholder="Tröjnummer"
                             icon={<MdPermIdentity color={colors.orangeish(95)} />}
-                            show={this.shouldBeShown("authCode")}
+                            show={this.shouldBeShown("playerNumber")}
                         />
                         <Input 
                             type="password" 
