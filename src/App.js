@@ -14,6 +14,13 @@ import Leaderboard from './components/leaderboard/Leaderboard';
 import Statistics from './components/statistics/Statistics';
 import Loading from './components/_shared/Loading';
 
+/*
+	Users: Everybody registered.
+	Players: All the players, done beforehand.
+	User: The logged in user - contains ratingsGiven-list
+	Player: If the user is a player - this is his playerobject. Contains ratingsGotten-list.
+*/
+
 class App extends Component {
 
 	constructor(props) {
@@ -23,6 +30,7 @@ class App extends Component {
 			isLoggedIn: false,
 			isFetching: true,
 			user: false,
+			player: false,
 			users: [],
 			players: [],
 			ratingOccasions: [],
@@ -59,7 +67,9 @@ class App extends Component {
 			this.populatePlayers(),
 			this.populateRatingOccasions(),
 		]);
-		this.setState({ users, players, ratingOccasions, isFetching: false });
+		// Because we're waiting for the fetch to succeed, we can use the players array directly from here.
+		const player = this.getPlayer(players);
+		this.setState({ users, players, player: player ? player : false, ratingOccasions, isFetching: false });
 	}
 
 	async populateUsers() {
@@ -83,7 +93,13 @@ class App extends Component {
 		return initRatingOccasions;
 	}
 
+	getPlayer = players => players.find(player => player.number === parseInt(this.state.user.playerNumber));
 	getActiveRatingOccasion = () => this.state.ratingOccasions.find(occasion => occasion.active);
+	// If the player/person got an account, we will use the user.id when we enter the profile. Otherwise we will use the player.id/nr.
+	getProfileId = playerNr => {
+		const user = this.state.users.find(user => parseInt(user.playerNumber) === playerNr);
+		return user ? user.id : playerNr;
+	}
 
 	onSignOut = () => {
 		signOut();
@@ -92,8 +108,7 @@ class App extends Component {
 
 	onAddAdminRole = email => {
         const addAdminRole = firebase.functions().httpsCallable('addAdminRole');
-        if (!email)
-            return console.log('Skriv en e-post!');
+        if (!email) return console.log('Skriv en e-post!');
         addAdminRole({ email }).then(result => {
             console.log(result);
         }).catch(err => console.log(err));
@@ -144,9 +159,9 @@ class App extends Component {
 			<Router>
 				<AppContainer>
 					<Route exact path='/' render={() => <Home user={this.state.user} ratingOccasion={this.getActiveRatingOccasion()} onSignOut={this.onSignOut} />} />
-					<Route path='/profile/:id' render={props => <Profile {...props} users={this.state.users} />}/>
+					<Route path='/profile/:id' render={props => <Profile {...props} users={this.state.users} players={this.state.players} />}/>
 					<Route path='/rate' render={() => <Rate user={this.state.user} players={this.state.players} ratingOccasion={this.getActiveRatingOccasion()}/>}/>
-					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} />}/>
+					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} getProfileId={this.getProfileId} />}/>
 					<Route path='/statistics' render={() => <Statistics players={this.state.players} ratingOccasions={this.state.ratingOccasions} />}/>
 					<Route path='/admin' render={() => 
 						<Admin 

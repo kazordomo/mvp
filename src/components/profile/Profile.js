@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { arrayToObj, uniqueArray, findUser } from '../../utils/funcs';
+import { arrayToObj, uniqueArray, findById } from '../../utils/funcs';
 import colors from '../../utils/colors';
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
@@ -10,24 +10,34 @@ import Chart from './Chart';
 import SubTitle from '../_shared/SubTitle';
 import PointsInfo from '../_shared/PointsInfo';
 
-const Profile = ({ users, match, history }) => {
-    
+const Profile = ({ users, players, match, history }) => {
+
+    // We divide the user and player object because we know that only users will have given ratings - and
+    // only player will have gotten ratings. It makes it easier to check if we should continue or not.
+    const user = findById(users, match.params.id);
+    let player = false;
+
+    // Check if the user is a player. If not, check if player exists without a user attached.
+    if (user) {
+        if (findById(players, user.playerNumber))
+            player = players.find(p => p.id === user.playerNumber);
+    } else if (findById(players, match.params.id))
+        player = findById(players, match.params.id);
+
     const filterRatingsGottenByUser = () => {
         const ratings = [];
 
-        const user = findUser(users, match.params.id);
-        if (!user.ratings) return [];
+        // Only players will be able to have gotten ratings.
+        if (!player || !player.ratings) return [];
 
-        for (let rating of user.ratings) {
-            const ratingFrom = findUser(users, rating.fromId);
-            const filtered = 
-                [ ...user.ratings ].filter(r => rating.fromId === r.fromId);
+        for (let rating of player.ratings) {
+            const allRatingsFromUser = player.ratings.filter(r => r.fromId === rating.fromId);
             const ratingObj = {
-                name: ratingFrom.name,
-                totalValue: filtered.reduce((total, a) => total += a.value, 0),
-                1: filtered.filter(r => r.value === 1),
-                2: filtered.filter(r => r.value === 2),
-                3: filtered.filter(r => r.value === 3),
+                name: findById(users, rating.fromId).name,
+                totalValue: allRatingsFromUser.reduce((total, a) => total += a.value, 0),
+                1: allRatingsFromUser.filter(r => r.value === 1),
+                2: allRatingsFromUser.filter(r => r.value === 2),
+                3: allRatingsFromUser.filter(r => r.value === 3),
             }
             ratings.push(ratingObj);
         }
@@ -37,14 +47,13 @@ const Profile = ({ users, match, history }) => {
     const filterRatingsGivenByUser = () => {
         const ratings = [];
 
-        for (let user of users) {
-            if (user.ratings) {
-                const ratingsMade = user.ratings.filter(rating => rating.fromId === match.params.id);
+        for (let player of players) {
+            if (player.ratings) {
+                const ratingsMade = player.ratings.filter(r => r.fromId === match.params.id);
                 let ratingObj = {};
-    
                 if (ratingsMade.length > 0) {
                     ratingObj = {
-                        name: user.name,
+                        name: player.name,
                         totalValue: ratingsMade.reduce((total, a) => total += a.value, 0),
                         1: ratingsMade.filter(r => r.value === 1),
                         2: ratingsMade.filter(r => r.value === 2),
@@ -70,13 +79,12 @@ const Profile = ({ users, match, history }) => {
         return quoteArr[ Math.floor(Math.random() * Math.floor(4))];
     }
 
-    const user = arrayToObj(users)[match.params.id];
     const ratingsGotten = filterRatingsGottenByUser();
     const ratingsGiven = filterRatingsGivenByUser();
 
     return (
         <Container brColor={colors.spacegrayish()}>
-            <Nav title={user.name} goBack={history.goBack} />
+            <Nav title={player ? player.name : user.name} goBack={history.goBack} />
             <PointsInfo />
             <Col margin>
                 <Wrapper>

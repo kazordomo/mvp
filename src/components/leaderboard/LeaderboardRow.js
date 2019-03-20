@@ -16,10 +16,10 @@ class LeaderboardRow extends Component {
     }
 
     render() {
-        const { pos, player, maxPoint } = this.props;
+        const { pos, profileId, player, maxPoint } = this.props;
         
         return (
-            <Link to={`/profile/${player.id}`}>
+            <Link to={`/profile/${profileId}`}>
                 <Row>
                     <Fill pos={pos} width={
                         (this.state.activateFill && getTotalValue(player.ratings) !== 0) ? 

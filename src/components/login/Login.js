@@ -38,7 +38,7 @@ class Login extends Component {
             await setById('users', cred.user.uid, { 
                 id: cred.user.uid, 
                 name: firstName, 
-                ratings: [], 
+                ratingsGiven: [], 
                 playerNumber: playerNumber ? playerNumber : null 
             });
         } catch(err) {
@@ -122,6 +122,7 @@ class Login extends Component {
                             required
                         />
                         <Input 
+                            type="number"
                             id="playerNumber"
                             placeholder="Tröjnummer"
                             icon={<MdPermIdentity color={colors.orangeish(95)} />}

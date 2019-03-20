@@ -44,7 +44,6 @@ class Rate extends Component {
             this.state.pointsGiven.forEach(point => {
                 const player = this.props.players.find(player => player.id === point.toId);
                 const rating = { 
-                    toId: point.toId, 
                     fromId: this.props.user.id, 
                     value: point.value,
                     ratingOccasionId: this.props.ratingOccasion.id,
@@ -52,7 +51,7 @@ class Rate extends Component {
                  };
                 // Update the players list to get the new rating calculated in the Leaderboard
                 player.ratings = player.ratings ? [ ...player.ratings, rating ] : [ rating ];
-                updateById('users', rating.toId, { ratings: player.ratings });
+                updateById('players', point.toId, { ratings: player.ratings });
             });
             this.setState({ isDoneRating: true }, this.handleRedirect);
         } catch(err) {
