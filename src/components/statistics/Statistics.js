@@ -85,7 +85,6 @@ class Statistics extends Component {
                                         {
                                             Object.keys(ratingsByOccasion[key].ratings).length ? (
                                                 Object.keys(ratingsByOccasion[key].ratings).map(userKey => {
-                                                    console.log(ratingsByOccasion[key].ratings[userKey]);
                                                     return <PlayerRatingsRow 
                                                         key={userKey}
                                                         ratingFrom={usersObj[userKey]}
@@ -144,7 +143,6 @@ const PlayerRates = styled.div`
 
     span {
         color: #fff;
-        font-style: italic;
     }
 `;
 
