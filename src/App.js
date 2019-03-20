@@ -162,7 +162,7 @@ class App extends Component {
 					<Route path='/profile/:id' render={props => <Profile {...props} users={this.state.users} players={this.state.players} />}/>
 					<Route path='/rate' render={() => <Rate user={this.state.user} players={this.state.players} ratingOccasion={this.getActiveRatingOccasion()}/>}/>
 					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} getProfileId={this.getProfileId} />}/>
-					<Route path='/statistics' render={() => <Statistics players={this.state.players} ratingOccasions={this.state.ratingOccasions} />}/>
+					<Route path='/statistics' render={() => <Statistics players={this.state.players} users={this.state.users} ratingOccasions={this.state.ratingOccasions} />}/>
 					<Route path='/admin' render={() => 
 						<Admin 
 							onAddAdminRole={this.onAddAdminRole} 

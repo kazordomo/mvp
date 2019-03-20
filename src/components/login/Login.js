@@ -38,7 +38,6 @@ class Login extends Component {
             await setById('users', cred.user.uid, { 
                 id: cred.user.uid, 
                 name: firstName, 
-                ratingsGiven: [], 
                 playerNumber: playerNumber ? playerNumber : null 
             });
         } catch(err) {

@@ -45,6 +45,7 @@ class Rate extends Component {
                 const player = this.props.players.find(player => player.id === point.toId);
                 const rating = { 
                     fromId: this.props.user.id, 
+                    toId: player.id, // This will be used to identify the player in the statistics
                     value: point.value,
                     ratingOccasionId: this.props.ratingOccasion.id,
                     createdAt: new Date(),

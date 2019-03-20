@@ -12,15 +12,13 @@ import Wrapper from '../_shared/Wrapper';
 import PointsInfo from '../_shared/PointsInfo';
 import PlayerRatingsRow from './PlayerRatingsRow';
 
-// TODO: Sort the ratingOccasions-ratings by the playerName.
-// We are getting the value from the ratings and "from-name" from the players list.
-
 class Statistics extends Component {
 
     state = {
         ratingsByOccasion: {},
         ratingOccasionsOpen: [],
         playersObj: {},
+        usersObj: {},
     }
 
     componentDidMount() {
@@ -38,7 +36,6 @@ class Statistics extends Component {
                 if (!player.ratings) return [];
                 return player.ratings.filter(rating => rating.ratingOccasionId === occasion.id);
             });
-
             for (let rating of allOccasionRatings) {
                 objs[occasion.id].ratings[rating.fromId] = allOccasionRatings
                     .filter(r => r.fromId === rating.fromId)
@@ -50,6 +47,7 @@ class Statistics extends Component {
         this.setState({ 
             ratingsByOccasion: objs, 
             playersObj: arrayToObj(this.props.players),
+            usersObj: arrayToObj(this.props.users),
             ratingOccasionsOpen: [ ...this.state.ratingOccasionsOpen, latestRatingOccasionId ] 
         });
     }
@@ -64,7 +62,7 @@ class Statistics extends Component {
     }
 
     render() {
-        const { ratingsByOccasion, playersObj } = this.state;
+        const { ratingsByOccasion, playersObj, usersObj } = this.state;
 
         return (
             <Container brColor={colors.spacegrayish()}>
@@ -85,15 +83,17 @@ class Statistics extends Component {
                                     </Info>
                                     <PlayerRates isOpen={this.checkIfOpen(ratingsByOccasion[key].id)}>
                                         {
-                                            Object.keys(ratingsByOccasion[key].ratings).length ?
-                                                Object.keys(ratingsByOccasion[key].ratings).map(playerKey => (
-                                                    <PlayerRatingsRow 
-                                                        key={playerKey}
-                                                        ratingFrom={playersObj[playerKey]}
-                                                        ratings={ratingsByOccasion[key].ratings[playerKey]}
+                                            Object.keys(ratingsByOccasion[key].ratings).length ? (
+                                                Object.keys(ratingsByOccasion[key].ratings).map(userKey => {
+                                                    console.log(ratingsByOccasion[key].ratings[userKey]);
+                                                    return <PlayerRatingsRow 
+                                                        key={userKey}
+                                                        ratingFrom={usersObj[userKey]}
+                                                        ratings={ratingsByOccasion[key].ratings[userKey]}
                                                         players={playersObj}
                                                     />
-                                                )) : <span>Inga röstningar registrerade än.</span>
+                                                }
+                                            )) : <span>Inga röstningar registrerade än.</span>
                                         }
                                     </PlayerRates>
                                 </RatingOccasion>
