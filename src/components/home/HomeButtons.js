@@ -11,7 +11,7 @@ import {
 import Button from '../_basic/Button';
 
 export default ({ ratingOccasion, userAlreadyRated }) => {
-    console.log(ratingOccasion, userAlreadyRated);
+    
     return (
         <Links>
             { 

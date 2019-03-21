@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import keys from './config/keys';
 import uuid from 'uuid';
-import { getById, updateById, setById } from './utils/fetch';
-import { populatePlayers, populateUsers, populateRatingOccasions } from './utils/actions';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
 import styled from 'styled-components';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { getById, updateById, setById } from './utils/fetch';
+import { 
+	populatePlayers, 
+	populateUsers, 
+	populateRatingOccasions 
+} from './utils/actions';
+
 import Login from './components/login/Login';
 import Admin from './components/admin/Admin';
 import Profile from './components/profile/Profile';
@@ -23,7 +28,6 @@ class App extends Component {
 		this.state = {
 			isFetching: true,
 			user: false,
-			player: false,
 			users: [],
 			players: [],
 			ratingOccasions: [],
@@ -59,9 +63,12 @@ class App extends Component {
 			populateRatingOccasions(),
 		]);
 		// Because we're waiting for the fetch to succeed, we can use the players array directly from here.
-		const player = players.find(player => player.number === parseInt(this.state.user.playerNumber));
-		this.setState({ users, players, player: player ? player : false, ratingOccasions, isFetching: false });
+		this.setState({ users, players, ratingOccasions, isFetching: false });
 	}
+
+	/* 
+		FUNCTIONS USING STATE BELOW - MOVE IF REDUX 
+	*/
 
 	getActiveRatingOccasion = () => this.state.ratingOccasions.find(occasion => occasion.active);
 	// If the player/person got an account, we will use the user.id when we enter the profile. Otherwise we will use the player.id/nr.
@@ -113,19 +120,29 @@ class App extends Component {
 		return (
 			<Router>
 				<AppContainer>
-					<Route exact path='/' render={() => <Home user={this.state.user} ratingOccasion={this.getActiveRatingOccasion()} />} />
-					<Route path='/profile/:id' render={props => <Profile {...props} users={this.state.users} players={this.state.players} />}/>
-					<Route path='/rate' render={() => <Rate user={this.state.user} players={this.state.players} ratingOccasion={this.getActiveRatingOccasion()}/>}/>
-					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} getProfileId={this.getProfileId} />}/>
-					<Route path='/statistics' render={() => <Statistics players={this.state.players} users={this.state.users} ratingOccasions={this.state.ratingOccasions} />}/>
+					<Route exact path='/' render={() => 
+						<Home user={this.state.user} ratingOccasion={this.getActiveRatingOccasion()} />
+					}/>
+					<Route path='/profile/:id' render={props => 
+						<Profile {...props} users={this.state.users} players={this.state.players} />
+					}/>
+					<Route path='/rate' render={() => 
+						<Rate user={this.state.user} players={this.state.players} ratingOccasion={this.getActiveRatingOccasion()}/>
+					}/>
+					<Route path='/leaderboard' render={() => 
+						<Leaderboard players={this.state.players} getProfileId={this.getProfileId} />
+					}/>
+					<Route path='/statistics' render={() => 
+						<Statistics players={this.state.players} users={this.state.users} ratingOccasions={this.state.ratingOccasions} />
+					}/>
 					<Route path='/admin' render={() => 
 						<Admin 
 							user={this.state.user}
 							ratingOccasion={this.getActiveRatingOccasion()}
 							onOpenRating={this.onOpenRating}
 							onCloseRating={this.onCloseRating}
-						/>}
-					/>
+						/>
+					}/>
 				</AppContainer>
 			</Router>
 		)
