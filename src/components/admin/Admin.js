@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { MdGroup, MdEmail } from 'react-icons/md'
+import { addAdminRole } from '../../utils/actions';
 import colors from '../../utils/colors';
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
@@ -38,7 +39,7 @@ class Admin extends Component {
     }
 
     render() {
-        const { ratingOccasion, onOpenRating, onCloseRating, onAddAdminRole } = this.props;
+        const { ratingOccasion, onOpenRating, onCloseRating } = this.props;
 
         return (
             <Container brColor={colors.spacegrayish()}>
@@ -84,7 +85,7 @@ class Admin extends Component {
                             show 
                         />
                         <Button 
-                            onClick={() =>onAddAdminRole(document.querySelector('#adminEmail').value)}
+                            onClick={() => addAdminRole(document.querySelector('#adminEmail').value)}
                             customStyle={btnStyle}
                             disabled={this.state.adminDisabled} >
                             <span>Gör till admin</span>

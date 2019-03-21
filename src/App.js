@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import keys from './config/keys';
 import uuid from 'uuid';
-import { getAll, getById, updateById, setById, signOut } from './utils/fetch';
+import { getById, updateById, setById } from './utils/fetch';
+import { populatePlayers, populateUsers, populateRatingOccasions } from './utils/actions';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Login from './components/login/Login';
@@ -14,20 +15,12 @@ import Leaderboard from './components/leaderboard/Leaderboard';
 import Statistics from './components/statistics/Statistics';
 import Loading from './components/_shared/Loading';
 
-/*
-	Users: Everybody registered.
-	Players: All the players, done beforehand.
-	User: The logged in user - contains ratingsGiven-list
-	Player: If the user is a player - this is his playerobject. Contains ratingsGotten-list.
-*/
-
 class App extends Component {
 
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			isLoggedIn: false,
 			isFetching: true,
 			user: false,
 			player: false,
@@ -38,6 +31,7 @@ class App extends Component {
 	}
 
 	async componentDidMount() {
+		// Regsiter fb-app. If already registered - skip.
 		if (!firebase.apps.length)
 			firebase.initializeApp(keys.firebaseConfig);
 
@@ -50,73 +44,36 @@ class App extends Component {
 					...snapshot.data(),
 					isAdmin: idTokenResult.claims.admin ? idTokenResult.claims.admin : false,
 				};
-				this.setState({ 
-					isLoggedIn: true, 
-					user: userData,
-				}, this.populateData);
+				this.setState({ user: userData}, this.populateData);
 			}
-			else
-				this.setState({ isFetching: false });
+			else {
+				this.setState({ isFetching: false, user: false });
+			}
 		});
-
 	}
 
 	async populateData() {
 		const [users, players, ratingOccasions] = await Promise.all([
-			this.populateUsers(),
-			this.populatePlayers(),
-			this.populateRatingOccasions(),
+			populateUsers(),
+			populatePlayers(),
+			populateRatingOccasions(),
 		]);
 		// Because we're waiting for the fetch to succeed, we can use the players array directly from here.
-		const player = this.getPlayer(players);
+		const player = players.find(player => player.number === parseInt(this.state.user.playerNumber));
 		this.setState({ users, players, player: player ? player : false, ratingOccasions, isFetching: false });
 	}
 
-	async populateUsers() {
-		const initUsers = [];
-		const snapshot = await getAll('users');
-		snapshot.forEach(doc => initUsers.push({ id: doc.id, ...doc.data() }));
-		return initUsers;
-	}
-
-	async populatePlayers() {
-		const initPlayers = [];
-		const snapshot = await getAll('players');
-		snapshot.forEach(doc => initPlayers.push({ id: doc.id, ...doc.data() }));
-		return initPlayers;
-	}
-
-	async populateRatingOccasions() {
-		const initRatingOccasions = [];
-		const snapshot = await getAll('ratingOccasions');
-		snapshot.forEach(doc => initRatingOccasions.push({ id: doc.id, ...doc.data() }));
-		return initRatingOccasions;
-	}
-
-	getPlayer = players => players.find(player => player.number === parseInt(this.state.user.playerNumber));
 	getActiveRatingOccasion = () => this.state.ratingOccasions.find(occasion => occasion.active);
 	// If the player/person got an account, we will use the user.id when we enter the profile. Otherwise we will use the player.id/nr.
 	getProfileId = playerNr => {
 		const user = this.state.users.find(user => parseInt(user.playerNumber) === playerNr);
 		return user ? user.id : playerNr;
 	}
-
-	onSignOut = () => {
-		signOut();
-		this.setState({ isLoggedIn: false });
-	}
-
-	onAddAdminRole = email => {
-        const addAdminRole = firebase.functions().httpsCallable('addAdminRole');
-        if (!email) return console.log('Skriv en e-post!');
-        addAdminRole({ email }).then(result => {
-            console.log(result);
-        }).catch(err => console.log(err));
-	}
 	
 	onOpenRating = async opponents => {
 		try {
 			const id = uuid();
+			// Get the last rounds "round-number" and add 1. If first round - use 1 instead of 0.
 			const round = this.state.ratingOccasions.length ? 
 				(this.state.ratingOccasions.sort((a, b) => b.round - a.round)[0].round + 1) : 1;
 
@@ -127,9 +84,7 @@ class App extends Component {
 				active: true,
 			}
 			await setById('ratingOccasions', id, newRatingOccasion);
-			this.setState({ 
-				ratingOccasions: [ ...this.state.ratingOccasions, newRatingOccasion ]
-			});
+			this.setState({ ratingOccasions: [ ...this.state.ratingOccasions, newRatingOccasion ] });
 		} catch(err) {
 			console.log(err);
 		}
@@ -152,20 +107,19 @@ class App extends Component {
 		if (this.state.isFetching)
             return <Loading />
 		
-		if (!this.state.isLoggedIn)
+		if (!this.state.user)
 			return <Login />
 
 		return (
 			<Router>
 				<AppContainer>
-					<Route exact path='/' render={() => <Home user={this.state.user} ratingOccasion={this.getActiveRatingOccasion()} onSignOut={this.onSignOut} />} />
+					<Route exact path='/' render={() => <Home user={this.state.user} ratingOccasion={this.getActiveRatingOccasion()} />} />
 					<Route path='/profile/:id' render={props => <Profile {...props} users={this.state.users} players={this.state.players} />}/>
 					<Route path='/rate' render={() => <Rate user={this.state.user} players={this.state.players} ratingOccasion={this.getActiveRatingOccasion()}/>}/>
 					<Route path='/leaderboard' render={() => <Leaderboard players={this.state.players} getProfileId={this.getProfileId} />}/>
 					<Route path='/statistics' render={() => <Statistics players={this.state.players} users={this.state.users} ratingOccasions={this.state.ratingOccasions} />}/>
 					<Route path='/admin' render={() => 
 						<Admin 
-							onAddAdminRole={this.onAddAdminRole} 
 							user={this.state.user}
 							ratingOccasion={this.getActiveRatingOccasion()}
 							onOpenRating={this.onOpenRating}

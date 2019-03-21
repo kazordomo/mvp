@@ -4,6 +4,7 @@ import styled, { keyframes } from 'styled-components';
 import { fadeIn } from 'react-animations';
 import { Link } from 'react-router-dom';
 import colors from '../../utils/colors';
+import { signOut } from '../../utils/fetch';
 import { 
     MdAccountCircle, 
     MdSupervisorAccount,
@@ -22,7 +23,7 @@ class HomeNav extends Component {
     render () {
         return (
             <Icons>
-                <Settings show={this.state.showSettings} onClose={this.onShowHideSettings} onSignOut={this.props.onSignOut} />
+                <Settings show={this.state.showSettings} onClose={this.onShowHideSettings} onSignOut={signOut} />
                 <MdSettings onClick={this.onShowHideSettings} />
                 <Link to={`/profile/${this.props.user.id}`}>
                     <MdAccountCircle />
