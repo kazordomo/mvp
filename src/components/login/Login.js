@@ -2,19 +2,20 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import styled  from 'styled-components';
 import { setById } from '../../utils/fetch';
+import { getFormValues, checkIfValuesMatch } from '../../utils/funcs';
 import colors from '../../utils/colors';
-import { MdFace, MdEmail, MdLock, MdPermIdentity } from 'react-icons/md'
+import { registerInputs, loginInputs } from './formInputIds';
 import Container from '../_shared/Container'
 import CenteredWrapper from '../_shared/CenteredWrapper';
 import Button from '../_basic/Button';
-import Input from '../_basic/Input';
 import DisplayError from '../_shared/DisplayError';
+import FormInputs from './FormInputs';
 
 class Login extends Component {
 
     state = {
-        register: true,
-        showInputs: ['email', 'firstName', 'authCode', 'playerNumber', 'password', 'retypePassword'],
+        isRegister: true,
+        showInputs: registerInputs,
         errorMsg: '',
     }
 
@@ -27,9 +28,9 @@ class Login extends Component {
     }
 
     register = async () => {
-        const { email, password, retypePass, firstName, playerNumber } = this.getFormValues();
+        const { email, password, retypePassword, firstName, playerNumber } = getFormValues(registerInputs);
 
-        if (!this.passwordCheck(password, retypePass)) 
+        if (!checkIfValuesMatch(password, retypePassword))
             return this.setState({ errorMsg: 'The passwords did not match!' });
 
         try {
@@ -46,7 +47,7 @@ class Login extends Component {
     }
 
     login = async () => {
-        const { email, password } = this.getFormValues();
+        const { email, password } = getFormValues(loginInputs);
 
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password);
@@ -56,13 +57,11 @@ class Login extends Component {
     }
 
     onChangeAuth = () => {
-        const registerInputs = ['email', 'firstName', 'authCode', 'playerNumber', 'password', 'retypePassword'];
-        const loginInputs = ['email', 'password'];
-        const showInputs = this.state.register ? loginInputs : registerInputs;
+        const showInputs = this.state.isRegister ? loginInputs : registerInputs;
 
         this.setState(prevState => { 
             return {
-                register: !prevState.register,
+                isRegister: !prevState.isRegister,
                 showInputs,
             }
         });
@@ -75,25 +74,14 @@ class Login extends Component {
         console.log('The user has signed out');
     }
 
-    getFormValues() {
-        return {
-            email: document.querySelector('#email').value,
-            password: document.querySelector('#password').value,
-            retypePass: document.querySelector('#retypePassword').value,
-            firstName: document.querySelector('#firstName').value,
-            playerNumber: document.querySelector('#playerNumber').value,
-        }
-    }
-
     shouldBeShown = inputId => this.state.showInputs.includes(inputId) ? true : false;
-    passwordCheck = (p1, p2) => p1 === p2; 
 
     render() {
 
         const { register } = this.state;
 
         return (
-            <Container brColor={colors.spacegrayish()} style={{height: '100vh'}}>
+            <Container brColor={colors.spacegrayish()}>
                 <DisplayError errorMsg={this.state.errorMsg} />
                 <CenteredWrapper bigger>
                     <Title>
@@ -102,47 +90,10 @@ class Login extends Component {
                     </Title>
                     <form>
                         <AuthTypes id="changeAuth">
-                            <Type active={this.state.register} onClick={this.onChangeAuth}>Registrera</Type>
-                            <Type active={!this.state.register} onClick={this.onChangeAuth}>Logga in</Type>
+                            <Type active={this.state.isRegister} onClick={this.onChangeAuth}>Registrera</Type>
+                            <Type active={!this.state.isRegister} onClick={this.onChangeAuth}>Logga in</Type>
                         </AuthTypes>
-                        <Input 
-                            type="email" 
-                            id="email" 
-                            placeholder="E-post"
-                            icon={<MdEmail color={colors.orangeish(145)} />}
-                            show={this.shouldBeShown("email")} 
-                            required
-                        />
-                        <Input 
-                            id="firstName" 
-                            placeholder="Förnamn" 
-                            icon={<MdFace color={colors.orangeish(120)}  />}
-                            show={this.shouldBeShown("firstName")}
-                            required
-                        />
-                        <Input 
-                            type="number"
-                            id="playerNumber"
-                            placeholder="Tröjnummer"
-                            icon={<MdPermIdentity color={colors.orangeish(95)} />}
-                            show={this.shouldBeShown("playerNumber")}
-                        />
-                        <Input 
-                            type="password" 
-                            id="password"
-                            placeholder="Lösenord" 
-                            icon={<MdLock color={colors.orangeish(70)} />} 
-                            show={this.shouldBeShown("password")}
-                            required
-                        />
-                        <Input 
-                            type="password" 
-                            id="retypePassword" 
-                            placeholder="Lösenord igen" 
-                            icon={<MdLock color={colors.orangeish(70)} />}   
-                            show={this.shouldBeShown("retypePassword")}
-                            required
-                        />
+                        <FormInputs shouldBeShown={this.shouldBeShown} />
                         <Button long onClick={this.onSubmit}>{ register ? 'Registrera' : 'Logga in' }</Button>
                         {/* <Guest>
                             <p>Fortsätt som gäst</p> 
