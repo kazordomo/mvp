@@ -1,8 +1,8 @@
 {
   "name": "Norrtull SK MVP",
   "short_name": "NSK",
-  "theme_color": "#28313d",
-  "background_color": "#28313d",
+  "theme_color": "#000000",
+  "background_color": "#000000",
   "display": "fullscreen",
   "start_url": ".",
   "icons": [

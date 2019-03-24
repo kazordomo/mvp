@@ -11,22 +11,25 @@ import {
 import Button from '../_basic/Button';
 
 export default ({ ratingOccasion, userAlreadyRated }) => {
+
+    // Show if rating is open and user has not already rated. Otherwise disable the button/link.
+    const renderRatingButton = () => {
+        return (ratingOccasion && !userAlreadyRated) ? 
+            <Link to={'/rate'}>
+                <Button shadow customStyle={{...btnStyle, backgroundColor: colors.orangeish(74)}}>
+                    <span>Rösta</span>
+                    <MdGrade color={colors.dirtpinkish()} />
+                </Button>
+            </Link> :
+            <Button customStyle={disabledBtnStyle} danger shadow>
+                <span>{ userAlreadyRated ? 'Du har röstat' : 'Rösta (stängd)' }</span>
+                <MdGrade color={colors.dirtpinkish()} />
+            </Button>
+    }
     
     return (
         <Links>
-            { 
-                (ratingOccasion && !userAlreadyRated) ? 
-                    <Link to={'/rate'}>
-                        <Button shadow customStyle={{...btnStyle, backgroundColor: colors.orangeish(74)}}>
-                            <span>Rösta</span>
-                            <MdGrade color={colors.dirtpinkish()} />
-                        </Button>
-                    </Link> :
-                    <Button customStyle={disabledBtnStyle} danger shadow>
-                        <span>{ userAlreadyRated ? 'Du har röstat' : 'Rösta (stängd)' }</span>
-                        <MdGrade color={colors.dirtpinkish()} />
-                    </Button>
-            }
+            { renderRatingButton() }
             <Link to={'/leaderboard'}>
                 <Button shadow customStyle={{...btnStyle, backgroundColor: colors.orangeish(94)}}>
                     <span>Poängliga</span>

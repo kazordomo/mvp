@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import colors from '../../utils/colors';
 import { MdRemoveCircle } from 'react-icons/md'
+import { signOut } from '../../utils/fetch';
 
-const Settings = ({ show, onSignOut }) => {
+const Settings = ({ show }) => {
     return (
         <SettingsWrapper show={show}>
-            <MdRemoveCircle onClick={onSignOut} color={colors.redish()} />
+            <MdRemoveCircle onClick={signOut} color={colors.redish()} />
         </SettingsWrapper>
     );
 }
