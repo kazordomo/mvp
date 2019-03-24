@@ -26,16 +26,18 @@ class Statistics extends Component {
     }
 
     setRatingsByOccasion = () => {
+        const objs = {};
         // Sorting by "round". The latest game (round >) will be shown as default.
         const sortedRatingOccasions = this.props.ratingOccasions ?
             [...this.props.ratingOccasions].sort((a, b) => b.round - a.round) : [];
-        const objs = {};
+
         for (let occasion of sortedRatingOccasions) {
             objs[occasion.id] = { ...occasion, ratings: {} };
             const allOccasionRatings = this.props.players.flatMap(player => {
                 if (!player.ratings) return [];
                 return player.ratings.filter(rating => rating.ratingOccasionId === occasion.id);
             });
+
             for (let rating of allOccasionRatings) {
                 objs[occasion.id].ratings[rating.fromId] = allOccasionRatings
                     .filter(r => r.fromId === rating.fromId)
@@ -61,44 +63,47 @@ class Statistics extends Component {
             this.setState({ ratingOccasionsOpen: [ ...this.state.ratingOccasionsOpen, ratingOccasionId ] });
     }
 
-    render() {
+    renderRatingOccasions = () => {
         const { ratingsByOccasion, playersObj, usersObj } = this.state;
 
+        return Object.keys(ratingsByOccasion).map(key => (
+            <RatingOccasion key={ ratingsByOccasion[key].id }>
+
+                <Info 
+                    onClick={() => this.onOpenCloseRates(ratingsByOccasion[key].id)} 
+                    isOpen={this.checkIfOpen(ratingsByOccasion[key].id)}
+                >
+                    <SubTitle noMargin>{ ratingsByOccasion[key].opponents }</SubTitle>
+                    <span>{ ratingsByOccasion[key].round }</span>
+                    <MdArrowDropDown />
+                </Info>
+
+                <PlayerRates isOpen={this.checkIfOpen(ratingsByOccasion[key].id)}>
+                    {
+                        Object.keys(ratingsByOccasion[key].ratings).length ? (
+                            Object.keys(ratingsByOccasion[key].ratings).map(userKey => {
+                                return <PlayerRatingsRow 
+                                    key={userKey}
+                                    ratingFrom={usersObj[userKey]}
+                                    ratings={ratingsByOccasion[key].ratings[userKey]}
+                                    players={playersObj}
+                                />
+                            }
+                        )) : <span>Inga röstningar registrerade än.</span>
+                    }
+                </PlayerRates>
+
+            </RatingOccasion>
+        ))
+    }
+
+    render() {
         return (
             <Container brColor={colors.spacegrayish()}>
                 <Nav title="STATISTIK" />
                 <PointsInfo />
                 <Wrapper>
-                    {
-                        Object.keys(ratingsByOccasion).map(key => {
-                            return (
-                                <RatingOccasion key={ ratingsByOccasion[key].id }>
-                                    <Info 
-                                        onClick={() => this.onOpenCloseRates(ratingsByOccasion[key].id)} 
-                                        isOpen={this.checkIfOpen(ratingsByOccasion[key].id)}
-                                    >
-                                        <SubTitle noMargin>{ ratingsByOccasion[key].opponents }</SubTitle>
-                                        <span>{ ratingsByOccasion[key].round }</span>
-                                        <MdArrowDropDown />
-                                    </Info>
-                                    <PlayerRates isOpen={this.checkIfOpen(ratingsByOccasion[key].id)}>
-                                        {
-                                            Object.keys(ratingsByOccasion[key].ratings).length ? (
-                                                Object.keys(ratingsByOccasion[key].ratings).map(userKey => {
-                                                    return <PlayerRatingsRow 
-                                                        key={userKey}
-                                                        ratingFrom={usersObj[userKey]}
-                                                        ratings={ratingsByOccasion[key].ratings[userKey]}
-                                                        players={playersObj}
-                                                    />
-                                                }
-                                            )) : <span>Inga röstningar registrerade än.</span>
-                                        }
-                                    </PlayerRates>
-                                </RatingOccasion>
-                            )
-                        })
-                    }
+                    { this.renderRatingOccasions() }
                 </Wrapper>
             </Container>
         )
@@ -148,6 +153,7 @@ const PlayerRates = styled.div`
 
 Statistics.propTypes = {
     ratingOccasions: PropTypes.array,
+    users: PropTypes.array,
     players: PropTypes.array,
 }
 

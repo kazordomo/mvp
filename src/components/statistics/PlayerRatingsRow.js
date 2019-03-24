@@ -8,9 +8,8 @@ const PlayerRatingsRow = ({ ratingFrom, ratings, players }) => (
         <div>{ ratingFrom.name }</div>
         <div>
             {
-                // TODO: The key should be rating.value - (fix that a player only can rate once a week first)
                 ratings.map((rating, i) => {
-                    return <span key={i}>{ players[rating.toId].name }</span>
+                    return <span key={rating.value}>{ players[rating.toId].name }</span>
                 })
             }
         </div>
