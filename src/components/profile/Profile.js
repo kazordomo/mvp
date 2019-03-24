@@ -32,13 +32,7 @@ const Profile = ({ users, players, match, history }) => {
 
         for (let rating of player.ratings) {
             const allRatingsFromUser = player.ratings.filter(r => r.fromId === rating.fromId);
-            const ratingObj = {
-                name: findById(users, rating.fromId).name,
-                totalValue: allRatingsFromUser.reduce((total, a) => total += a.value, 0),
-                1: allRatingsFromUser.filter(r => r.value === 1),
-                2: allRatingsFromUser.filter(r => r.value === 2),
-                3: allRatingsFromUser.filter(r => r.value === 3),
-            }
+            const ratingObj = convertToRatingObj(findById(users, rating.fromId), allRatingsFromUser);
             ratings.push(ratingObj);
         }
         return uniqueArray(ratings).sort((a, b) => b.totalValue - a.totalValue);
@@ -52,19 +46,23 @@ const Profile = ({ users, players, match, history }) => {
                 const ratingsMade = player.ratings.filter(r => r.fromId === match.params.id);
                 let ratingObj = {};
                 if (ratingsMade.length > 0) {
-                    ratingObj = {
-                        name: player.name,
-                        totalValue: ratingsMade.reduce((total, a) => total += a.value, 0),
-                        1: ratingsMade.filter(r => r.value === 1),
-                        2: ratingsMade.filter(r => r.value === 2),
-                        3: ratingsMade.filter(r => r.value === 3),
-                    }
+                    ratingObj = convertToRatingObj(player, ratingsMade)
                     ratings.push(ratingObj);
                 }
     
             }
         }
         return uniqueArray(ratings).sort((a, b) => b.totalValue - a.totalValue);
+    }
+
+    const convertToRatingObj = (person, ratings) => {
+        return {
+            name: person.name,
+            totalValue: ratings.reduce((total, a) => total += a.value, 0),
+            1: ratings.filter(r => r.value === 1),
+            2: ratings.filter(r => r.value === 2),
+            3: ratings.filter(r => r.value === 3),
+        }
     }
 
     const getQuote = () => {

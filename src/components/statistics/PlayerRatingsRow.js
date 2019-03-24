@@ -7,10 +7,8 @@ const PlayerRatingsRow = ({ ratingFrom, ratings, players }) => (
     <Row>
         <div>{ ratingFrom.name }</div>
         <div>
-            {
-                ratings.map((rating, i) => {
-                    return <span key={rating.value}>{ players[rating.toId].name }</span>
-                })
+            { ratings.map(rating => 
+                <span key={rating.value}>{ players[rating.toId].name }</span>) 
             }
         </div>
     </Row>

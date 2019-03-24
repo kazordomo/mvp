@@ -6,13 +6,13 @@ import { getFillWidth, getTotalValue } from '../../utils/funcs';
 import Fill from './Fill';
 
 const Chart = ({ ratings, maxPoint }) => {
+    
     return (
         <div>
             { ratings.map(rating => {
 
-                const firstFillWidth = getTotalValue(rating['1']) ? getFillWidth(maxPoint, getTotalValue(rating['1'])) : 0;
-                const secondFillWidth = getTotalValue(rating['2']) ? getFillWidth(maxPoint, getTotalValue(rating['2'])) : 0;
-                const thirdFillWidth = getTotalValue(rating['3']) ? getFillWidth(maxPoint, getTotalValue(rating['3'])) : 0;
+                const getFillWIdth = value => getTotalValue(rating[value]) ? 
+                    getFillWidth(maxPoint, getTotalValue(rating[value])) : 0;
 
                 return (
                     <ChartRowWrapper key={rating.name}>
@@ -20,20 +20,20 @@ const Chart = ({ ratings, maxPoint }) => {
                             <span>{ rating.name }</span>
                             <FillWrapper className='fillWrapper'>
                                 <Fill 
-                                    fillWidth={firstFillWidth} 
+                                    fillWidth={getFillWIdth('1')} 
                                     left={0} 
                                     brColor={colors.pointvalueone()}
                                     rateValueLen={rating['1'].length}
                                 />
                                 <Fill 
-                                    fillWidth={secondFillWidth} 
-                                    left={firstFillWidth} 
+                                    fillWidth={getFillWIdth('2')} 
+                                    left={getFillWIdth('1')} 
                                     brColor={colors.pointvaluetwo()}
                                     rateValueLen={rating['2'].length}
                                 />
                                 <Fill 
-                                    fillWidth={thirdFillWidth} 
-                                    left={firstFillWidth + secondFillWidth} 
+                                    fillWidth={getFillWIdth('3')} 
+                                    left={getFillWIdth('1') + getFillWIdth('2')} 
                                     brColor={colors.pointvaluethree()} 
                                     rateValueLen={rating['3'].length}
                                 />
