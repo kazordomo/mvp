@@ -4,28 +4,16 @@ import styled from 'styled-components';
 import { MdLock } from 'react-icons/md'
 import colors from '../../utils/colors';
 
-const RateButton = ({ rateValue, rated, onPlayerRate, player  }) => {
-
-    const getRateButtonColor = () => {
-        if (rateValue === 1)
-            return 'rgba(232,74,20,1)';
-        else if (rateValue === 2)
-            return 'rgba(232,94,20,1)';
-        else if (rateValue === 3)
-            return 'rgba(232,114,20,1)';
-        
-        return false;
-    }
-
+const RateButton = ({ rateValue, rated, onPlayerRate, player, getRateButtonColor  }) => {
     return (
         rated.toId ? 
             <CustomButton 
-                brColor={getRateButtonColor()} 
+                brColor={getRateButtonColor(rateValue)} 
             >
                 <MdLock />
             </CustomButton> :
             <CustomButton 
-                brColor={getRateButtonColor()} 
+                brColor={getRateButtonColor(rateValue)} 
                 onClick={() => onPlayerRate(player, rateValue)}
             >
                 { rateValue }
@@ -51,7 +39,8 @@ RateButton.propTypes = {
     rateValue: PropTypes.number,
     rated: PropTypes.object,
     onPlayerRate: PropTypes.func,
-    player: PropTypes.object
+    player: PropTypes.object,
+    getRateButtonColor: PropTypes.func,
 }
 
 export default RateButton;

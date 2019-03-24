@@ -28,15 +28,13 @@ class Rate extends Component {
     }
 
     onPlayerRate = (player, point) => {
-        try {
-            this.setState({ pointsGiven: [...this.state.pointsGiven, { 
+        this.setState({ 
+            pointsGiven: [...this.state.pointsGiven, { 
                 toId: player.id, 
                 fromId: this.props.user.id,
                 value: point 
-            }] });
-        } catch(err) {
-            console.log(err);
-        }
+            }] 
+        });
     }
     
     onDoneRating = () => {
@@ -71,9 +69,9 @@ class Rate extends Component {
     }
 
     onReset = () => this.setState(this.initialState);
-    // Let the checkmark-animation be done before redirecting.
-    handleRedirect = () => setTimeout(() => this.setState({ redirectToReferrer: true }), 1050);
     checkIfAllRatesUsed = () => this.state.pointsGiven.length === this.state.AMOUNT_OF_RATINGS;
+    // Let the checkmark-animation finnish before redirecting.
+    handleRedirect = () => setTimeout(() => this.setState({ redirectToReferrer: true }), 1050);
 
     render() {
 
@@ -162,7 +160,9 @@ const HiddenIcon = styled.div`
 `;
 
 Rate.propTypes = {
+    user: PropTypes.object,
     players: PropTypes.array,
+    ratingOccasion: PropTypes.object,
 }
 
 export default Rate;

@@ -16,12 +16,12 @@ class RateRow extends Component {
 
     getRowMargin = () => this.state.activateRow ? '0' : '-400px';
     
-    getRateButtonColor = pos => {
-        if (pos === 1)
+    getRateButtonColor = value => {
+        if (value === 1)
             return 'rgba(232,74,20,1)';
-        else if (pos === 2)
+        else if (value === 2)
             return 'rgba(232,94,20,1)';
-        else if (pos === 3)
+        else if (value === 3)
             return 'rgba(232,114,20,1)';
         
         return false;
@@ -47,6 +47,7 @@ class RateRow extends Component {
                                 rated={checkIfRateValueIsUsed(value)}
                                 onPlayerRate={onPlayerRate}
                                 player={player}
+                                getRateButtonColor={this.getRateButtonColor}
                             />
                         )) }
                     </RateButtons>
