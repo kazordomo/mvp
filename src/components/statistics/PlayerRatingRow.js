@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import colors from '../../utils/colors';
 
-const PlayerRatingsRow = ({ ratingFrom, ratings, players }) => (
+const PlayerRatingRow = ({ ratingFrom, ratings, players }) => (
     <Row>
         <div>{ ratingFrom.name }</div>
         <div>
@@ -58,10 +58,10 @@ const Row = styled.div`
     }
 `;
 
-PlayerRatingsRow.propTypes = {
+PlayerRatingRow.propTypes = {
     ratingFrom: PropTypes.object,
     ratings: PropTypes.array,
     players: PropTypes.object,
 }
 
-export default PlayerRatingsRow;
+export default PlayerRatingRow;

@@ -2,23 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 import colors from '../../utils/colors'
-import { MdArrowDropDown } from 'react-icons/md'
 import { fadeIn } from 'react-animations';
 import { arrayToObj } from '../../utils/funcs';
-import SubTitle from '../_shared/SubTitle';
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
 import Wrapper from '../_shared/Wrapper';
-import PointsInfo from '../_shared/PointsInfo';
-import PlayerRatingsRow from './PlayerRatingsRow';
+import ActiveRatingOccasion from './ActiveRatingOccasion';
 
 class Statistics extends Component {
 
     state = {
         ratingsByOccasion: {},
-        ratingOccasionsOpen: [],
         playersObj: {},
         usersObj: {},
+        activeRatingOccasion: {}
     }
 
     componentDidMount() {
@@ -44,67 +41,43 @@ class Statistics extends Component {
                     .sort((a, b) => a.value - b.value);
             }
         }
-        // '' will be added to the arr, which is fine. This is only to avoid error/crash
-        const latestRatingOccasionId = sortedRatingOccasions.length ? sortedRatingOccasions[0].id : '';
         this.setState({ 
             ratingsByOccasion: objs, 
             playersObj: arrayToObj(this.props.players),
             usersObj: arrayToObj(this.props.users),
-            ratingOccasionsOpen: [ ...this.state.ratingOccasionsOpen, latestRatingOccasionId ] 
         });
     }
 
-    checkIfOpen = ratingOccasionId => this.state.ratingOccasionsOpen.find(id => id === ratingOccasionId);
-
-    onOpenCloseRates = ratingOccasionId => {
-        if (this.checkIfOpen(ratingOccasionId))
-            this.setState({ ratingOccasionsOpen: [...this.state.ratingOccasionsOpen].filter(id => id !== ratingOccasionId) });
-        else
-            this.setState({ ratingOccasionsOpen: [ ...this.state.ratingOccasionsOpen, ratingOccasionId ] });
-    }
-
-    renderRatingOccasions = () => {
-        const { ratingsByOccasion, playersObj, usersObj } = this.state;
-
-        return Object.keys(ratingsByOccasion).map(key => (
-            <RatingOccasion key={ ratingsByOccasion[key].id }>
-
-                <Info 
-                    onClick={() => this.onOpenCloseRates(ratingsByOccasion[key].id)} 
-                    isOpen={this.checkIfOpen(ratingsByOccasion[key].id)}
-                >
-                    <SubTitle noMargin>{ ratingsByOccasion[key].opponents }</SubTitle>
-                    <span>{ ratingsByOccasion[key].round }</span>
-                    <MdArrowDropDown />
-                </Info>
-
-                <PlayerRates isOpen={this.checkIfOpen(ratingsByOccasion[key].id)}>
-                    {
-                        Object.keys(ratingsByOccasion[key].ratings).length ? (
-                            Object.keys(ratingsByOccasion[key].ratings).map(userKey => {
-                                return <PlayerRatingsRow 
-                                    key={userKey}
-                                    ratingFrom={usersObj[userKey]}
-                                    ratings={ratingsByOccasion[key].ratings[userKey]}
-                                    players={playersObj}
-                                />
-                            }
-                        )) : <span>Inga röstningar registrerade än.</span>
-                    }
-                </PlayerRates>
-
-            </RatingOccasion>
-        ))
-    }
+    onRatingOccasion = ratingOccasion => this.setState({ activeRatingOccasion: ratingOccasion });
+    onCloseRatingOccasion = () => this.setState({ activeRatingOccasion: {} });
 
     render() {
+        const { ratingsByOccasion } = this.state;
+
         return (
             <Container brColor={colors.spacegrayish()}>
                 <Nav title="STATISTIK" />
-                <PointsInfo />
-                <Wrapper>
-                    { this.renderRatingOccasions() }
-                </Wrapper>
+                    <Wrapper>
+                        {
+                            Object.keys(ratingsByOccasion).map(key => (
+                                <RatingOccasion key={key} onClick={() => this.onRatingOccasion(ratingsByOccasion[key])}>
+                                    <RateCount>
+                                        { ratingsByOccasion[key].round }
+                                    </RateCount>
+                                    <Head>
+                                        <div>{ ratingsByOccasion[key].opponents }</div>
+                                        <div>Antal Röster: { Object.keys(ratingsByOccasion[key].ratings).length } / { this.props.users.length }</div>
+                                    </Head>
+                                </RatingOccasion>
+                            ))
+                        }
+                    </Wrapper>
+                    <ActiveRatingOccasion 
+                        ratingOccasion={this.state.activeRatingOccasion} 
+                        users={this.state.usersObj}
+                        players={this.state.playersObj}
+                        onClose={this.onCloseRatingOccasion}
+                    />
             </Container>
         )
     }
@@ -114,31 +87,36 @@ const fadeInAnimation = keyframes`${fadeIn}`;
 
 const RatingOccasion = styled.div`
     animation: 1s ${fadeInAnimation};
-    margin-bottom: 30px;
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 2px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    padding: 30px 20px;
+    position: relative;
+    width: 100%;
 `;
 
-const Info = styled.div`
+const Head = styled.div`
     align-items: center;
-    border-bottom: 1px solid #fff;
     color: #fff;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 20px;
-    padding: 0px 5px 5px 5px;
-    position: relative;
 
-    svg {
-        font-size: 28px;
-        left: 50%;
-        position: absolute;
-        bottom: -22px;
-        transform: translateX(-50%) rotate(${props=>props.isOpen?'180deg':'0'});
+    div:last-child {
+        color: ${colors.dirtpinkish()};
     }
+`;
 
-    span {
-        color: #F8B195;
-    }
+const RateCount = styled.div`
+    background-color: ${colors.orangeish()};
+    box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.75);
+    border-radius: 50%;
+    color: #fff;
+    padding: 5px 10px;
+    position: absolute;
+    left: -10px;
+    top: -10px;
 `;
 
 const PlayerRates = styled.div`
