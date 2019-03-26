@@ -48,7 +48,7 @@ class Rate extends Component {
                     ratingOccasionId: this.props.ratingOccasion.id,
                     createdAt: new Date(),
                  };
-
+                this.props.user.ratingOccasions.push(this.props.ratingOccasion.id);
                 player.ratings = player.ratings ? [ ...player.ratings, rating ] : [ rating ];
                 addRate(player, rating);
             });

@@ -32,10 +32,15 @@ export const addAdminRole = email => {
 
 export const addRate = (player, rating) => {
     try {
+        // Player
         const dbPlayer = getDoc('players', player.id);
-        console.log(dbPlayer);
         dbPlayer.update({
             ratings: firebase.firestore.FieldValue.arrayUnion(rating)
+        });
+        // User
+        const dbUser = getDoc('users', rating.fromId);
+        dbUser.update({
+            ratingOccasions: firebase.firestore.FieldValue.arrayUnion(rating.ratingOccasionId)
         });
     } catch(err) {
         console.log(err);

@@ -7,13 +7,20 @@ import HomeNav from './HomeNav';
 import HomeButtons from './HomeButtons';
 
 const Home = ({ user, ratingOccasion }) => {
+
+    const userAlreadyRated = () => {
+        if (!ratingOccasion) return false;
+        const haveRated = user.ratingOccasions.find(roId => roId === ratingOccasion.id);
+        return haveRated ? haveRated : false;
+    }
+
     return (
         <Container brColor={colors.spacegrayish()}>
             <HomeNav user={user} />
             <CenteredWrapper>
                 <HomeButtons 
                     ratingOccasion={ratingOccasion} 
-                    userAlreadyRated={false} 
+                    userAlreadyRated={userAlreadyRated()} 
                 />
             </CenteredWrapper>
         </Container>

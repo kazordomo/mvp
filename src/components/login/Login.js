@@ -39,7 +39,8 @@ class Login extends Component {
             await setById('users', cred.user.uid, { 
                 id: cred.user.uid, 
                 name: firstName, 
-                playerNumber: playerNumber ? playerNumber : null 
+                playerNumber: playerNumber ? playerNumber : null ,
+                ratingOccasions: [],
             });
         } catch(err) {
             this.setState({ errorMsg: err.message });

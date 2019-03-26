@@ -19,7 +19,7 @@ class Fill extends Component {
         // Make sure we can cancel the animation if the user leaves the comp before the animation is done.
         this.setState({ timeouts: [ 
             setTimeout(() => this.setState({ activateFill: true }), 75),
-            setTimeout(() => this.setState({ activateFillText: true }), 1175),
+            setTimeout(() => this.setState({ activateFillText: true }), 975),
          ] });
     }
 
