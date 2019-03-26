@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import { getAll, getById, updateById, setById, signOut } from './fetch';
+import { getDoc, getAll, } from './fetch';
 
 export const populateUsers = async () => {
     const initUsers = [];
@@ -28,4 +28,16 @@ export const addAdminRole = email => {
     addAdminRole({ email }).then(result => {
         console.log(result);
     }).catch(err => console.log(err));
+}
+
+export const addRate = (player, rating) => {
+    try {
+        const dbPlayer = getDoc('players', player.id);
+        console.log(dbPlayer);
+        dbPlayer.update({
+            ratings: firebase.firestore.FieldValue.arrayUnion(rating)
+        });
+    } catch(err) {
+        console.log(err);
+    }
 }

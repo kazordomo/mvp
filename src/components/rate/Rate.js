@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { updateById } from '../../utils/fetch';
+import { addRate } from '../../utils/actions';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import colors from '../../utils/colors';
@@ -36,7 +36,7 @@ class Rate extends Component {
             }] 
         });
     }
-    
+
     onDoneRating = () => {
         try {
             this.state.pointsGiven.forEach(point => {
@@ -48,9 +48,9 @@ class Rate extends Component {
                     ratingOccasionId: this.props.ratingOccasion.id,
                     createdAt: new Date(),
                  };
-                // Update the players list to get the new rating calculated in the Leaderboard
+
                 player.ratings = player.ratings ? [ ...player.ratings, rating ] : [ rating ];
-                updateById('players', point.toId, { ratings: player.ratings });
+                addRate(player, rating);
             });
             this.setState({ isDoneRating: true }, this.handleRedirect);
         } catch(err) {
