@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 import colors from '../../utils/colors'
 import { fadeIn } from 'react-animations';
-import { arrayToObj } from '../../utils/funcs';
+import { arrayToObj, getFillColor } from '../../utils/funcs';
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
 import Wrapper from '../_shared/Wrapper';
@@ -59,8 +59,8 @@ class Statistics extends Component {
                 <Nav title="STATISTIK" />
                     <Wrapper>
                         {
-                            Object.keys(ratingsByOccasion).map(key => (
-                                <RatingOccasion key={key} onClick={() => this.onRatingOccasion(ratingsByOccasion[key])}>
+                            Object.keys(ratingsByOccasion).map((key, i) => (
+                                <RatingOccasion key={key} pos={i} onClick={() => this.onRatingOccasion(ratingsByOccasion[key])}>
                                     <RateCount>
                                         { ratingsByOccasion[key].round }
                                     </RateCount>
@@ -87,9 +87,10 @@ const fadeInAnimation = keyframes`${fadeIn}`;
 
 const RatingOccasion = styled.div`
     animation: 1s ${fadeInAnimation};
-    background-color: rgba(0,0,0,0.2);
+    background-color: ${props=>getFillColor(props.pos)};
     border-radius: 2px;
     box-sizing: border-box;
+    color: #fff;
     margin-bottom: 20px;
     padding: 30px 20px;
     position: relative;
@@ -98,35 +99,23 @@ const RatingOccasion = styled.div`
 
 const Head = styled.div`
     align-items: center;
-    color: #fff;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 
     div:last-child {
-        color: ${colors.dirtpinkish()};
+        color: #fff;
     }
 `;
 
 const RateCount = styled.div`
-    background-color: ${colors.orangeish()};
+    background-color: ${colors.darkish()};
     box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.75);
     border-radius: 50%;
-    color: #fff;
     padding: 5px 10px;
     position: absolute;
     left: -10px;
     top: -10px;
-`;
-
-const PlayerRates = styled.div`
-    height: ${props=>props.isOpen ? 'auto' : '0px'};
-    overflow: hidden;
-    position: relative;
-
-    span {
-        color: #fff;
-    }
 `;
 
 Statistics.propTypes = {

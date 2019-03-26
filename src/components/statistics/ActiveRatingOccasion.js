@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { MdClose } from 'react-icons/md'
 import colors from '../../utils/colors';
 import Wrapper from '../_shared/Wrapper';
-import SubTitle from '../_shared/SubTitle';
+import PointsInfo from '../_shared/PointsInfo';
 import PlayerRatingRow from './PlayerRatingRow';
 
 const ActiveRatingOccasion = ({ ratingOccasion, users, players, onClose }) => {
@@ -13,23 +13,27 @@ const ActiveRatingOccasion = ({ ratingOccasion, users, players, onClose }) => {
             <Outer></Outer>
         )
 
-        console.log(ratingOccasion, users);
     return (
         <Outer active={true}>
             <MdClose onClick={onClose} />
             <Wrapper>
                 <Inner>
-                    <SubTitle noMargin>{ ratingOccasion.opponents }</SubTitle>
-                    { Object.keys(ratingOccasion.ratings).map(key => {
-                        return (
-                            <PlayerRatingRow 
-                                key={key}
-                                ratingFrom={users[key]}
-                                ratings={ratingOccasion.ratings[key]}
-                                players={players}
-                            />
-                        )
-                    }) }
+                    <Head>
+                        <h2>{ ratingOccasion.opponents }</h2>
+                    </Head>
+                    <PointsInfo />
+                    <PlayerRatings>
+                        { Object.keys(ratingOccasion.ratings).map(key => {
+                            return (
+                                <PlayerRatingRow 
+                                    key={key}
+                                    ratingFrom={users[key]}
+                                    ratings={ratingOccasion.ratings[key]}
+                                    players={players}
+                                />
+                            )
+                        }) }
+                    </PlayerRatings>
                 </Inner>
             </Wrapper>
         </Outer>
@@ -49,15 +53,31 @@ const Outer = styled.div`
 
     svg:first-child {
         color: #fff;
-        font-size: 26px;
-        position: absolute;
-        right: 15px;
-        top: 15px;
+        font-size: 30px;
+        position: fixed;
+        right: 20px;
+        top: 40px;
+        z-index: 5;
     }
 `;
 
 const Inner = styled.div`
 
+`;
+
+const PlayerRatings = styled.div`
+    margin-top: 40px;
+`;
+
+const Head = styled.div`
+    color: #fff;
+    height: 75px;
+    line-height: 75px;
+    padding: 20px 0;
+    position: relative;
+    h2 {
+        margin: 0;
+    }
 `;
 
 ActiveRatingOccasion.propTypes = {

@@ -83,7 +83,9 @@ const Profile = ({ users, players, match, history }) => {
     return (
         <Container brColor={colors.spacegrayish()}>
             <Nav title={player ? player.name : user.name} goBack={history.goBack} />
-            <PointsInfo />
+            <Wrapper>
+                <PointsInfo />
+            </Wrapper>
             <Col margin>
                 <Wrapper>
                     <SubTitle>Poäng från användare</SubTitle>

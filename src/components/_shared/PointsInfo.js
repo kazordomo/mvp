@@ -18,7 +18,6 @@ const Info = styled.div`
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 30px;
-    padding: 0 20px;
 
     div:nth-child(1) {
         animation: 0.8s ${slideInLeftAnimation};

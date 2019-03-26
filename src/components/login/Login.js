@@ -21,7 +21,7 @@ class Login extends Component {
 
     onSubmit = e => {
         e.preventDefault();
-        if (this.state.register)
+        if (this.state.isRegister)
             this.register();
         else
             this.login();
@@ -37,7 +37,8 @@ class Login extends Component {
             const cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
             // Creates a user in the users schema, using the unique ID gotten from the authed user.
             await setById('users', cred.user.uid, { 
-                id: cred.user.uid, 
+                id: cred.user.uid,
+                admin: false,
                 name: firstName, 
                 playerNumber: playerNumber ? playerNumber : null ,
                 ratingOccasions: [],
@@ -79,7 +80,7 @@ class Login extends Component {
 
     render() {
 
-        const { register } = this.state;
+        const { isRegister } = this.state;
 
         return (
             <Container brColor={colors.spacegrayish()}>
@@ -91,11 +92,11 @@ class Login extends Component {
                     </Title>
                     <form>
                         <AuthTypes id="changeAuth">
-                            <Type active={this.state.isRegister} onClick={this.onChangeAuth}>Registrera</Type>
-                            <Type active={!this.state.isRegister} onClick={this.onChangeAuth}>Logga in</Type>
+                            <Type active={isRegister} onClick={this.onChangeAuth}>Registrera</Type>
+                            <Type active={!isRegister} onClick={this.onChangeAuth}>Logga in</Type>
                         </AuthTypes>
                         <FormInputs shouldBeShown={this.shouldBeShown} />
-                        <Button long onClick={this.onSubmit}>{ register ? 'Registrera' : 'Logga in' }</Button>
+                        <Button long onClick={this.onSubmit}>{ isRegister ? 'Registrera' : 'Logga in' }</Button>
                         {/* <Guest>
                             <p>Fortsätt som gäst</p> 
                             <MdKeyboardArrowRight />
