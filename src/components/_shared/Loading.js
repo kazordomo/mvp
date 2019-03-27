@@ -1,9 +1,9 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import brImage from '../../images/broddshow.jpeg';
+import brImage from '../../assets/images/broddshow.jpeg';
+import logo from '../../assets/images/logo.png';
 import ImageBr from '../_shared/ImageBr';
 import GradientBr from '../_shared/GradientBr';
-import logo from '../../images/logo.png';
 import { pulse } from 'react-animations';
 
 const pulseAnimation =  keyframes`${pulse}`;
