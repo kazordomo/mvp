@@ -97,10 +97,7 @@ class Login extends Component {
                         </AuthTypes>
                         <FormInputs shouldBeShown={this.shouldBeShown} />
                         <Button long onClick={this.onSubmit}>{ isRegister ? 'Registrera' : 'Logga in' }</Button>
-                        {/* <Guest>
-                            <p>Fortsätt som gäst</p> 
-                            <MdKeyboardArrowRight />
-                        </Guest> */}
+                        {/* <p>Fortsätt som gäst</p> */}
                     </form>
                 </CenteredWrapper>
             </Container>
@@ -160,21 +157,6 @@ const Type = styled.div`
     position: absolute;
     transition: 150ms margin ease-out; 
     width: 50%;
-`;
-
-const Guest = styled.div`
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    color: #fff;
-
-    p {
-        font-size: 18px;
-        margin-right: 5px;
-    }
-    svg {
-        font-size: 25px;
-    }
 `;
 
 export default Login;

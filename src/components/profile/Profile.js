@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { arrayToObj, uniqueArray, findById } from '../../utils/funcs';
+import { uniqueArray, findById } from '../../utils/funcs';
 import colors from '../../utils/colors';
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
