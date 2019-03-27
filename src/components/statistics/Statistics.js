@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 import colors from '../../utils/colors'
 import { fadeIn } from 'react-animations';
-import { arrayToObj, getFillColor } from '../../utils/funcs';
+import { arrayToObj } from '../../utils/funcs';
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
 import Wrapper from '../_shared/Wrapper';
@@ -61,13 +61,11 @@ class Statistics extends Component {
                         {
                             Object.keys(ratingsByOccasion).map((key, i) => (
                                 <RatingOccasion key={key} pos={i} onClick={() => this.onRatingOccasion(ratingsByOccasion[key])}>
-                                    <RateCount>
+                                    {/* <RateRound>
                                         { ratingsByOccasion[key].round }
-                                    </RateCount>
-                                    <Head>
-                                        <div>{ ratingsByOccasion[key].opponents }</div>
-                                        <div>Antal Röster: { Object.keys(ratingsByOccasion[key].ratings).length } / { this.props.users.length }</div>
-                                    </Head>
+                                    </RateRound> */}
+                                    <div>{ ratingsByOccasion[key].opponents }</div>
+                                    <div>Antal Röster: { Object.keys(ratingsByOccasion[key].ratings).length } / { this.props.users.length }</div>
                                 </RatingOccasion>
                             ))
                         }
@@ -87,35 +85,24 @@ const fadeInAnimation = keyframes`${fadeIn}`;
 
 const RatingOccasion = styled.div`
     animation: 1s ${fadeInAnimation};
-    background-color: ${props=>getFillColor(props.pos)};
-    border-radius: 2px;
+    border-bottom: 1px solid ${colors.dirtpinkish()};
     box-sizing: border-box;
     color: #fff;
-    margin-bottom: 20px;
-    padding: 30px 20px;
-    position: relative;
-    width: 100%;
-`;
-
-const Head = styled.div`
-    align-items: center;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 10px;
+    position: relative;
+    width: 100%;
 
-    div:last-child {
-        color: #fff;
+    div:first-child {
+        font-weight: 700;
     }
-`;
-
-const RateCount = styled.div`
-    background-color: ${colors.darkish()};
-    box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.75);
-    border-radius: 50%;
-    padding: 5px 10px;
-    position: absolute;
-    left: -10px;
-    top: -10px;
+    div:last-child {
+        color: ${colors.dirtpinkish()};
+        font-weight: 300;
+    }
 `;
 
 Statistics.propTypes = {

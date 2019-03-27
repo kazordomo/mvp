@@ -17,31 +17,33 @@ const ActiveRatingOccasion = ({ ratingOccasion, users, players, onClose }) => {
         <Outer active={true}>
             <MdClose onClick={onClose} />
             <Wrapper>
-                <Inner>
-                    <Head>
-                        <h2>{ ratingOccasion.opponents }</h2>
-                    </Head>
-                    <PointsInfo />
-                    <PlayerRatings>
-                        { Object.keys(ratingOccasion.ratings).map(key => {
-                            return (
-                                <PlayerRatingRow 
-                                    key={key}
-                                    ratingFrom={users[key]}
-                                    ratings={ratingOccasion.ratings[key]}
-                                    players={players}
-                                />
-                            )
-                        }) }
-                    </PlayerRatings>
-                </Inner>
+                <Head>
+                    <h2>{ ratingOccasion.opponents }</h2>
+                </Head>
+                <PointsInfo />
+                <PlayerRatings>
+                    {
+                        Object.keys(ratingOccasion.ratings).length !== 0 ?
+                            Object.keys(ratingOccasion.ratings).map(key => {
+                                return (
+                                    <PlayerRatingRow 
+                                        key={key}
+                                        ratingFrom={users[key]}
+                                        ratings={ratingOccasion.ratings[key]}
+                                        players={players}
+                                    />
+                                )
+                            }) :
+                            'Inga röster registrerade.'
+                    }
+                </PlayerRatings>
             </Wrapper>
         </Outer>
     )
 }
 
 const Outer = styled.div`
-    background-color: ${colors.grayish()};
+    background-color: ${colors.darkish()};
     bottom: 0;
     left: 0;
     opacity: ${props=>props.active?'1':'0'};
@@ -61,11 +63,8 @@ const Outer = styled.div`
     }
 `;
 
-const Inner = styled.div`
-
-`;
-
 const PlayerRatings = styled.div`
+    color: #fff;
     margin-top: 40px;
 `;
 

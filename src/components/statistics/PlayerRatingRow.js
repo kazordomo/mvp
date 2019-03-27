@@ -5,55 +5,47 @@ import colors from '../../utils/colors';
 
 const PlayerRatingRow = ({ ratingFrom, ratings, players }) => (
     <Row>
-        <div>{ ratingFrom.name }</div>
-        <div>
+        <Name>{ ratingFrom.name }</Name>
+        <Points>
             { ratings.map(rating => 
-                <span key={rating.value}>{ players[rating.toId].name }</span>) 
+                <div key={rating.value}>{ players[rating.toId].name }</div>) 
             }
-        </div>
+        </Points>
     </Row>
 )
 
 const Row = styled.div`
-    align-items: center;
     color: #fff;
+    margin-bottom: 15px;
+    height: 50px;
+    padding-top: 30px;
+    position: relative;
+`;
+
+const Name = styled.div`
+    left: 0;
+    position: absolute;
+    top: 5px;
+`;
+
+const Points = styled.div`
     display: flex;
     flex-direction: row;
-    height: 40px;
-    margin-bottom: 10px;
-    justify-content: space-between;
-    padding: 0px 5px;
 
-    div:first-child {
-        margin-right: 20px;
-        width: 15%;
-    }
-    div:last-child {
-        display: flex;
-        flex-direction: row;
-        width: calc(85% - 20px);
-    }
-
-    div span {
-        display: block;
-        border-radius: 2px;
-        margin-right: 10px;
+    div {
+        flex: 1;
+        height: 50px;
+        line-height: 50px;
         text-align: center;
-        padding: 10px 20px;
-        width: 33%;
-
-        :last-child {
-            margin-right: 0;
-        }
     }
-    
-    div span:nth-child(1) {
+
+    div:nth-child(1) {
         background-color: ${colors.pointvalueone()};
     }
-    div span:nth-child(2) {
+    div:nth-child(2) {
         background-color: ${colors.pointvaluetwo()};
     }
-    div span:nth-child(3) {
+    div:nth-child(3) {
         background-color: ${colors.pointvaluethree()};
     }
 `;
