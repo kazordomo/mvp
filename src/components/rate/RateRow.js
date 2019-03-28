@@ -14,8 +14,6 @@ class RateRow extends Component {
         this.props.setCustomAnimationDelay(50 * this.props.pos);
     }
 
-    getRowMargin = () => this.props.activeAnimation ? '0' : '-400px';
-    
     getRateButtonColor = value => {
         if (value === 1)
             return 'rgba(232,74,20,1)';
@@ -32,7 +30,7 @@ class RateRow extends Component {
 
         return (
             <Row 
-                marginLeft={this.getRowMargin()} 
+                active={this.props.activeAnimation} 
                 brColor={rating ? this.getRateButtonColor(rating.value) : false} 
                 used={rating.toId}
             >
@@ -66,7 +64,7 @@ const Row = styled.div`
     flex-direction: row;
     height: 80px;
     margin-bottom: 10px;
-    margin-left: ${props=>props.marginLeft};
+    margin-left: ${props=>props.active ? '0' : '-400px'};
     padding: ${props=>props.used ? '2.5px 0' : '0'};
     transition: margin 450ms ease-in-out, padding 150ms ease-out;
     width: 100%;

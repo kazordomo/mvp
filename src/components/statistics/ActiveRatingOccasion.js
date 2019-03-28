@@ -24,13 +24,14 @@ const ActiveRatingOccasion = ({ ratingOccasion, users, players, onClose }) => {
                 <PlayerRatings>
                     {
                         Object.keys(ratingOccasion.ratings).length !== 0 ?
-                            Object.keys(ratingOccasion.ratings).map(key => {
+                            Object.keys(ratingOccasion.ratings).map((key, i) => {
                                 return (
                                     <PlayerRatingRow 
                                         key={key}
                                         ratingFrom={users[key]}
                                         ratings={ratingOccasion.ratings[key]}
                                         players={players}
+                                        pos={i}
                                     />
                                 )
                             }) :

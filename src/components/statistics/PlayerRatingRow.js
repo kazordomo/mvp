@@ -1,18 +1,30 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import colors from '../../utils/colors';
+import Animation from '../hoc/Animation';
 
-const PlayerRatingRow = ({ ratingFrom, ratings, players }) => (
-    <Row>
-        <Name>{ ratingFrom.name }</Name>
-        <Points>
-            { ratings.map(rating => 
-                <div key={rating.value}>{ players[rating.toId].name }</div>) 
-            }
-        </Points>
-    </Row>
-)
+class PlayerRatingRow extends Component {
+
+    componentDidMount() {
+        this.props.setCustomAnimationDelay(50 * this.props.pos);
+    }
+
+    render () {
+        const { ratingFrom, ratings, players } = this.props;
+
+        return (
+            <Row active={this.props.activeAnimation}>
+                <Name>{ ratingFrom.name }</Name>
+                <Points>
+                    { ratings.map(rating => 
+                        <div key={rating.value}>{ players[rating.toId].name }</div>) 
+                    }
+                </Points>
+            </Row>
+        )
+    }
+}
 
 const Row = styled.div`
     color: #fff;
@@ -20,6 +32,8 @@ const Row = styled.div`
     height: 50px;
     padding-top: 30px;
     position: relative;
+    transform: scale(${props=>props.active ? '1' : '0'});
+    transition: transform 450ms ease-in-out;
 `;
 
 const Name = styled.div`
@@ -56,4 +70,4 @@ PlayerRatingRow.propTypes = {
     players: PropTypes.object,
 }
 
-export default PlayerRatingRow;
+export default Animation(PlayerRatingRow);
