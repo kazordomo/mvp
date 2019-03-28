@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import RateButton from './RateButton';
+import Animation from '../hoc/Animation';
 
 class RateRow extends Component {
 
     state = {
-        activateRow: false,
         ratingValues: [1, 2, 3],
     }
 
     componentDidMount() {
-        setTimeout(() => this.setState({ activateRow: true }), 50 * this.props.pos);
+        this.props.setCustomAnimationDelay(50 * this.props.pos);
     }
 
-    getRowMargin = () => this.state.activateRow ? '0' : '-400px';
+    getRowMargin = () => this.props.activeAnimation ? '0' : '-400px';
     
     getRateButtonColor = value => {
         if (value === 1)
@@ -101,4 +101,4 @@ RateRow.propTypes = {
     checkIfRateValueIsUsed: PropTypes.func,
 }
 
-export default RateRow;
+export default Animation(RateRow);

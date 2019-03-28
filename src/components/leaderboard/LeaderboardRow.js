@@ -4,16 +4,9 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { MdGrade } from 'react-icons/md'
 import { getTotalValue, getFillWidth, getFillColor } from '../../utils/funcs';
+import Animation from '../hoc/Animation';
 
 class LeaderboardRow extends Component {
-
-    state = {
-        activateFill: false,
-    }
-
-    componentDidMount() {
-        setTimeout(() => this.setState({ activateFill: true }), 75);
-    }
 
     render() {
         const { pos, profileId, player, maxPoint } = this.props;
@@ -22,7 +15,7 @@ class LeaderboardRow extends Component {
             <Link to={`/profile/${profileId}`}>
                 <Row>
                     <Fill pos={pos} width={
-                        (this.state.activateFill && getTotalValue(player.ratings) !== 0) ? 
+                        (this.props.activeAnimation && getTotalValue(player.ratings) !== 0) ? 
                         getFillWidth(maxPoint, getTotalValue(player.ratings)) : 0} 
                     />
                     <Col>
@@ -81,4 +74,4 @@ LeaderboardRow.propTypes = {
     maxPoint: PropTypes.number,
 }
 
-export default LeaderboardRow;
+export default Animation(LeaderboardRow);
