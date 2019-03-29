@@ -121,7 +121,6 @@ class Login extends Component {
                         </AuthTypes>
                         <FormInputs shouldBeShown={this.shouldBeShown} displayInfoText={this.displayInfoText} />
                         <Button long onClick={this.onSubmit}>{ isRegister ? 'Registrera' : 'Logga in' }</Button>
-                        {/* <p>Fortsätt som gäst</p> */}
                     </form>
                 </CenteredWrapper>
             </Container>

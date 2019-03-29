@@ -51,7 +51,7 @@ class App extends Component {
 					...snapshot.data(),
 					isAdmin: idTokenResult.claims.admin ? idTokenResult.claims.admin : false,
 				};
-				this.setState({ user: userData}, this.populateData);
+				this.setState({ user: userData, isFetching: true }, this.populateData);
 			}
 			else {
 				this.setState({ isFetching: false, user: false });
