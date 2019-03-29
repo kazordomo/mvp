@@ -14,6 +14,7 @@ const Input = props => {
                 id={props.id ? props.id : ''}
                 placeholder={props.placeholder}
                 onChange={props.onChange ? props.onChange : () => false}
+                onFocus={() => props.displayInfo(props.id)}
             />
         </InputWrapper>
     );
@@ -38,6 +39,7 @@ const InputWrapper = styled.div`
     display: ${props=>props.show?'flex':'none'};
     flex-direction: row;
     margin-bottom: 10px;
+    position: relative;
 `;
 
 const InputField = styled.input`
@@ -56,4 +58,4 @@ const Icon = styled.div`
     svg {
         font-size: 35px;
     }
-`; 
+`;

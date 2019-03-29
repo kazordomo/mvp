@@ -85,7 +85,7 @@ const fadeInAnimation = keyframes`${fadeIn}`;
 
 const RatingOccasion = styled.div`
     animation: 1s ${fadeInAnimation};
-    border-bottom: 1px solid ${colors.dirtpinkish()};
+    border-bottom: 1px solid #fff;
     box-sizing: border-box;
     color: #fff;
     display: flex;

@@ -8,7 +8,9 @@ import { registerInputs, loginInputs } from './formInputIds';
 import Container from '../_shared/Container'
 import CenteredWrapper from '../_shared/CenteredWrapper';
 import Button from '../_basic/Button';
+import Fade from '../_shared/Fade';
 import DisplayError from '../_shared/DisplayError';
+import DisplayInfo from '../_shared/DisplayInfo';
 import FormInputs from './FormInputs';
 
 class Login extends Component {
@@ -17,6 +19,8 @@ class Login extends Component {
         isRegister: true,
         showInputs: registerInputs,
         errorMsg: '',
+        infoMsg: '',
+        infoShown: [],
     }
 
     onSubmit = e => {
@@ -65,6 +69,7 @@ class Login extends Component {
             return {
                 isRegister: !prevState.isRegister,
                 showInputs,
+                infoMsg: '',
             }
         });
     }
@@ -76,15 +81,34 @@ class Login extends Component {
         console.log('The user has signed out');
     }
 
+    // TODO: popup hoc
+    displayInfoText = inputId => {
+        const infoTexts = {
+            playerNumber: `Skriv in det tröjnummer du har på matchtröjan. 
+                           Om du inte är en spelare kan du lämna detta tomt.`,
+        }
+        // Get the info message from the infoText object.
+        const infoMsg = infoTexts[inputId];
+        // Only show if there is a info message for the focused input, and that it have not been shown yet.
+        if (infoMsg && !this.state.infoShown.find(info => info === inputId))
+            this.setState({ infoMsg, infoShown: [...this.state.infoShown, inputId] });
+        else
+            this.setState({ infoMsg: '' });
+    }
+
+    closeInfoPopup = () => this.setState({ infoMsg: '' });
+
     shouldBeShown = inputId => this.state.showInputs.includes(inputId) ? true : false;
 
     render() {
 
-        const { isRegister } = this.state;
+        const { isRegister, errorMsg, infoMsg } = this.state;
 
         return (
             <Container brColor={colors.spacegrayish()}>
-                <DisplayError errorMsg={this.state.errorMsg} />
+                <Fade show={infoMsg} />
+                <DisplayError errorMsg={errorMsg} />
+                <DisplayInfo infoMsg={infoMsg} close={this.closeInfoPopup}></DisplayInfo>
                 <CenteredWrapper bigger>
                     <Title>
                         <h2>MVP</h2>
@@ -95,7 +119,7 @@ class Login extends Component {
                             <Type active={isRegister} onClick={this.onChangeAuth}>Registrera</Type>
                             <Type active={!isRegister} onClick={this.onChangeAuth}>Logga in</Type>
                         </AuthTypes>
-                        <FormInputs shouldBeShown={this.shouldBeShown} />
+                        <FormInputs shouldBeShown={this.shouldBeShown} displayInfoText={this.displayInfoText} />
                         <Button long onClick={this.onSubmit}>{ isRegister ? 'Registrera' : 'Logga in' }</Button>
                         {/* <p>Fortsätt som gäst</p> */}
                     </form>
