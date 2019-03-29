@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import colors from '../../utils/colors';
 import Animation from '../hoc/Animation';
 
@@ -11,17 +12,19 @@ class PlayerRatingRow extends Component {
     }
 
     render () {
-        const { ratingFrom, ratings, players } = this.props;
+        const { ratingFrom, ratings, players, profileId } = this.props;
 
         return (
-            <Row active={this.props.activeAnimation}>
-                <Name>{ ratingFrom.name }</Name>
-                <Points>
-                    { ratings.map(rating => 
-                        <div key={rating.value}>{ players[rating.toId].name }</div>) 
-                    }
-                </Points>
-            </Row>
+            <Link to={`/profile/${profileId}`}>
+                <Row active={this.props.activeAnimation}>
+                    <Name>{ ratingFrom.name }</Name>
+                    <Points>
+                        { ratings.map(rating => 
+                            <div key={rating.value}>{ players[rating.toId].name }</div>) 
+                        }
+                    </Points>
+                </Row>
+            </Link>
         )
     }
 }

@@ -7,7 +7,7 @@ import Wrapper from '../_shared/Wrapper';
 import PointsInfo from '../_shared/PointsInfo';
 import PlayerRatingRow from './PlayerRatingRow';
 
-const ActiveRatingOccasion = ({ ratingOccasion, users, players, onClose }) => {
+const ActiveRatingOccasion = ({ ratingOccasion, users, players, getProfileId, onClose }) => {
     if (Object.keys(ratingOccasion).length === 0) 
         return (
             <Outer></Outer>
@@ -31,6 +31,7 @@ const ActiveRatingOccasion = ({ ratingOccasion, users, players, onClose }) => {
                                         ratingFrom={users[key]}
                                         ratings={ratingOccasion.ratings[key]}
                                         players={players}
+                                        profileId={getProfileId(users[key].playerNumber)}
                                         pos={i}
                                     />
                                 )
@@ -48,6 +49,7 @@ const Outer = styled.div`
     bottom: 0;
     left: 0;
     opacity: ${props=>props.active?'1':'0'};
+    overflow: auto;
     position: fixed;
     pointer-events: ${props=>props.active?'all':'none'};
     right: 0;

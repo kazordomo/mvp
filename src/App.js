@@ -69,15 +69,11 @@ class App extends Component {
 		this.setState({ users, players, ratingOccasions, isFetching: false });
 	}
 
-	/* 
-		FUNCTIONS USING STATE BELOW - MOVE IF REDUX 
-	*/
-
 	getActiveRatingOccasion = () => this.state.ratingOccasions.find(occasion => occasion.active);
 	// If the player/person got an account, we will use the user.id when we enter the profile. Otherwise we will use the player.id/nr.
-	getProfileId = playerNr => {
-		const user = this.state.users.find(user => parseInt(user.playerNumber) === playerNr);
-		return user ? user.id : playerNr;
+	getProfileId = nr => {
+		const user = this.state.users.find(user => parseInt(user.playerNumber) === nr);
+		return user ? user.id : nr;
 	}
 	
 	onOpenRating = async opponents => {
@@ -137,7 +133,12 @@ class App extends Component {
 						<Leaderboard players={this.state.players} getProfileId={this.getProfileId} />
 					}/>
 					<Route path='/statistics' render={() => 
-						<Statistics players={this.state.players} users={this.state.users} ratingOccasions={this.state.ratingOccasions} />
+						<Statistics 
+							players={this.state.players} 
+							users={this.state.users} 
+							ratingOccasions={this.state.ratingOccasions} 
+							getProfileId={this.getProfileId} 
+						/>
 					}/>
 					<Route path='/admin' render={() => 
 						<Admin 
