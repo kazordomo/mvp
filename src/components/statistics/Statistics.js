@@ -30,10 +30,10 @@ class Statistics extends Component {
 
         for (let occasion of sortedRatingOccasions) {
             objs[occasion.id] = { ...occasion, ratings: {} };
-            const allOccasionRatings = this.props.players.flatMap(player => {
-                if (!player.ratings) return [];
-                return player.ratings.filter(rating => rating.ratingOccasionId === occasion.id);
-            });
+            const allOccasionRatings = this.props.players
+                .map(player => player.ratings)
+                .reduce((acc, val) => acc.concat(val), [])
+                .filter(rating => rating.ratingOccasionId === occasion.id);
 
             for (let rating of allOccasionRatings) {
                 objs[occasion.id].ratings[rating.fromId] = allOccasionRatings
