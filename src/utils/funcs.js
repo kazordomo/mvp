@@ -20,6 +20,7 @@ export const getFormValues = arr => {
 }
 
 export const checkIfValuesMatch = (v1, v2) => v1 === v2;
+export const isEmptyObj = obj => Object.keys(obj).length ? false : true;
 
 export const getFillColor = pos => `rgba(232,${56 + (pos * 12)},20,1)`;
 export const getTotalValue = ratings => ratings ? ratings.reduce((total, a) => total += a.value, 0) : 0;

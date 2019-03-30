@@ -8,7 +8,8 @@ import {
     MdAccountCircle, 
     MdSupervisorAccount,
     MdSettings,
-} from 'react-icons/md'
+} from 'react-icons/md';
+import { isEmptyObj } from '../../utils/funcs';
 import Settings from './Settings'
 
 class HomeNav extends Component {
@@ -20,6 +21,8 @@ class HomeNav extends Component {
     onShowHideSettings = () => this.setState(prevState => { return { showSettings: !prevState.showSettings }});
 
     render () {
+        if (isEmptyObj(this.props.user)) return '';
+
         return (
             <Icons>
                 <Settings show={this.state.showSettings} onClose={this.onShowHideSettings} />

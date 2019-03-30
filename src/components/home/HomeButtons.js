@@ -10,10 +10,12 @@ import {
 } from 'react-icons/md'
 import Button from '../_basic/Button';
 
-export default ({ ratingOccasion, userAlreadyRated }) => {
+export default ({ ratingOccasion, userAlreadyRated, isGuest }) => {
 
     // Show if rating is open and user has not already rated. Otherwise disable the button/link.
     const renderRatingButton = () => {
+        if(isGuest) return '';
+
         return (ratingOccasion && !userAlreadyRated) ? 
             <Link to={'/rate'}>
                 <Button shadow customStyle={{...btnStyle, backgroundColor: colors.orangeish(74)}}>

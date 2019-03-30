@@ -5,6 +5,7 @@ import uuid from 'uuid';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { getById, updateById, setById } from './utils/fetch';
+import { isEmptyObj } from './utils/funcs';
 import { 
 	populatePlayers, 
 	populateUsers, 
@@ -29,10 +30,11 @@ class App extends Component {
 
 		this.state = {
 			isFetching: true,
-			user: false,
+			user: {},
 			users: [],
 			players: [],
 			ratingOccasions: [],
+			isGuest: false,
 		}
 	}
 
@@ -53,7 +55,7 @@ class App extends Component {
 				this.setState({ user: userData, isFetching: true }, this.populateData);
 			}
 			else {
-				this.setState({ isFetching: false, user: false });
+				this.setState({ isFetching: false, user: {} }, this.populateData);
 			}
 		});
 	}
@@ -108,12 +110,15 @@ class App extends Component {
 		}
 	}
 
+	enterAsGuest = () => this.setState({ isGuest: true });
+
 	render() {
 		if (this.state.isFetching)
             return <Loading />
 		
-		if (!this.state.user)
-			return <Login />
+		if (isEmptyObj(this.state.user) && !this.state.isGuest) {
+			return <Login onEnterAsGuest={this.enterAsGuest} />
+		}
 
 		return (
 			<Router>

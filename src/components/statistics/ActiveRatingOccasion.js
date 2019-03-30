@@ -49,7 +49,8 @@ const Outer = styled.div`
     bottom: 0;
     left: 0;
     opacity: ${props=>props.active?'1':'0'};
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     position: fixed;
     pointer-events: ${props=>props.active?'all':'none'};
     right: 0;

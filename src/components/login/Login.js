@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import styled  from 'styled-components';
+import { MdTrendingFlat } from 'react-icons/md';
 import { setById } from '../../utils/fetch';
 import { getFormValues, checkIfValuesMatch } from '../../utils/funcs';
 import colors from '../../utils/colors';
@@ -101,7 +102,6 @@ class Login extends Component {
     shouldBeShown = inputId => this.state.showInputs.includes(inputId) ? true : false;
 
     render() {
-
         const { isRegister, errorMsg, infoMsg } = this.state;
 
         return (
@@ -122,6 +122,7 @@ class Login extends Component {
                         <FormInputs shouldBeShown={this.shouldBeShown} displayInfoText={this.displayInfoText} />
                         <Button long onClick={this.onSubmit}>{ isRegister ? 'Registrera' : 'Logga in' }</Button>
                     </form>
+                    <Guest onClick={this.props.onEnterAsGuest}><span>Fortsätt som gäst</span> <MdTrendingFlat /></Guest>
                 </CenteredWrapper>
             </Container>
         )
@@ -180,6 +181,22 @@ const Type = styled.div`
     position: absolute;
     transition: 150ms margin ease-out; 
     width: 50%;
+`;
+
+const Guest = styled.p `
+    align-items: center;
+    color: #fff;
+    display: flex;
+    margin-top: 20px;
+    
+    span {
+        font-size: 15px;
+        margin-right: 10px;
+    }
+
+    svg {
+        font-size: 18px;
+    }
 `;
 
 export default Login;

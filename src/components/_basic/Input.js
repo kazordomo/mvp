@@ -14,7 +14,7 @@ const Input = props => {
                 id={props.id ? props.id : ''}
                 placeholder={props.placeholder}
                 onChange={props.onChange ? props.onChange : () => false}
-                onFocus={() => props.displayInfo(props.id)}
+                onFocus={props.displayInfo ? () => props.displayInfo(props.id) : () => false}
             />
         </InputWrapper>
     );
