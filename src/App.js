@@ -19,7 +19,6 @@ import Rate from './components/rate/Rate';
 import Leaderboard from './components/leaderboard/Leaderboard';
 import Statistics from './components/statistics/Statistics';
 import Loading from './components/_shared/Loading';
-import A2HS from './components/_shared/A2HS';
 
 // TODO: Handle errors.
 
@@ -119,7 +118,6 @@ class App extends Component {
 		return (
 			<Router>
 				<AppContainer>
-					<A2HS />
 					<Route exact path='/' render={() => 
 						<Home user={this.state.user} ratingOccasion={this.getActiveRatingOccasion()} />
 					}/>
