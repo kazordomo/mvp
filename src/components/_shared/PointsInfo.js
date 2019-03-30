@@ -1,33 +1,24 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import colors from '../../utils/colors';
-import { slideInLeft } from 'react-animations';
+import Animation from '../hoc/Animation';
 
-export default () => (
-    <Info>
+const PointsInfo = ({ activeAnimation }) => (
+    <Info active={activeAnimation}>
         <div>1p: <span></span></div>
         <div>2p: <span></span></div>
         <div>3p: <span></span></div>
     </Info>
 );
 
-const slideInLeftAnimation = keyframes`${slideInLeft}`;
-
 const Info = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 30px;
-
-    div:nth-child(1) {
-        animation: 0.8s ${slideInLeftAnimation};
-    }
-    div:nth-child(2) {
-        animation: 0.6s ${slideInLeftAnimation};
-    }
-    div:nth-child(3) {
-        animation: 0.4s ${slideInLeftAnimation};
-    }
+    margin-left: ${props=>props.active?'0':'-200px'};
+    transform: scale(${props=>props.active?'1':'1.2'});
+    transition: margin 650ms ease-out, transform 650ms ease-out;
 
     div {
         align-items: center;
@@ -54,3 +45,5 @@ const Info = styled.div`
         width: 50px;
     }
 `;
+
+export default Animation(PointsInfo, 10);
