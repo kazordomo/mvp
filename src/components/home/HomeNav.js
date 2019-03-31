@@ -8,36 +8,55 @@ import {
     MdAccountCircle, 
     MdSupervisorAccount,
     MdSettings,
+    MdInfo,
 } from 'react-icons/md';
 import { isEmptyObj } from '../../utils/funcs';
 import Settings from './Settings'
+import Information from './Information';
 
 class HomeNav extends Component {
 
     state = {
         showSettings: false,
+        showInfo: false,
     }
 
     onShowHideSettings = () => this.setState(prevState => { return { showSettings: !prevState.showSettings }});
+    onShowHideInfo = () => this.setState(prevState => { return { showInfo: !prevState.showInfo }});
 
     render () {
-        if (isEmptyObj(this.props.user)) return '';
+        if (isEmptyObj(this.props.user)) return (
+            <div>
+                <Icons>
+                    <InfoIcon>
+                        <MdInfo onClick={this.onShowHideInfo} />
+                    </InfoIcon>
+                </Icons>
+                <Information show={this.state.showInfo} onClose={this.onShowHideInfo} />
+            </div>
+        )
 
         return (
-            <Icons>
-                <Settings show={this.state.showSettings} onClose={this.onShowHideSettings} />
-                <MdSettings onClick={this.onShowHideSettings} />
-                <Link to={`/profile/${this.props.user.id}`}>
-                    <MdAccountCircle />
-                </Link>
-                {
-                    // this.props.user.isAdmin ?
-                    true ?
-                    <Link to={'/admin'}>
-                        <MdSupervisorAccount />
-                    </Link> : ''
-                }
-            </Icons>
+            <div>
+                <Icons>
+                    <Settings show={this.state.showSettings} onClose={this.onShowHideSettings} />
+                    <MdSettings onClick={this.onShowHideSettings} />
+                    <Link to={`/profile/${this.props.user.id}`}>
+                        <MdAccountCircle />
+                    </Link>
+                    {
+                        // this.props.user.isAdmin ?
+                        true ?
+                        <Link to={'/admin'}>
+                            <MdSupervisorAccount />
+                        </Link> : ''
+                    }
+                    <InfoIcon>
+                        <MdInfo onClick={this.onShowHideInfo} />
+                    </InfoIcon>
+                </Icons>
+                <Information show={this.state.showInfo} onClose={this.onShowHideInfo} isAdmin={this.props.user.isAdmin} />
+            </div>
         )
     }
 }
@@ -56,6 +75,14 @@ const Icons = styled.div`
         font-size: 36px;
         float: right;
         margin-left: 10px;
+    }
+`;
+
+const InfoIcon = styled.div`
+    float: left;
+
+    svg {
+        color: ${colors.blue()};
     }
 `;
 

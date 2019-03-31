@@ -1,4 +1,5 @@
 export default {
+    blue: (a = 1) => `rgba(109,158,255,${a})`,
     yellowish: (a = 1) => `rgba(237,213,33,${a})`,
     orangeish: (a = 74, b = 1) => `rgba(232,${a},20,${b})`,
     darkish: (a = 1) => `rgba(30,30,29,${a})`,
