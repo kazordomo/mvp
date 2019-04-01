@@ -99,6 +99,7 @@ class App extends Component {
 
 	onCloseRating = async () => {
 		try {
+			// TODO: map
 			let ratingOccasions = [ ...this.state.ratingOccasions ];
 			let ratingOccasion = this.getActiveRatingOccasion();
 			ratingOccasion.active = false;
@@ -116,9 +117,8 @@ class App extends Component {
 		if (this.state.isFetching)
             return <Loading />
 		
-		if (isEmptyObj(this.state.user) && !this.state.isGuest) {
+		if (isEmptyObj(this.state.user) && !this.state.isGuest)
 			return <Login onEnterAsGuest={this.enterAsGuest} />
-		}
 
 		return (
 			<Router>

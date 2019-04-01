@@ -5,8 +5,7 @@ export const arrayToObj = arr => {
     }, {});
 }
 
-// Return false rather than undefined if nothing is found.
-export const findById = (arr, id) => arr.find(item => item.id === id) ? arr.find(item => item.id === id) : false;
+export const findById = (arr, id) => arr.find(item => item.id === id);
 // Removes duplicated objects from array of object.
 export const uniqueArray = arr => [ ...new Set(arr.map(o => JSON.stringify(o))) ].map(s => JSON.parse(s));
 export const getFormValue = id => document.querySelector(`${id}`).value
@@ -20,7 +19,7 @@ export const getFormValues = arr => {
 }
 
 export const checkIfValuesMatch = (v1, v2) => v1 === v2;
-export const isEmptyObj = obj => Object.keys(obj).length ? false : true;
+export const isEmptyObj = obj => Object.keys(obj).length === 0;
 
 export const getFillColor = pos => `rgba(232,${56 + (pos * 12)},20,1)`;
 export const getTotalValue = ratings => ratings ? ratings.reduce((total, a) => total += a.value, 0) : 0;

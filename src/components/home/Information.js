@@ -94,7 +94,7 @@ const Text = styled.div`
     padding: 70px 20px 20px 20px;
 `;
 
-const Sub = styled.div`
+const Sub = styled.span`
     color: ${colors.dirtpinkish()};
     font-size: 18px;
     margin-bottom: 5px;
