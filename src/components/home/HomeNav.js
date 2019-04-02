@@ -32,7 +32,7 @@ class HomeNav extends Component {
                         <MdInfo onClick={this.onShowHideInfo} />
                     </InfoIcon>
                 </Icons>
-                <Information show={this.state.showInfo} onClose={this.onShowHideInfo} />
+                <Information show={this.state.showInfo} onClose={this.onShowHideInfo} isAdmin={false} />
             </div>
         )
 

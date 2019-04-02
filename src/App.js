@@ -140,7 +140,6 @@ class App extends Component {
 							players={this.state.players} 
 							users={this.state.users} 
 							ratingOccasions={this.state.ratingOccasions} 
-							getProfileId={this.getProfileId} 
 						/>
 					}/>
 					<Route path='/admin' render={() => 

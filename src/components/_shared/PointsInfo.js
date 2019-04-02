@@ -17,8 +17,8 @@ const Info = styled.div`
     justify-content: space-between;
     margin-bottom: 30px;
     margin-left: ${props=>props.active?'0':'-200px'};
-    transform: scale(${props=>props.active?'1':'1.2'});
-    transition: margin 650ms ease-out, transform 650ms ease-out;
+    transform: scale(${props=>props.active?'1':'1.4'});
+    transition: margin 650ms cubic-bezier(.36,.36,.26,.86), transform 650ms ease-out;
 
     div {
         align-items: center;

@@ -74,7 +74,6 @@ class Statistics extends Component {
                         ratingOccasion={this.state.activeRatingOccasion} 
                         users={this.state.usersObj}
                         players={this.state.playersObj}
-                        getProfileId={this.props.getProfileId}
                         onClose={this.onCloseRatingOccasion}
                     />
             </Container>

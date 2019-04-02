@@ -10,7 +10,7 @@ import {
 } from 'react-icons/md'
 import colors from '../../utils/colors';
 
-const Information = ({ show, onClose }) => {
+const Information = ({ show, isAdmin, onClose }) => {
     return (
         <InfoContainer active={show}>
             <Close>
@@ -46,18 +46,21 @@ const Information = ({ show, onClose }) => {
                     <b>Poäng från användare - <i>enbart för spelare: </i></b><br /> visar alla de röster denna spelare har blivit given och från vem under alla omgångar.<br />
                     <b>Utdelade poäng - <i>enbart för registrerade användare</i>:</b><br /> visar alla de röster användaren har givit och till vilka spelare under alla omgångar.
                 </p>
-                <p>
-                    <Sub><MdSupervisorAccount />Admin:<br /></Sub>
-                    <b>Öppna röstning:</b><br />
-                    Efter spelad match skriver du in motståndarnas namn och trycker sedan på "Öppna röstning".
-                    Nu är det möjligt för alla användare att rösta - för den omgången.<br />
-                    <b>Stäng Röstning:</b><br />
-                    När röstningar är gjorda är det dags att stänga omgången. Klicka på "Stäng röstning" för att
-                    låsa omgångens röstning.<br />
-                    <b>Gör till admin:</b><br />
-                    Behövs det ytterligare någon som har tillgång till öppna/stäng röstning?
-                    Skriv in mejl-addressen till denne och lägg till personen som admin.
-                </p>
+                {
+                    isAdmin ?
+                        <p>
+                            <Sub><MdSupervisorAccount />Admin:<br /></Sub>
+                            <b>Öppna röstning:</b><br />
+                            Efter spelad match skriver du in motståndarnas namn och trycker sedan på "Öppna röstning".
+                            Nu är det möjligt för alla användare att rösta - för den omgången.<br />
+                            <b>Stäng Röstning:</b><br />
+                            När röstningar är gjorda är det dags att stänga omgången. Klicka på "Stäng röstning" för att
+                            låsa omgångens röstning.<br />
+                            <b>Gör till admin:</b><br />
+                            Behövs det ytterligare någon som har tillgång till öppna/stäng röstning?
+                            Skriv in mejl-addressen till denne och lägg till personen som admin.
+                        </p> : ''
+                }
             </Text>
         </InfoContainer>
     )
