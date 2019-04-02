@@ -61,9 +61,6 @@ class Statistics extends Component {
                         {
                             Object.keys(ratingsByOccasion).map((key, i) => (
                                 <RatingOccasion key={key} pos={i} onClick={() => this.onRatingOccasion(ratingsByOccasion[key])}>
-                                    {/* <RateRound>
-                                        { ratingsByOccasion[key].round }
-                                    </RateRound> */}
                                     <div>{ ratingsByOccasion[key].opponents }</div>
                                     <div>Antal Röster: { Object.keys(ratingsByOccasion[key].ratings).length } / { this.props.users.length }</div>
                                 </RatingOccasion>

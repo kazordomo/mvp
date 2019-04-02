@@ -16,7 +16,7 @@ class LeaderboardRow extends Component {
                 <Row>
                     <Fill pos={pos} width={
                         (this.props.activeAnimation && getTotalValue(player.ratings) !== 0) ? 
-                        getFillWidth(maxPoint, getTotalValue(player.ratings)) : 0} 
+                            getFillWidth(maxPoint, getTotalValue(player.ratings)) : 0} 
                     />
                     <Col>
                         <div>{ (pos === 1) ? <MdGrade /> : pos }</div>
