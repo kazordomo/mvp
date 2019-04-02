@@ -1,6 +1,8 @@
 # MVP - Mobile web app.
 
+DISCLAIMERS:
 Optimized for chrome only at the moment - will be testing/fixing for safari and firefox later on.
+Need to sort out the env-variables before running it localy.
 
 ## Purpose
 The purpose of the app is for the players in the club to be able to rate the top three player after each game during the season.
