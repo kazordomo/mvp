@@ -7,6 +7,8 @@ import Fill from './Fill';
 
 const Chart = ({ ratings, maxPoint }) => {
     
+    if (ratings.length === 0) return '';
+
     return (
         <div>
             { ratings.map(rating => {
