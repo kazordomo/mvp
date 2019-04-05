@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { addRate } from '../../utils/actions';
+import { addRate } from '../../actions';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import colors from '../../utils/colors';
+import colors from '../../assets/colors';
 import { MdCheckCircle, MdLockOpen } from 'react-icons/md'
 import Nav from '../_shared/Nav';
 import Fade from '../_shared/Fade'

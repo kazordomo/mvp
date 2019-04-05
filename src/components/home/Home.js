@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import colors from '../../utils/colors';
-import { isEmptyObj } from '../../utils/funcs';
+import colors from '../../assets/colors';
+import { isEmptyObj } from '../../utils';
 import Container from '../_shared/Container'
 import CenteredWrapper from '../_shared/CenteredWrapper';
 import HomeNav from './HomeNav';

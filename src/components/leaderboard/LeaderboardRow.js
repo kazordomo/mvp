@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { MdGrade } from 'react-icons/md'
-import { getTotalValue, getFillWidth, getFillColor } from '../../utils/funcs';
+import { getTotalValue, getFillWidth, getFillColor } from '../../utils';
 import Animation from '../hoc/Animation';
 
 class LeaderboardRow extends Component {

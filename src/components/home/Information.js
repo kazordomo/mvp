@@ -8,8 +8,8 @@ import {
     MdSupervisorAccount,
     MdClose,
 } from 'react-icons/md'
-import colors from '../../utils/colors';
-import { infoTrans } from '../../utils/translations';
+import colors from '../../assets/colors';
+import infoTrans from '../../translations/infoTrans';
 
 class Information extends Component {
 

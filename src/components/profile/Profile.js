@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { uniqueArray, findById } from '../../utils/funcs';
-import colors from '../../utils/colors';
+import { uniqueArray, findById } from '../../utils';
+import colors from '../../assets/colors';
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
 import Wrapper from '../_shared/Wrapper';

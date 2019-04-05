@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import colors from '../../utils/colors';
+import colors from '../../assets/colors';
 import { MdRemoveCircle } from 'react-icons/md'
-import { signOut } from '../../utils/fetch';
+import { signOut } from '../../firebase/fetch';
 
 const Settings = ({ show }) => {
     return (

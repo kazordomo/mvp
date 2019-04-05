@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import colors from '../../utils/colors';
-import { getFillWidth, getTotalValue } from '../../utils/funcs';
+import colors from '../../assets/colors';
+import { getFillWidth, getTotalValue } from '../../utils';
 import Fill from './Fill';
 
 const Chart = ({ ratings, maxPoint }) => {

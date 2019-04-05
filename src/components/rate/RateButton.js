@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { MdLock } from 'react-icons/md'
-import colors from '../../utils/colors';
+import colors from '../../assets/colors';
 
 const RateButton = ({ rateValue, rated, onPlayerRate, player, getRateButtonColor  }) => {
     return (

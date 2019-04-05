@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import styled  from 'styled-components';
 import { MdTrendingFlat } from 'react-icons/md';
-import { setById } from '../../utils/fetch';
-import { getFormValues, checkIfValuesMatch } from '../../utils/funcs';
-import colors from '../../utils/colors';
+import { setById } from '../../firebase/fetch';
+import { getFormValues, checkIfValuesMatch } from '../../utils';
+import colors from '../../assets/colors';
 import { registerInputs, loginInputs } from './formInputIds';
 import Container from '../_shared/Container'
 import CenteredWrapper from '../_shared/CenteredWrapper';

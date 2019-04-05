@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import colors from '../../utils/colors';
+import colors from '../../assets/colors';
 
 export default styled.div`
     background: ${colors.spacegrayish()};

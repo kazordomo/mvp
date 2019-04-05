@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import { getDoc, getAll, } from './fetch';
+import { getDoc, getAll, } from '../firebase/fetch';
 
 export const populateUsers = async () => {
     const initUsers = [];

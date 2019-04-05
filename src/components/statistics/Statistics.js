@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
-import colors from '../../utils/colors'
+import colors from '../../assets/colors'
 import { fadeIn } from 'react-animations';
-import { arrayToObj } from '../../utils/funcs';
+import { arrayToObj } from '../../utils';
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
 import Wrapper from '../_shared/Wrapper';

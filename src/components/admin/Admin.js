@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { MdGroup, MdEmail } from 'react-icons/md'
-import { addAdminRole } from '../../utils/actions';
-import colors from '../../utils/colors';
+import { addAdminRole } from '../../actions';
+import colors from '../../assets/colors';
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
 import CenteredWrapper from '../_shared/CenteredWrapper';

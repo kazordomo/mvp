@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MdFace, MdEmail, MdLock, MdPermIdentity } from 'react-icons/md'
-import colors from '../../utils/colors';
+import colors from '../../assets/colors';
 import Input from '../_basic/Input';
 
 const FormInputs = ({ shouldBeShown, displayInfoText }) => {

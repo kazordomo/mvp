@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import colors from '../../utils/colors';
-import { getTotalValue } from '../../utils/funcs';
+import colors from '../../assets/colors';
+import { getTotalValue } from '../../utils';
 import Container from '../_shared/Container';
 import Nav from '../_shared/Nav';
 import LeaderboardRow from './LeaderboardRow';

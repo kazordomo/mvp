@@ -1,5 +1,5 @@
 import React from 'react';
-import colors from '../../utils/colors';
+import colors from '../../assets/colors';
 import styled, { keyframes } from 'styled-components';
 import { bounceIn } from 'react-animations';
 import { Link } from 'react-router-dom';

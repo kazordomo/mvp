@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 import { fadeIn } from 'react-animations';
 import { Link } from 'react-router-dom';
-import colors from '../../utils/colors';
+import colors from '../../assets/colors';
 import { 
     MdAccountCircle, 
     MdSupervisorAccount,
     MdSettings,
     MdInfo,
 } from 'react-icons/md';
-import { isEmptyObj } from '../../utils/funcs';
+import { isEmptyObj } from '../../utils';
 import Settings from './Settings'
 import Information from './Information';
 

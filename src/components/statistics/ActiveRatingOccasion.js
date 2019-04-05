@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { MdClose } from 'react-icons/md'
-import colors from '../../utils/colors';
+import colors from '../../assets/colors';
 import Wrapper from '../_shared/Wrapper';
 import PointsInfo from '../_shared/PointsInfo';
 import PlayerRatingRow from './PlayerRatingRow';

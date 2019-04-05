@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import colors from '../../utils/colors';
+import colors from '../../assets/colors';
 import Animation from '../hoc/Animation';
 
 const PointsInfo = ({ activeAnimation }) => (

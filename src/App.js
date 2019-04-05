@@ -4,13 +4,13 @@ import keys from './config/keys';
 import uuid from 'uuid';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { getById, updateById, setById } from './utils/fetch';
-import { isEmptyObj } from './utils/funcs';
+import { getById, updateById, setById } from './firebase/fetch';
+import { isEmptyObj } from './utils';
 import { 
 	populatePlayers, 
 	populateUsers, 
 	populateRatingOccasions 
-} from './utils/actions';
+} from './actions';
 
 import Login from './components/login/Login';
 import Admin from './components/admin/Admin';

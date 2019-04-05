@@ -1,4 +1,4 @@
-export const infoTrans = {
+export default {
     swedish: {
         general: {
             text: `
