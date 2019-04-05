@@ -67,7 +67,7 @@ class App extends Component {
 			populateRatingOccasions(),
 		]);
 		// Because we're waiting for the fetch to succeed, we can use the players array directly from here.
-		this.setState({ users, players, ratingOccasions, isFetching: false }, () => console.log(this.state.user));
+		this.setState({ users, players, ratingOccasions, isFetching: false });
 	}
 
 	getActiveRatingOccasion = () => this.state.ratingOccasions.find(occasion => occasion.active);
