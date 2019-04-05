@@ -1,30 +1,51 @@
 import React from 'react';
 import styled from 'styled-components';
 import colors from '../../assets/colors';
-import { MdRemoveCircle } from 'react-icons/md'
+import { MdClose } from 'react-icons/md'
 import { signOut } from '../../firebase/fetch';
 
-const Settings = ({ show }) => {
+const Settings = ({ show, onClose }) => {
     return (
         <SettingsWrapper show={show}>
-            <MdRemoveCircle onClick={signOut} color={colors.redish()} />
+            <div>
+                <SettingsLink href="http://guldfemman.se/norrtulls-sk" target="_blank">Guldfemman</SettingsLink>
+                <SettingsLink onClick={signOut}>Logga ut</SettingsLink>
+            </div>
+            <MdClose onClick={onClose} />
         </SettingsWrapper>
     );
 }
 
 const SettingsWrapper = styled.div`
+    align-items: center;
+    background-color: ${colors.grayish()};
+    box-sizing: border-box;
+    box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.25);
     display: flex;
-    flex-direction: column;
-    height: 150px;
+    justify-content: space-between;
+    padding: 0px 20px;
     position: absolute;
-    right: ${props=>props.show ? '20' : '-40'}px;
-    top: 65px;
-    transition: right 150ms ease-out;
+    height: 75px;
+    right: 0;
+    left: 0;
+    top: ${props=>props.show ? '0' : '-100'}px;
+    transition: top 150ms ease-out;
+    z-index: 6;
 
     svg {
-        color: ${colors.dirtpinkish()};
-        cursor: pointer;
-        font-size: 36px;
+        color: #fff !important;
+    }
+`;
+
+const SettingsLink = styled.a`
+    border-bottom: 1px solid #fff;
+    color: #fff;
+    margin-right: 20px;
+    padding: 2px 5px;
+
+    :last-child {
+        border-bottom: 1px solid ${colors.redish()};
+        color: ${colors.redish()};
     }
 `;
 
