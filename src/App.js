@@ -50,7 +50,7 @@ class App extends Component {
 				const snapshot = await getById('users', user.uid);
 				const userData ={
 					...snapshot.data(),
-					isAdmin: idTokenResult.claims.admin ? idTokenResult.claims.admin : false,
+					admin: idTokenResult.claims.admin ? idTokenResult.claims.admin : false,
 				};
 				this.setState({ user: userData, isFetching: true }, this.populateData);
 			}
@@ -67,7 +67,7 @@ class App extends Component {
 			populateRatingOccasions(),
 		]);
 		// Because we're waiting for the fetch to succeed, we can use the players array directly from here.
-		this.setState({ users, players, ratingOccasions, isFetching: false });
+		this.setState({ users, players, ratingOccasions, isFetching: false }, () => console.log(this.state.user));
 	}
 
 	getActiveRatingOccasion = () => this.state.ratingOccasions.find(occasion => occasion.active);

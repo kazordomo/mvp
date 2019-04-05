@@ -45,17 +45,17 @@ class HomeNav extends Component {
                         <MdAccountCircle />
                     </Link>
                     {
-                        // this.props.user.isAdmin ?
+                        // this.props.user.admin ?
                         true ?
-                        <Link to={'/admin'}>
-                            <MdSupervisorAccount />
-                        </Link> : ''
+                            <Link to={'/admin'}>
+                                <MdSupervisorAccount />
+                            </Link> : ''
                     }
                     <InfoIcon>
                         <MdInfo onClick={this.onShowHideInfo} />
                     </InfoIcon>
                 </Icons>
-                <Information show={this.state.showInfo} onClose={this.onShowHideInfo} isAdmin={this.props.user.isAdmin} />
+                <Information show={this.state.showInfo} onClose={this.onShowHideInfo} isAdmin={this.props.user.admin} />
             </div>
         )
     }
