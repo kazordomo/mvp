@@ -18,7 +18,12 @@ class Fill extends Component {
                 width={this.props.activeAnimation ? this.props.fillWidth : 0} 
                 left={this.props.left} 
                 brColor={this.props.brColor}
-            ><FillText amount={this.props.rateValueLen} /></FillRow>
+            >
+                { 
+                    (this.props.fillWidth >= 8) ?
+                        <FillText amount={this.props.rateValueLen} /> : ''
+                }
+            </FillRow>
         );
     }
 }

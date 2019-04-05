@@ -43,7 +43,7 @@ const Row = styled.div`
 `;
 
 const Fill = styled.div`
-    background-color: ${props=>getFillColor(props.pos)};
+    background-color: ${props=>getFillColor((props.pos >= 12) ? props.pos / 2 : props.pos)};
     height: 100%;
     position: absolute;
     transition: 1000ms width ease-in-out;
