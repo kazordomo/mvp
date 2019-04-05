@@ -4,14 +4,13 @@ import { MdFace, MdEmail, MdLock, MdPermIdentity } from 'react-icons/md'
 import colors from '../../assets/colors';
 import Input from '../_basic/Input';
 
-const FormInputs = ({ shouldBeShown, displayInfoText }) => {
+const FormInputs = ({ shouldBeShown, displayInfoText, infoShown }) => {
     return (
         <div>
             <Input 
                 type="email" 
                 id="email" 
                 placeholder="E-post"
-                displayInfo={displayInfoText}
                 icon={<MdEmail color={colors.orangeish(145)} />}
                 show={shouldBeShown("email")} 
                 required
@@ -19,7 +18,6 @@ const FormInputs = ({ shouldBeShown, displayInfoText }) => {
             <Input 
                 id="firstName" 
                 placeholder="Förnamn" 
-                displayInfo={displayInfoText}
                 icon={<MdFace color={colors.orangeish(120)}  />}
                 show={shouldBeShown("firstName")}
                 required
@@ -28,7 +26,8 @@ const FormInputs = ({ shouldBeShown, displayInfoText }) => {
                 type="number"
                 id="playerNumber"
                 placeholder="Tröjnummer"
-                displayInfo={displayInfoText}
+                displayInfoText={displayInfoText}
+                isInfoShown={infoShown.find(inputId => inputId === 'playerNumber')}
                 icon={<MdPermIdentity color={colors.orangeish(95)} />}
                 show={shouldBeShown("playerNumber")}
             />
@@ -36,7 +35,6 @@ const FormInputs = ({ shouldBeShown, displayInfoText }) => {
                 id="password"
                 type="password" 
                 placeholder="Lösenord" 
-                displayInfo={displayInfoText}
                 icon={<MdLock color={colors.orangeish(70)} />} 
                 show={shouldBeShown("password")}
                 required
@@ -45,7 +43,6 @@ const FormInputs = ({ shouldBeShown, displayInfoText }) => {
                 type="password" 
                 id="retypePassword" 
                 placeholder="Lösenord igen" 
-                displayInfo={displayInfoText}
                 icon={<MdLock color={colors.orangeish(70)} />}   
                 show={shouldBeShown("retypePassword")}
                 required
@@ -56,6 +53,7 @@ const FormInputs = ({ shouldBeShown, displayInfoText }) => {
 
 FormInputs.propTypes = {
     shouldBeShown: PropTypes.func,
+    infoShown: PropTypes.array,
 }
 
 export default FormInputs;

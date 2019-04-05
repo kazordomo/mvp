@@ -97,12 +97,19 @@ class Login extends Component {
             this.setState({ infoMsg: '' });
     }
 
-    closeInfoPopup = () => this.setState({ infoMsg: '' });
+    closeInfoPopup = () => {
+        this.setState({ infoMsg: '' }, () => {
+            const { infoShown } = this.state;
+            // The last used input will always be last.
+            const inputId = infoShown[infoShown.length - 1]
+            document.querySelector(`#${inputId}`).focus();
+        });
+    }
 
     shouldBeShown = inputId => this.state.showInputs.includes(inputId) ? true : false;
 
     render() {
-        const { isRegister, errorMsg, infoMsg } = this.state;
+        const { isRegister, errorMsg, infoMsg, infoShown } = this.state;
 
         return (
             <Container brColor={colors.spacegrayish()}>
@@ -119,7 +126,11 @@ class Login extends Component {
                             <Type active={isRegister} onClick={this.onChangeAuth}>Registrera</Type>
                             <Type active={!isRegister} onClick={this.onChangeAuth}>Logga in</Type>
                         </AuthTypes>
-                        <FormInputs shouldBeShown={this.shouldBeShown} displayInfoText={this.displayInfoText} />
+                        <FormInputs 
+                            shouldBeShown={this.shouldBeShown} 
+                            displayInfoText={this.displayInfoText} 
+                            infoShown={infoShown} 
+                        />
                         <Button long onClick={this.onSubmit}>{ isRegister ? 'Registrera' : 'Logga in' }</Button>
                     </form>
                     <Guest onClick={this.props.onEnterAsGuest}><span>Fortsätt som gäst</span> <MdTrendingFlat /></Guest>
