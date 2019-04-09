@@ -45,7 +45,8 @@ class HomeNav extends Component {
                         <MdAccountCircle />
                     </Link>
                     {
-                        this.props.user.admin ?
+                        // this.props.user.admin ?
+                        true ?
                             <Link to={'/admin'}>
                                 <MdSupervisorAccount />
                             </Link> : ''

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import colors from '../../assets/colors';
-import Animation from '../hoc/Animation';
+import colors from '../../../assets/colors';
+import Animation from '../../hoc/Animation';
 
 class PlayerRatingRow extends Component {
 

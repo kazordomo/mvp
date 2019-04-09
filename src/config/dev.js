@@ -1,10 +1,10 @@
 module.exports = {
     firebaseConfig: { 
-        apiKey: "AIzaSyDiC_DsKu72QCohgBmm9nqs5p5k08kEJGM",
-        authDomain: "mvp-nsk.firebaseapp.com",
-        databaseURL: "https://mvp-nsk.firebaseio.com",
-        projectId: "mvp-nsk",
-        storageBucket: "mvp-nsk.appspot.com",
-        messagingSenderId: "377135908081"
+        apiKey: "AIzaSyAiul8XH6-oVxn3eLm3KZOzIq-s5ea5LI8",
+        authDomain: "mvp-nsk-dev.firebaseapp.com",
+        databaseURL: "https://mvp-nsk-dev.firebaseio.com",
+        projectId: "mvp-nsk-dev",
+        storageBucket: "mvp-nsk-dev.appspot.com",
+        messagingSenderId: "1085388631148"
     },
 }

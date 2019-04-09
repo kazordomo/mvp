@@ -4,10 +4,11 @@ import styled, { keyframes } from 'styled-components';
 import colors from '../../assets/colors'
 import { fadeIn } from 'react-animations';
 import { arrayToObj } from '../../utils';
+import { getTotalValue } from '../../utils'
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
 import Wrapper from '../_shared/Wrapper';
-import ActiveRatingOccasion from './ActiveRatingOccasion';
+import ActiveRatingOccasion from './ActiveRatingOccasion/ActiveRatingOccasion';
 
 class Statistics extends Component {
 
@@ -48,8 +49,33 @@ class Statistics extends Component {
         });
     }
 
+    getPlayersTotalGivenRatings = ratingOccasion => {
+        const playersGivenRatings = {};
+
+        for(let key of Object.keys(ratingOccasion.ratings)) {
+            for(let rating of ratingOccasion.ratings[key]) {
+                // Store as an object with key "value" to keep the structure with getTotalValue-func.
+                if (playersGivenRatings[rating.toId]) 
+                    playersGivenRatings[rating.toId].push({ value: rating.value });
+                else
+                    playersGivenRatings[rating.toId] = [{ value: rating.value }];
+            }
+        }
+
+        return playersGivenRatings;
+    }
+
+    calcPlayersTotalRatingValue = ratingOccasion => {
+        const ratings = this.getPlayersTotalGivenRatings(ratingOccasion);
+        // Store as an array with [id, totalValue] so that the sorting is easy.
+        return Object.keys(ratings)
+            .map(key => [ this.state.playersObj[key].name, getTotalValue(ratings[key]) ])
+            .sort((a, b) => b[1] - a[1]);
+    }
+
     onRatingOccasion = ratingOccasion => this.setState({ activeRatingOccasion: ratingOccasion });
     onCloseRatingOccasion = () => this.setState({ activeRatingOccasion: {} });
+    
 
     render() {
         const { ratingsByOccasion } = this.state;
@@ -59,18 +85,24 @@ class Statistics extends Component {
                 <Nav title="STATISTIK" />
                     <Wrapper>
                         {
-                            Object.keys(ratingsByOccasion).map((key, i) => (
-                                <RatingOccasion key={key} pos={i} onClick={() => this.onRatingOccasion(ratingsByOccasion[key])}>
-                                    <div>{ ratingsByOccasion[key].opponents }</div>
-                                    <div>Antal Röster: { Object.keys(ratingsByOccasion[key].ratings).length } / { this.props.users.length }</div>
-                                </RatingOccasion>
-                            ))
+                            Object.keys(ratingsByOccasion).map((key, i) => {
+                                console.log(this.calcPlayersTotalRatingValue(ratingsByOccasion[key]));
+                                return (
+                                    <RatingOccasion key={key} pos={i} onClick={() => this.onRatingOccasion(ratingsByOccasion[key])}>
+                                        <div>{ ratingsByOccasion[key].opponents }</div>
+                                        {/* CHECK IF EMPTY */}
+                                        <div>MVP: {this.calcPlayersTotalRatingValue(ratingsByOccasion[key])[0]}</div>
+                                        <div>Antal Röster: { Object.keys(ratingsByOccasion[key].ratings).length } / { this.props.users.length }</div>
+                                    </RatingOccasion>
+                                )}
+                            )
                         }
                     </Wrapper>
                     <ActiveRatingOccasion 
                         ratingOccasion={this.state.activeRatingOccasion} 
                         users={this.state.usersObj}
                         players={this.state.playersObj}
+                        calcPlayersTotalRatingValue={this.calcPlayersTotalRatingValue}
                         onClose={this.onCloseRatingOccasion}
                     />
             </Container>

@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { MdClose } from 'react-icons/md'
-import colors from '../../assets/colors';
-import Wrapper from '../_shared/Wrapper';
-import PointsInfo from '../_shared/PointsInfo';
+import colors from '../../../assets/colors';
+import Wrapper from '../../_shared/Wrapper';
+import PointsInfo from '../../_shared/PointsInfo';
 import PlayerRatingRow from './PlayerRatingRow';
+import TopThree from './TopThree';
 
-const ActiveRatingOccasion = ({ ratingOccasion, users, players, onClose }) => {
+const ActiveRatingOccasion = ({ ratingOccasion, users, players, calcPlayersTotalRatingValue, onClose }) => {
     if (Object.keys(ratingOccasion).length === 0) 
         return (
             <Outer></Outer>
@@ -20,6 +21,11 @@ const ActiveRatingOccasion = ({ ratingOccasion, users, players, onClose }) => {
                 <Head>
                     <h2>{ ratingOccasion.opponents }</h2>
                 </Head>
+                <TopThree 
+                    ratingOccasion={ratingOccasion} 
+                    players={players} 
+                    playersTotalRatingValue={calcPlayersTotalRatingValue(ratingOccasion)} 
+                />
                 <PointsInfo />
                 <PlayerRatings>
                     {
@@ -75,7 +81,7 @@ const Head = styled.div`
     color: #fff;
     height: 75px;
     line-height: 75px;
-    padding: 20px 0;
+    padding-top: 20px;
     position: relative;
     h2 {
         margin: 0;
