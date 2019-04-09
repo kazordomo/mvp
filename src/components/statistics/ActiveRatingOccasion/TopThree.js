@@ -7,7 +7,7 @@ import Animation from '../../hoc/Animation';
 
 const TopThree = ({ ratingOccasion, players, playersTotalRatingValue, activeAnimation }) => {
     // Return empty if less than 3 ratings have been done.
-    if (3 > Object.keys(ratingOccasion.ratings).length)
+    if (3 > playersTotalRatingValue.length)
         return '';
 
     return (

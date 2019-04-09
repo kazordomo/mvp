@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
-import colors from '../../assets/colors'
 import { fadeIn } from 'react-animations';
+import { MdGrade } from 'react-icons/md'
+import colors from '../../assets/colors'
 import { arrayToObj } from '../../utils';
 import { getTotalValue } from '../../utils'
 import Nav from '../_shared/Nav';
@@ -50,6 +51,7 @@ class Statistics extends Component {
     }
 
     getPlayersTotalGivenRatings = ratingOccasion => {
+        if (ratingOccasion.ratings.length === 0) return [];
         const playersGivenRatings = {};
 
         for(let key of Object.keys(ratingOccasion.ratings)) {
@@ -67,6 +69,7 @@ class Statistics extends Component {
 
     calcPlayersTotalRatingValue = ratingOccasion => {
         const ratings = this.getPlayersTotalGivenRatings(ratingOccasion);
+        if (ratings.length === 0) return [];
         // Store as an array with [id, totalValue] so that the sorting is easy.
         return Object.keys(ratings)
             .map(key => [ this.state.playersObj[key].name, getTotalValue(ratings[key]) ])
@@ -86,13 +89,19 @@ class Statistics extends Component {
                     <Wrapper>
                         {
                             Object.keys(ratingsByOccasion).map((key, i) => {
-                                console.log(this.calcPlayersTotalRatingValue(ratingsByOccasion[key]));
                                 return (
                                     <RatingOccasion key={key} pos={i} onClick={() => this.onRatingOccasion(ratingsByOccasion[key])}>
-                                        <div>{ ratingsByOccasion[key].opponents }</div>
-                                        {/* CHECK IF EMPTY */}
-                                        <div>MVP: {this.calcPlayersTotalRatingValue(ratingsByOccasion[key])[0]}</div>
-                                        <div>Antal Röster: { Object.keys(ratingsByOccasion[key].ratings).length } / { this.props.users.length }</div>
+                                        <Head>
+                                            <h3>{ ratingsByOccasion[key].opponents }</h3>
+                                            <span>Röster: { Object.keys(ratingsByOccasion[key].ratings).length }</span>
+                                        </Head>
+                                        {
+                                            this.calcPlayersTotalRatingValue(ratingsByOccasion[key]).length ?
+                                                <RoMVP>
+                                                    <MdGrade /> 
+                                                    <div>{this.calcPlayersTotalRatingValue(ratingsByOccasion[key])[0][0]}</div>
+                                                </RoMVP> : ''
+                                        }
                                     </RatingOccasion>
                                 )}
                             )
@@ -114,23 +123,45 @@ const fadeInAnimation = keyframes`${fadeIn}`;
 
 const RatingOccasion = styled.div`
     animation: 1s ${fadeInAnimation};
-    border-bottom: 1px solid #fff;
+    background-color: ${colors.grayish(.65)};
+    border-radius: 2px;
     box-sizing: border-box;
+    box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.75);
     color: #fff;
+    margin-bottom: 20px;
+    padding: 20px;
+    position: relative;
+    width: 100%;
+
+    span {
+        font-weight: 300;
+    }
+`;
+
+const Head = styled.div`
+    align-items: center;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 20px;
-    padding: 10px;
-    position: relative;
-    width: 100%;
 
-    div:first-child {
-        font-weight: 700;
+    h3 {
+        font-size: 24px;
+        margin: 0;
+        padding: 0;
     }
-    div:last-child {
-        color: ${colors.dirtpinkish()};
-        font-weight: 300;
+`;
+
+const RoMVP = styled.div`
+    align-items: flex-end;
+    color: ${colors.yellowish()};
+    display: flex;
+    flex-direction: row;
+    font-size: 18px;
+
+    svg {
+        font-size: 22px;
+        margin-right: 10px;
     }
 `;
 
