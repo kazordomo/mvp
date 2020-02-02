@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import * as firebase from 'firebase';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import keys from './config/keys';
 import { getById, updateById, setById } from './firebase/fetch';
 import { isEmptyObj } from './utils';
-import { populatePlayers, populateUsers, populateRatingOccasions } from './actions';
+import { populateUsers, populateRatingOccasions } from './actions';
+import * as playerActions from './data/actions/players';
 
 import Login from './components/login/Login';
 import Admin from './components/admin/Admin';
@@ -53,7 +55,7 @@ class App extends Component {
 	async populateData() {
 		const [users, players, ratingOccasions] = await Promise.all([
 			populateUsers(),
-			populatePlayers(),
+			this.props.fetchPlayers(),
 			populateRatingOccasions(),
 		]);
 		// Because we're waiting for the fetch to succeed, we can use the players array directly from here.
@@ -132,10 +134,7 @@ class App extends Component {
 							/>
 						)}
 					/>
-					<Route
-						path="/leaderboard"
-						render={() => <Leaderboard players={this.state.players} getProfileId={this.getProfileId} />}
-					/>
+					<Route path="/leaderboard" render={() => <Leaderboard getProfileId={this.getProfileId} />} />
 					<Route
 						path="/statistics"
 						render={() => (
@@ -167,4 +166,8 @@ const AppContainer = styled.div`
 	font-family: 'Josefin Sans', sans-serif;
 `;
 
-export default App;
+const actions = {
+	fetchPlayers: playerActions.fetchPlayers,
+};
+
+export default connect(null, actions)(App);

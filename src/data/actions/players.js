@@ -9,11 +9,11 @@ export const setPlayers = payload => ({
 
 export const fetchPlayers = () => async dispatch => {
 	try {
-		const players = new Map();
+		const players = [];
 		const snapshot = await getAll('players');
 		snapshot.forEach(doc => {
 			const id = parseInt(doc.id, 10);
-			players.set(id, { id, ...doc.data() });
+			players.push({ id, ...doc.data() });
 		});
 
 		dispatch(setPlayers(players));

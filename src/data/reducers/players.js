@@ -9,16 +9,20 @@ const initialState = new Record(
 	'players',
 );
 
+const addPlayers = (state, { payload }) => {
+	let { entities } = state;
+
+	payload.forEach(player => {
+		entities = entities.set(player.id, new Player(player));
+	});
+
+	return state.set('entities', entities);
+};
+
 const players = (state = initialState(), action) => {
 	switch (action.type) {
 		case playerTypes.SET_ITEMS:
-			let newEntities = state.entities;
-
-			for (const player of action.payload.values()) {
-				newEntities = newEntities.set(player.id, new Player(player));
-			}
-
-			return state.set('entities', newEntities);
+			return addPlayers(state, action);
 
 		default:
 			return state;

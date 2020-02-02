@@ -1,18 +1,14 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { getPlayersAsList } from '../../data/selectors/players';
 import colors from '../../assets/colors';
 import { getTotalValue } from '../../utils';
-import { fetchPlayers } from '../../data/actions/players';
 import Container from '../_shared/Container';
 import Nav from '../_shared/Nav';
 import LeaderboardRow from './LeaderboardRow';
 
-const Leaderboard = ({ players, getProfileId, fetchPlayers }) => {
-	useEffect(() => {
-		fetchPlayers();
-	}, []);
-
+const Leaderboard = ({ getProfileId }) => {
+	const players = useSelector(state => getPlayersAsList(state));
 	const sortedPlayers = players.sort((a, b) => getTotalValue(b.ratings) - getTotalValue(a.ratings));
 
 	return (
@@ -24,20 +20,11 @@ const Leaderboard = ({ players, getProfileId, fetchPlayers }) => {
 					pos={i + 1}
 					player={player}
 					profileId={getProfileId(player.number)}
-					maxPoint={getTotalValue(sortedPlayers[0].ratings)}
+					maxPoint={getTotalValue(sortedPlayers.first().ratings)}
 				/>
 			))}
 		</Container>
 	);
 };
 
-Leaderboard.propTypes = {
-	players: PropTypes.array,
-	getProfileId: PropTypes.func,
-};
-
-const actions = {
-	fetchPlayers,
-};
-
-export default connect(null, actions)(Leaderboard);
+export default Leaderboard;
