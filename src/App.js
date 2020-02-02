@@ -16,8 +16,6 @@ import Leaderboard from './components/leaderboard/Leaderboard';
 import Statistics from './components/statistics/Statistics';
 import Loading from './components/_shared/Loading';
 
-// TODO: Handle errors.
-
 class App extends Component {
 	constructor(props) {
 		super(props);
