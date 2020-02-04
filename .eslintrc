@@ -25,7 +25,7 @@
 		],
 		"no-tabs": 0,
 		"indent": [
-			2,
+			4,
 			"tab"
 		],
 		"linebreak-style": 0,

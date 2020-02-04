@@ -7,7 +7,9 @@ import keys from './config/keys';
 import { getById, updateById, setById } from './firebase/fetch';
 import { isEmptyObj } from './utils';
 import { populateUsers, populateRatingOccasions } from './actions';
+// @todo: import all actions
 import * as playerActions from './data/actions/players';
+import * as ratingOccasionActions from './data/actions/ratingOccasions';
 
 import Login from './components/login/Login';
 import Admin from './components/admin/Admin';
@@ -53,13 +55,15 @@ class App extends Component {
 	}
 
 	async populateData() {
-		const [users, players, ratingOccasions] = await Promise.all([
-			populateUsers(),
-			this.props.fetchPlayers(),
-			populateRatingOccasions(),
-		]);
+		// await Promise.all({
+
+		// });
+
+		this.props.fetchPlayers();
+
+		const [users, ratingOccasions] = await Promise.all([populateUsers(), populateRatingOccasions()]);
 		// Because we're waiting for the fetch to succeed, we can use the players array directly from here.
-		this.setState({ users, players, ratingOccasions, isFetching: false });
+		this.setState({ users, ratingOccasions, isFetching: false });
 	}
 
 	getActiveRatingOccasion = () => this.state.ratingOccasions.find(occasion => occasion.active);
@@ -168,6 +172,7 @@ const AppContainer = styled.div`
 
 const actions = {
 	fetchPlayers: playerActions.fetchPlayers,
+	fetchRatingOccasions: ratingOccasionActions.fetchRatingOccasions,
 };
 
 export default connect(null, actions)(App);
