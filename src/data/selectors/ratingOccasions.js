@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-export const getRatingOccasions = state => state.players.entities;
+export const getRatingOccasions = state => state.ratingOccasions.entities;
 
 export const getRatingOccasionsAsList = createSelector(
 	getRatingOccasions,
@@ -9,6 +9,6 @@ export const getRatingOccasionsAsList = createSelector(
 
 export const getSingleRatingOccasion = createSelector(
 	getRatingOccasions,
-	ratingOccasionId,
+	(_, props) => props.ratingOccasionId,
 	(ratingOccasions, ratingOccasionId) => ratingOccasions.get(ratingOccasionId)
 );

@@ -7,7 +7,7 @@ import Container from '../_shared/Container';
 import Nav from '../_shared/Nav';
 import LeaderboardRow from './LeaderboardRow';
 
-const Leaderboard = ({ getProfileId }) => {
+const Leaderboard = () => {
 	const players = useSelector(state => getPlayersAsList(state));
 	const sortedPlayers = players.sort((a, b) => getTotalValue(b.ratings) - getTotalValue(a.ratings));
 
@@ -19,7 +19,7 @@ const Leaderboard = ({ getProfileId }) => {
 					key={player.name}
 					pos={i + 1}
 					player={player}
-					profileId={getProfileId(player.number)}
+					profileId={1}
 					maxPoint={getTotalValue(sortedPlayers.first().ratings)}
 				/>
 			))}
