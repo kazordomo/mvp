@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { batch, useDispatch } from 'react-redux';
+import { batch, useDispatch, useSelector } from 'react-redux';
 import * as firebase from 'firebase';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
@@ -15,18 +15,18 @@ import Leaderboard from './components/leaderboard/Leaderboard';
 import Statistics from './components/statistics/Statistics';
 import Loading from './components/_shared/Loading';
 
+import { getActiveUser } from './data/selectors/app';
+
 const App = () => {
 	const dispatch = useDispatch();
 
 	// remove
 	const players = [];
 	const ratingOccasions = [];
+	const users = [];
+	const activeUser = useSelector(state => getActiveUser(state)); // @todo: change old "user" to "activeUser"
 
 	const [isFetching, setIsFetching] = useState(false);
-	// @todo: store in redux state - users.*
-	const [users, setUsers] = useState(null);
-	// @todo: store in redux state - app.user or something
-	const [user, setUser] = useState(null);
 	const [isGuest, setIsGuest] = useState(null);
 
 	useEffect(() => {
@@ -57,6 +57,7 @@ const App = () => {
 
 	const fetchData = () => {
 		batch(() => {
+			dispatch(actions.users.fetchUsers());
 			dispatch(actions.players.fetchPlayers());
 			dispatch(actions.ratingOccasions.fetchRatingOccasions());
 		});
@@ -67,7 +68,7 @@ const App = () => {
 	// If the player/person got an account, we will use the user.id when we enter the profile. Otherwise we will use the player.id/nr.
 	const getProfileId = nr => {
 		const user = users.find(user => parseInt(user.playerNumber) === nr);
-		return user ? user.id : nr;
+		return activeUser ? activeUser.id : nr;
 	};
 
 	const onOpenRating = async opponents => {
@@ -117,7 +118,7 @@ const App = () => {
 				<Route
 					exact
 					path="/"
-					render={() => <Home user={user} ratingOccasion={null} />}
+					render={() => <Home user={activeUser} ratingOccasion={null} />}
 				/>
 				<Route
 					path="/profile/:id"
@@ -127,7 +128,7 @@ const App = () => {
 					path="/rate"
 					render={() => (
 						<Rate
-							user={user}
+							user={activeUser}
 							players={players}
 							ratingOccasion={null}
 						/>
@@ -148,7 +149,7 @@ const App = () => {
 					path="/admin"
 					render={() => (
 						<Admin
-							user={user}
+							user={activeUser}
 							ratingOccasion={null}
 							onOpenRating={null}
 							onCloseRating={null}
