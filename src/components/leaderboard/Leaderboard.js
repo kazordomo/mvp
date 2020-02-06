@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { getPlayersAsList } from '../../data/selectors/players';
+import * as selectors from '../../data/selectors/players';
 import colors from '../../assets/colors';
 import { getTotalValue } from '../../utils';
 import Container from '../_shared/Container';
@@ -8,7 +8,7 @@ import Nav from '../_shared/Nav';
 import LeaderboardRow from './LeaderboardRow';
 
 const Leaderboard = () => {
-	const players = useSelector(state => getPlayersAsList(state));
+	const players = useSelector(state => selectors.getPlayersAsList(state));
 	const sortedPlayers = players.sort((a, b) => getTotalValue(b.ratings) - getTotalValue(a.ratings));
 
 	return (
@@ -19,7 +19,6 @@ const Leaderboard = () => {
 					key={player.name}
 					pos={i + 1}
 					player={player}
-					profileId={1}
 					maxPoint={getTotalValue(sortedPlayers.first().ratings)}
 				/>
 			))}

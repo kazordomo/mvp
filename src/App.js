@@ -68,7 +68,7 @@ const App = () => {
 	// If the player/person got an account, we will use the user.id when we enter the profile. Otherwise we will use the player.id/nr.
 	const getProfileId = nr => {
 		const user = users.find(user => parseInt(user.playerNumber) === nr);
-		return activeUser ? activeUser.id : nr;
+		return user ? user.id : nr;
 	};
 
 	const onOpenRating = async opponents => {
