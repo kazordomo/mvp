@@ -1,3 +1,7 @@
+export const appTypes = {
+	SET_ACTIVE_USER: 'app/SET_ACTIVE_USER',
+};
+
 export const playerTypes = {
 	SET_ITEMS: 'players/SET_ITEMS',
 };

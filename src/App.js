@@ -50,7 +50,8 @@ const App = () => {
 				...snapshot.data(),
 				admin: idTokenResult.claims.admin ? idTokenResult.claims.admin : false,
 			};
-			setUser(userData);
+
+			dispatch(actions.app.setActiveUser(userData.id));
 		});
 	}
 
