@@ -2,12 +2,18 @@ import { getAll } from '../../firebase/fetch';
 
 import { playerTypes } from './types';
 
-export const setPlayers = payload => ({
-	type: playerTypes.SET_ITEMS,
+const requestPlayers = () => ({
+	type: playerTypes.FETCH_REQUEST,
+})
+
+const setPlayers = payload => ({
+	type: playerTypes.FETCH_SUCCESS,
 	payload,
 });
 
 export const fetchPlayers = () => async dispatch => {
+	dispatch(requestPlayers());
+
 	try {
 		const players = [];
 		const snapshot = await getAll('players');

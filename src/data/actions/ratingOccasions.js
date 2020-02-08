@@ -2,12 +2,18 @@ import { getAll } from '../../firebase/fetch';
 
 import { ratingOccasionTypes } from './types';
 
-export const setRatingOccasions = payload => ({
-	type: ratingOccasionTypes.SET_ITEMS,
+const requestRatingOccasions = () => ({
+	type: ratingOccasionTypes.FETCH_REQUEST
+});
+
+const setRatingOccasions = payload => ({
+	type: ratingOccasionTypes.FETCH_SUCCESS,
 	payload,
 });
 
 export const fetchRatingOccasions = () => async dispatch => {
+	dispatch(requestRatingOccasions());
+
 	try {
 		const ratingOccasions = [];
 		const snapshot = await getAll('ratingOccasions');

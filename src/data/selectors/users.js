@@ -1,5 +1,7 @@
 import { createSelector } from 'reselect';
 
+export const getIsFetching = state => state.users.isFetching;
+
 export const getUsers = state => state.users.entities;
 
 export const getUsersAsList = createSelector(getUsers, users => users.toList());

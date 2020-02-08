@@ -4,6 +4,7 @@ import { playerTypes } from '../actions/types';
 
 const initialState = new Record(
 	{
+		isFetching: false,
 		entities: new Map(),
 	},
 	'players',
@@ -16,12 +17,14 @@ const addPlayers = (state, { payload }) => {
 		entities = entities.set(player.id, new Player(player));
 	});
 
-	return state.set('entities', entities);
+	return state.set('entities', entities).set('isFetching', false);
 };
 
 const players = (state = initialState(), action) => {
 	switch (action.type) {
-		case playerTypes.SET_ITEMS:
+		case playerTypes.FETCH_REQUEST:
+			return state.set('isFetching', true);
+		case playerTypes.FETCH_SUCCESS:
 			return addPlayers(state, action);
 
 		default:

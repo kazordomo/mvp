@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { getById, updateById, setById } from './firebase/fetch';
 import actions from './data/actions';
+import selectors from './data/selectors';
 import Login from './components/login/Login';
 import Admin from './components/admin/Admin';
 import Profile from './components/profile/Profile';
@@ -18,6 +19,11 @@ import { getActiveUser } from './data/selectors/app';
 const App = () => {
 	const dispatch = useDispatch();
 
+	const isAppFetching = useSelector(state => selectors.app.getIsFetching(state));
+	const isUsersFetching = useSelector(state => selectors.users.getIsFetching(state));
+	const isPlayersFetching = useSelector(state => selectors.players.getIsFetching(state));
+	const isRatingOccasionsFetching = useSelector(state => selectors.ratingOccasions.getIsFetching(state));
+
 	// remove
 	const players = [];
 	const ratingOccasions = [];
@@ -28,7 +34,6 @@ const App = () => {
 		fetchData();
 	}, [])
 
-	/* @todo: only need user and activeRatingOccasion on start. setup isFetching */
 	const fetchData = () => {
 		batch(() => {
 			dispatch(actions.app.dbInit());
@@ -75,9 +80,12 @@ const App = () => {
 		}
 	};
 
-	// steer isFetching from redux state/actions
-	// https://redux.js.org/advanced/async-actions/
-	if (false) return <Loading />;
+	if (
+		isAppFetching ||
+		isUsersFetching ||
+		isPlayersFetching ||
+		isRatingOccasionsFetching
+	) return <Loading />;
 
 	return (
 		<Router>

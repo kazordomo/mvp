@@ -1,5 +1,7 @@
 import { createSelector } from 'reselect';
 
+export const getIsFetching = state => state.ratingOccasions.isFetching;
+
 export const getRatingOccasions = state => state.ratingOccasions.entities;
 
 export const getActiveRatingOccasion = createSelector(

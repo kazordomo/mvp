@@ -3,12 +3,18 @@ import keys from '../../config/keys';
 import { getById } from '../../firebase/fetch';
 import { appTypes } from './types';
 
-export const setActiveUser = payload => ({
-	type: appTypes.SET_ACTIVE_USER,
-	payload
+const requestUser = () => ({
+	type: appTypes.FETCH_USER_REQUEST
 });
 
+const setUser = payload => ({
+	type: appTypes.FETCH_USER_SUCCESS,
+	payload
+})
+
 export const dbInit = () => async dispatch => {
+	dispatch(requestUser());
+
 	// Regsiter fb-app. If already registered - skip.
 	if (!firebase.apps.length) firebase.initializeApp(keys.firebaseConfig);
 
@@ -23,6 +29,6 @@ export const dbInit = () => async dispatch => {
 			admin: idTokenResult.claims.admin ? idTokenResult.claims.admin : false,
 		};
 
-		dispatch(setActiveUser(userData.id));
+		dispatch(setUser(userData.id));
 	});
 }

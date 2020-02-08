@@ -16,12 +16,14 @@ const addUsers = (state, { payload }) => {
 		entities = entities.set(user.id, new User(user));
 	});
 
-	return state.set('entities', entities);
+	return state.set('entities', entities).set('isFetching', false);
 };
 
 const users = (state = initialState(), action) => {
 	switch (action.type) {
-		case userTypes.SET_ITEMS:
+		case userTypes.FETCH_REQUEST:
+			return state.set('isFetching', true);
+		case userTypes.FETCH_SUCCESS:
 			return addUsers(state, action);
 
 		default:
