@@ -9,11 +9,9 @@ const initialState = new Record(
 	'app',
 );
 
-const addActiveUser = (state, { payload }) => ({
-	...state, activeUserId: payload
-})
+const addActiveUser = (state, { payload }) => state.set('activeUserId', payload);
 
-const app = (state = initialState, action) => {
+const app = (state = initialState(), action) => {
 	switch (action.type) {
 		case appTypes.SET_ACTIVE_USER:
 			return addActiveUser(state, action);

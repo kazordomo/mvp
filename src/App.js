@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { batch, useDispatch, useSelector } from 'react-redux';
-import * as firebase from 'firebase';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import keys from './config/keys';
 import { getById, updateById, setById } from './firebase/fetch';
 import actions from './data/actions';
 import Login from './components/login/Login';
@@ -27,34 +25,13 @@ const App = () => {
 	const activeUser = useSelector(state => getActiveUser(state)); // @todo: change old "user" to "activeUser"
 
 	useEffect(() => {
-		(async () => {
-			await firebaseInit();
-			await fetchData();
-		})()
+		fetchData();
 	}, [])
 
-	const firebaseInit = async () => {
-		// Regsiter fb-app. If already registered - skip.
-		if (!firebase.apps.length) firebase.initializeApp(keys.firebaseConfig);
-
-		// This func gets called when the app is fired up or when a user signs in/out.
-		firebase.auth().onAuthStateChanged(async user => {
-			if (!user) return;
-
-			const idTokenResult = await user.getIdTokenResult();
-			const snapshot = await getById('users', user.uid);
-			const userData = {
-				...snapshot.data(),
-				admin: idTokenResult.claims.admin ? idTokenResult.claims.admin : false,
-			};
-
-			dispatch(actions.app.setActiveUser(userData.id));
-		});
-	}
-
 	/* @todo: only need user and activeRatingOccasion on start. setup isFetching */
-	const fetchData = async () => {
-		await batch(() => {
+	const fetchData = () => {
+		batch(() => {
+			dispatch(actions.app.dbInit());
 			dispatch(actions.users.fetchUsers());
 			dispatch(actions.players.fetchPlayers());
 			dispatch(actions.ratingOccasions.fetchRatingOccasions());
