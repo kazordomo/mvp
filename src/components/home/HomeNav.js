@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { fadeIn } from 'react-animations';
 import { Link } from 'react-router-dom';
@@ -13,52 +12,46 @@ import {
 import Settings from './Settings'
 import Information from './Information';
 
-class HomeNav extends Component {
+const HomeNav = ({ activeUser }) => {
 
-	state = {
-		showSettings: false,
-		showInfo: false,
-	}
+	const [showSettings, setShowSettings] = useState(false);
+	const [showInfo, setShowInfo] = useState(false);
 
-	onShowHideSettings = () => this.setState(prevState => { return { showSettings: !prevState.showSettings } });
-	onShowHideInfo = () => this.setState(prevState => { return { showInfo: !prevState.showInfo } });
+	const onShowHideSettings = () => setShowSettings(prev => !prev);
+	const onShowHideInfo = () => setShowInfo(prev => !prev);
 
-	render() {
-		const isUserLoggedIn = true;
-		if (isUserLoggedIn) return (
-			<div>
-				<Icons>
-					<InfoIcon>
-						<MdInfo onClick={this.onShowHideInfo} />
-					</InfoIcon>
-				</Icons>
-				<Information show={this.state.showInfo} onClose={this.onShowHideInfo} isAdmin={false} />
-			</div>
-		)
+	if (!activeUser) return (
+		<div>
+			<Icons>
+				<InfoIcon>
+					<MdInfo onClick={onShowHideInfo} />
+				</InfoIcon>
+			</Icons>
+			<Information show={showInfo} onClose={onShowHideInfo} isAdmin={false} />
+		</div>
+	)
 
-		return (
-			<div>
-				<Icons>
-					<Settings show={this.state.showSettings} onClose={this.onShowHideSettings} />
-					<MdSettings onClick={this.onShowHideSettings} />
-					<Link to={`/profile/${this.props.user.id}`}>
-						<MdAccountCircle />
-					</Link>
-					{
-						// this.props.user.admin ?
-						true ?
-							<Link to={'/admin'}>
-								<MdSupervisorAccount />
-							</Link> : ''
-					}
-					<InfoIcon>
-						<MdInfo onClick={this.onShowHideInfo} />
-					</InfoIcon>
-				</Icons>
-				<Information show={this.state.showInfo} onClose={this.onShowHideInfo} isAdmin={this.props.user.admin} />
-			</div>
-		)
-	}
+	return (
+		<div>
+			<Icons>
+				<Settings show={showSettings} onClose={onShowHideSettings} />
+				<MdSettings onClick={onShowHideSettings} />
+				<Link to={`/profile/${activeUser.id}`}>
+					<MdAccountCircle />
+				</Link>
+				{
+					activeUser.admin ?
+						<Link to={'/admin'}>
+							<MdSupervisorAccount />
+						</Link> : ''
+				}
+				<InfoIcon>
+					<MdInfo onClick={onShowHideInfo} />
+				</InfoIcon>
+			</Icons>
+			<Information show={showInfo} onClose={onShowHideInfo} isAdmin={activeUser.admin} />
+		</div>
+	)
 }
 
 const fadeInAnimation = keyframes`${fadeIn}`
@@ -85,9 +78,5 @@ const InfoIcon = styled.div`
         color: ${colors.blue()};
     }
 `;
-
-HomeNav.propTypes = {
-	user: PropTypes.object,
-}
 
 export default HomeNav;

@@ -26,13 +26,10 @@ const App = () => {
 	const users = [];
 	const activeUser = useSelector(state => getActiveUser(state)); // @todo: change old "user" to "activeUser"
 
-	const [isFetching, setIsFetching] = useState(false);
-	const [isGuest, setIsGuest] = useState(null);
-
 	useEffect(() => {
 		(async () => {
 			await firebaseInit();
-			fetchData();
+			await fetchData();
 		})()
 	}, [])
 
@@ -55,21 +52,14 @@ const App = () => {
 		});
 	}
 
-	const fetchData = () => {
-		batch(() => {
+	/* @todo: only need user and activeRatingOccasion on start. setup isFetching */
+	const fetchData = async () => {
+		await batch(() => {
 			dispatch(actions.users.fetchUsers());
 			dispatch(actions.players.fetchPlayers());
 			dispatch(actions.ratingOccasions.fetchRatingOccasions());
 		});
 	}
-
-	const getActiveRatingOccasion = () => ratingOccasions.find(occasion => occasion.active);
-
-	// If the player/person got an account, we will use the user.id when we enter the profile. Otherwise we will use the player.id/nr.
-	const getProfileId = nr => {
-		const user = users.find(user => parseInt(user.playerNumber) === nr);
-		return user ? user.id : nr;
-	};
 
 	const onOpenRating = async opponents => {
 		try {
@@ -108,9 +98,9 @@ const App = () => {
 		}
 	};
 
-	const enterAsGuest = () => setIsGuest(true);
-
-	if (isFetching) return <Loading />;
+	// steer isFetching from redux state/actions
+	// https://redux.js.org/advanced/async-actions/
+	if (false) return <Loading />;
 
 	return (
 		<Router>
@@ -118,7 +108,7 @@ const App = () => {
 				<Route
 					exact
 					path="/"
-					render={() => <Home user={activeUser} ratingOccasion={null} />}
+					render={() => <Home />}
 				/>
 				<Route
 					path="/profile/:id"

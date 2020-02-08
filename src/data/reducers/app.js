@@ -3,6 +3,7 @@ import { appTypes } from '../actions/types';
 
 const initialState = new Record(
 	{
+		isGuest: false,
 		activeUserId: 0,
 	},
 	'app',

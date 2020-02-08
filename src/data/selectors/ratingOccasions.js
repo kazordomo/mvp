@@ -2,6 +2,11 @@ import { createSelector } from 'reselect';
 
 export const getRatingOccasions = state => state.ratingOccasions.entities;
 
+export const getActiveRatingOccasion = createSelector(
+	getRatingOccasions,
+	ratingOccasions => ratingOccasions.find(ratingOccasion => ratingOccasion.active)
+);
+
 export const getRatingOccasionsAsList = createSelector(
 	getRatingOccasions,
 	ratingOccasions => ratingOccasions.toList(),
