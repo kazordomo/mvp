@@ -6,6 +6,11 @@ export const getUsers = state => state.users.entities;
 
 export const getUsersAsList = createSelector(getUsers, users => users.toList());
 
+export const getSingleUser = createSelector(
+	getUsers,
+	(_, { id }) => id,
+	(users, id) => users.get(id));
+
 export const getUserProfileId = createSelector(
 	getUsers,
 	(_, props) => props.playerNumber,

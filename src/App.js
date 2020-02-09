@@ -43,43 +43,6 @@ const App = () => {
 		});
 	}
 
-	const onOpenRating = async opponents => {
-		try {
-			const id = 1;
-			// Get the last rounds "round-number" and add 1. If first round - use 1 instead of 0.
-			const round = ratingOccasions.length
-				? ratingOccasions.sort((a, b) => b.round - a.round)[0].round + 1
-				: 1;
-
-			const newRatingOccasion = {
-				id,
-				opponents,
-				round,
-				active: true,
-			};
-			await setById('ratingOccasions', id, newRatingOccasion);
-
-			// open rating
-		} catch (err) {
-			console.log(err);
-		}
-	};
-
-	const onCloseRating = async () => {
-		try {
-			// TODO: map
-			const ratingOccasions = [ratingOccasions];
-			const ratingOccasion = this.getActiveRatingOccasion();
-			ratingOccasion.active = false;
-			ratingOccasions[ratingOccasions.indexOf(ratingOccasion)] = ratingOccasion;
-			await updateById('ratingOccasions', ratingOccasion.id, ratingOccasion);
-
-			// close rating
-		} catch (err) {
-			console.log(err);
-		}
-	};
-
 	if (
 		isAppFetching ||
 		isUsersFetching ||
@@ -97,7 +60,7 @@ const App = () => {
 				/>
 				<Route
 					path="/profile/:id"
-					render={props => <Profile {...props} users={users} players={players} />}
+					render={props => <Profile {...props} />}
 				/>
 				<Route
 					path="/rate"
@@ -123,12 +86,7 @@ const App = () => {
 				<Route
 					path="/admin"
 					render={() => (
-						<Admin
-							user={activeUser}
-							ratingOccasion={null}
-							onOpenRating={null}
-							onCloseRating={null}
-						/>
+						<Admin />
 					)}
 				/>
 			</AppContainer>

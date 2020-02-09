@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { MdGroup, MdEmail } from 'react-icons/md'
 import { addAdminRole } from '../../actions';
@@ -21,8 +20,44 @@ const Admin = () => {
 	const onOpponentsChange = ({ target }) => setOpponents(target.value);
 	const onAdminChange = ({ target }) => setAdmin(target.value);
 
-	const onOpenRating = () => { };
-	const onCloseRating = () => { };
+	/* @todo: refactor to action */
+	const onOpenRating = async opponents => {
+		// try {
+		// 	const id = 1;
+		// 	// Get the last rounds "round-number" and add 1. If first round - use 1 instead of 0.
+		// 	const round = ratingOccasions.length
+		// 		? ratingOccasions.sort((a, b) => b.round - a.round)[0].round + 1
+		// 		: 1;
+
+		// 	const newRatingOccasion = {
+		// 		id,
+		// 		opponents,
+		// 		round,
+		// 		active: true,
+		// 	};
+		// 	await setById('ratingOccasions', id, newRatingOccasion);
+
+		// 	// open rating
+		// } catch (err) {
+		// 	console.log(err);
+		// }
+	};
+
+	/* @todo: refactor */
+	const onCloseRating = async () => {
+		// try {
+		// 	// TODO: map
+		// 	const ratingOccasions = [ratingOccasions];
+		// 	const ratingOccasion = this.getActiveRatingOccasion();
+		// 	ratingOccasion.active = false;
+		// 	ratingOccasions[ratingOccasions.indexOf(ratingOccasion)] = ratingOccasion;
+		// 	await updateById('ratingOccasions', ratingOccasion.id, ratingOccasion);
+
+		// 	// close rating
+		// } catch (err) {
+		// 	console.log(err);
+		// }
+	};
 
 	const onAddAdmin = () => addAdminRole(admin);
 
@@ -94,13 +129,6 @@ const RatingInfo = styled.div`
 
 let btnStyle = {
 	width: '250px',
-}
-
-Admin.propTypes = {
-	onAddAdminRole: PropTypes.func,
-	ratingOccasion: PropTypes.object,
-	onOpenRating: PropTypes.func,
-	onCloseRating: PropTypes.func,
 }
 
 export default Admin;

@@ -10,56 +10,21 @@ import Chart from './Chart';
 import SubTitle from '../_shared/SubTitle';
 import PointsInfo from '../_shared/PointsInfo';
 
-import { getUsersAsList } from '../../data/selectors/users';
-import { getPlayersAsList } from '../../data/selectors/players';
+import { getUsersAsList, getSingleUser } from '../../data/selectors/users';
+import { getPlayersAsList, getSinglePlayer } from '../../data/selectors/players';
 
 const Profile = ({ match, history }) => {
 
 	const users = useSelector(state => getUsersAsList(state));
 	const players = useSelector(state => getPlayersAsList(state));
 
-	// We divide the user and player object because we know that only users will have given ratings - and
-	// only player will have gotten ratings. It makes it easier to check if we should continue or not.
-	const user = findById(users, match.params.id);
-	let player = false;
+	const user = useSelector(state => getSingleUser(state, { id: match.params.id }));
+	const player = useSelector(state => getSinglePlayer(
+		state, { id: user ? user.playerNumber : parseInt(match.params.id) })
+	);
 
-	// Check if the user is a player. If not, check if player exists without a user attached.
-	if (user) {
-		if (findById(players, user.playerNumber))
-			player = players.find(p => p.id === user.playerNumber);
-	} else if (findById(players, match.params.id))
-		player = findById(players, match.params.id);
-
-	const filterRatingsGottenByUser = () => {
-		const ratings = [];
-
-		// Only players will be able to have gotten ratings.
-		if (!player || !player.ratings) return [];
-
-		for (let rating of player.ratings) {
-			const allRatingsFromUser = player.ratings.filter(r => r.fromId === rating.fromId);
-			const ratingObj = convertToRatingObj(findById(users, rating.fromId), allRatingsFromUser);
-			ratings.push(ratingObj);
-		}
-		return uniqueArray(ratings).sort((a, b) => b.totalValue - a.totalValue);
-	}
-
-	const filterRatingsGivenByUser = () => {
-		const ratings = [];
-
-		for (let player of players) {
-			if (player.ratings) {
-				const ratingsMade = player.ratings.filter(r => r.fromId === match.params.id);
-				let ratingObj = {};
-				if (ratingsMade.length > 0) {
-					ratingObj = convertToRatingObj(player, ratingsMade)
-					ratings.push(ratingObj);
-				}
-
-			}
-		}
-		return uniqueArray(ratings).sort((a, b) => b.totalValue - a.totalValue);
-	}
+	/* @todo: fetch user/users on page-refresh */
+	if (!user && !player) return 'loading';
 
 	const convertToRatingObj = (person, ratings) => {
 		return {
@@ -71,20 +36,34 @@ const Profile = ({ match, history }) => {
 		}
 	}
 
-	const getQuote = () => {
-		const quoteBegining = 'Inga poäng - ';
-		const quoteArr = [
-			`${quoteBegining}Lira lite bättre.`,
-			`${quoteBegining}Ta hemjobbet.`,
-			`${quoteBegining}På't igen`,
-			`${quoteBegining}Det kommer.`,
-			`${quoteBegining}Dags att vinna andrabollarna.`
-		]
-		return quoteArr[Math.floor(Math.random() * Math.floor(4))];
+	const getEarnedRatings = () => {
+		// Only players will be able to have gotten ratings.
+		if (!player?.ratings) return [];
+
+		return uniqueArray(player.ratings.map(rating => {
+			const allRatingsFromUser =
+				player.ratings.filter(r => r.fromId === rating.fromId);
+			return convertToRatingObj(findById(users, rating.fromId), allRatingsFromUser);
+		}));
 	}
 
-	const ratingsGotten = filterRatingsGottenByUser();
-	const ratingsGiven = filterRatingsGivenByUser();
+	const getGivenRatings = () =>
+		uniqueArray(
+			players.map(player =>
+				convertToRatingObj(player, player.ratings
+					.filter(rating => rating.fromId === user?.id))
+			).filter(ratings => ratings.totalValue !== 0)
+		);
+
+	const getQuote = () => (
+		[
+			'Inga poäng - Lira lite bättre.',
+			'Inga poäng - Ta hemjobbet.',
+			'Inga poäng - På\'t igen',
+			'Inga poäng - Det kommer.',
+			'Inga pooäng - Dags att vinna andrabollarna.'
+		][Math.floor(Math.random() * Math.floor(4))]
+	);
 
 	return (
 		<Container brColor={colors.spacegrayish()}>
@@ -96,8 +75,12 @@ const Profile = ({ match, history }) => {
 				<Wrapper>
 					<SubTitle>Poäng från användare</SubTitle>
 					{
-						Object.keys(ratingsGotten).length ?
-							<Chart title='Poäng från användare' ratings={ratingsGotten} maxPoint={ratingsGotten[0].totalValue} />
+						getEarnedRatings().length ?
+							<Chart
+								title='Poäng från användare'
+								ratings={getEarnedRatings()}
+								maxPoint={getEarnedRatings()[0].totalValue}
+							/>
 							: <div>{getQuote()}</div>
 					}
 				</Wrapper>
@@ -106,8 +89,12 @@ const Profile = ({ match, history }) => {
 				<Wrapper>
 					<SubTitle>Utdelade Poäng</SubTitle>
 					{
-						Object.keys(ratingsGiven).length ?
-							<Chart title='Poäng från användare' ratings={ratingsGiven} maxPoint={ratingsGiven[0].totalValue} />
+						getGivenRatings().length ?
+							<Chart
+								title='Poäng från användare'
+								ratings={getGivenRatings()}
+								maxPoint={getGivenRatings()[0].totalValue}
+							/>
 							: <div>Inget utdelat än.</div>
 					}
 				</Wrapper>
