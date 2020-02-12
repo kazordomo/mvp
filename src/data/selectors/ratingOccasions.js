@@ -1,4 +1,8 @@
+import { Map } from 'immutable';
 import { createSelector } from 'reselect';
+
+import { getPlayers } from './players';
+import { getUsers } from './users';
 
 export const getIsFetching = state => state.ratingOccasions.isFetching;
 
@@ -16,6 +20,6 @@ export const getRatingOccasionsAsList = createSelector(
 
 export const getSingleRatingOccasion = createSelector(
 	getRatingOccasions,
-	(_, props) => props.ratingOccasionId,
-	(ratingOccasions, ratingOccasionId) => ratingOccasions.get(ratingOccasionId)
+	(_, { id }) => id,
+	(ratingOccasions, id) => ratingOccasions.get(id)
 );

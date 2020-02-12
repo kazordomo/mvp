@@ -12,6 +12,7 @@ import Home from './components/home/Home';
 import Rate from './components/rate/Rate';
 import Leaderboard from './components/leaderboard/Leaderboard';
 import Statistics from './components/statistics/Statistics';
+import RatingOccasion from './components/statistics/RatingOccasion';
 import Loading from './components/_shared/Loading';
 
 import { getActiveUser } from './data/selectors/app';
@@ -56,7 +57,7 @@ const App = () => {
 				<Route
 					exact
 					path="/"
-					render={() => <Home />}
+					component={Home}
 				/>
 				<Route
 					path="/profile/:id"
@@ -72,22 +73,23 @@ const App = () => {
 						/>
 					)}
 				/>
-				<Route path="/leaderboard" render={() => <Leaderboard getProfileId={null} />} />
+				<Route path="/leaderboard" component={Leaderboard} />
 				<Route
+					exact
 					path="/statistics"
-					render={() => (
-						<Statistics
-							players={players}
-							users={users}
-							ratingOccasions={ratingOccasions}
-						/>
+					component={Statistics}
+				/>
+				<Route
+					exact
+					path="/statistics/:id"
+					render={props => (
+						<RatingOccasion
+							{...props} />
 					)}
 				/>
 				<Route
 					path="/admin"
-					render={() => (
-						<Admin />
-					)}
+					component={Admin}
 				/>
 			</AppContainer>
 		</Router>
