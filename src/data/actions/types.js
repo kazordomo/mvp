@@ -19,5 +19,5 @@ export const ratingOccasionTypes = {
 };
 
 export const ratingTypes = {
-	SET_ITEMS: 'ratings/SET_ITEMS',
+	SET_ITEM: 'ratings/SET_ITEM',
 };

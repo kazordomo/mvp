@@ -9,7 +9,9 @@ import Login from './components/login/Login';
 import Admin from './components/admin/Admin';
 import Profile from './components/profile/Profile';
 import Home from './components/home/Home';
+// @todo: remove rate
 import Rate from './components/rate/Rate';
+import Rating from './components/rating/Rating';
 import Leaderboard from './components/leaderboard/Leaderboard';
 import Statistics from './components/statistics/Statistics';
 import RatingOccasion from './components/statistics/RatingOccasion';
@@ -65,6 +67,10 @@ const App = () => {
 				/>
 				<Route
 					path="/rate"
+					component={Rating}
+				/>
+				<Route
+					path="/rate_old"
 					render={() => (
 						<Rate
 							user={activeUser}

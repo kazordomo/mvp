@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import colors from '../../assets/colors';
 
-import { getSingleRatingOccasion, getRatingOccasionRatings } from '../../data/selectors/ratingOccasions';
+import { getSingleRatingOccasion } from '../../data/selectors/ratingOccasions';
 
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
@@ -13,10 +13,6 @@ const RatingOccasion = ({ match }) => {
 	/* @todo: redo how we are storing ratings... */
 	const ratingOccasion = useSelector(state =>
 		getSingleRatingOccasion(state, { id: match.params.id })
-	);
-
-	const ratings = useSelector(state =>
-		getRatingOccasionRatings(state, { id: match.params.id })
 	);
 
 	if (!ratingOccasion) return 'loading';
