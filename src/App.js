@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { batch, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { getById, updateById, setById } from './firebase/fetch';
 import actions from './data/actions';
 import selectors from './data/selectors';
 import Login from './components/login/Login';
@@ -13,8 +12,8 @@ import Home from './components/home/Home';
 import Rate from './components/rate/Rate';
 import Rating from './components/rating/Rating';
 import Leaderboard from './components/leaderboard/Leaderboard';
-import Statistics from './components/statistics/Statistics';
-import RatingOccasion from './components/statistics/RatingOccasion';
+import ListMatch from './components/match/List';
+import SingleMatch from './components/match/Single';
 import Loading from './components/_shared/Loading';
 
 import { getActiveUser } from './data/selectors/app';
@@ -25,12 +24,10 @@ const App = () => {
 	const isAppFetching = useSelector(state => selectors.app.getIsFetching(state));
 	const isUsersFetching = useSelector(state => selectors.users.getIsFetching(state));
 	const isPlayersFetching = useSelector(state => selectors.players.getIsFetching(state));
-	const isRatingOccasionsFetching = useSelector(state => selectors.ratingOccasions.getIsFetching(state));
+	const isMatchesFetching = useSelector(state => selectors.matches.getIsFetching(state));
 
 	// remove
 	const players = [];
-	const ratingOccasions = [];
-	const users = [];
 	const activeUser = useSelector(state => getActiveUser(state)); // @todo: change old "user" to "activeUser"
 
 	useEffect(() => {
@@ -42,7 +39,7 @@ const App = () => {
 			dispatch(actions.app.dbInit());
 			dispatch(actions.users.fetchUsers());
 			dispatch(actions.players.fetchPlayers());
-			dispatch(actions.ratingOccasions.fetchRatingOccasions());
+			dispatch(actions.matches.fetchMatches());
 		});
 	}
 
@@ -50,7 +47,7 @@ const App = () => {
 		isAppFetching ||
 		isUsersFetching ||
 		isPlayersFetching ||
-		isRatingOccasionsFetching
+		isMatchesFetching
 	) return <Loading />;
 
 	return (
@@ -82,14 +79,14 @@ const App = () => {
 				<Route path="/leaderboard" component={Leaderboard} />
 				<Route
 					exact
-					path="/statistics"
-					component={Statistics}
+					path="/matches"
+					component={ListMatch}
 				/>
 				<Route
 					exact
-					path="/statistics/:id"
+					path="/matches/:id"
 					render={props => (
-						<RatingOccasion
+						<SingleMatch
 							{...props} />
 					)}
 				/>

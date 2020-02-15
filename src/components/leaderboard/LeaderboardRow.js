@@ -1,31 +1,30 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { MdGrade } from 'react-icons/md'
-import { getTotalValue, getFillWidth, getFillColor } from '../../utils';
+import { getFillWidth, getFillColor } from '../../utils';
 import Animation from '../hoc/Animation';
 
-import * as selectors from '../../data/selectors/users';
+import selectors from '../../data/selectors';
 
-const LeaderboardRow = ({ activeAnimation, pos, player, maxPoint }) => {
+const LeaderboardRow = ({ activeAnimation, pos, player, maxScore, score }) => {
 	const profileId = useSelector(state =>
-		selectors.getUserProfileId(state, { playerNumber: player.number }));
+		selectors.users.getUserProfileId(state, { playerNumber: player.number }));
 
 	return (
 		<Link to={`/profile/${profileId}`}>
 			<Row>
 				<Fill pos={pos} width={
-					(activeAnimation && getTotalValue(player.ratings) !== 0) ?
-						getFillWidth(maxPoint, getTotalValue(player.ratings)) : 0}
+					(activeAnimation && score !== 0) ?
+						getFillWidth(maxScore, score) : 0}
 				/>
 				<Col>
 					<div>{(pos === 1) ? <MdGrade /> : pos}</div>
 					<Name>{player.name}</Name>
 				</Col>
 				<Col>
-					<Points><div>{getTotalValue(player.ratings)}</div><div>poäng</div></Points>
+					<Points><div>{score}</div><div>poäng</div></Points>
 				</Col>
 			</Row>
 		</Link>
@@ -68,11 +67,5 @@ const Points = styled.div`
     text-align: center;
     line-height: 1.1;
 `;
-
-LeaderboardRow.propTypes = {
-	pos: PropTypes.number,
-	player: PropTypes.object,
-	maxPoint: PropTypes.number,
-}
 
 export default Animation(LeaderboardRow);

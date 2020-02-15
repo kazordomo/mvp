@@ -13,6 +13,11 @@ export const playerTypes = {
 	FETCH_SUCCESS: 'players/FETCH_SUCCESS',
 };
 
+export const matchTypes = {
+	FETCH_REQUEST: 'matches/FETCH_REQUEST',
+	FETCH_SUCCESS: 'matches/FETCH_SUCCESS',
+};
+
 export const ratingOccasionTypes = {
 	FETCH_REQUEST: 'ratingOccasions/FETCH_REQUEST',
 	FETCH_SUCCESS: 'ratingOccasions/FETCH_SUCCESS',

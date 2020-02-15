@@ -38,7 +38,7 @@ export default ({ ratingOccasion, userAlreadyRated, isGuest }) => {
 					<MdFormatListNumbered color={colors.dirtpinkish()} />
 				</Button>
 			</Link>
-			<Link to={'/statistics'}>
+			<Link to={'/matches'}>
 				<Button customStyle={{ ...btnStyle, backgroundColor: colors.orangeish(114) }} shadow>
 					<span>Statistik</span>
 					<MdShowChart color={colors.dirtpinkish()} />
