@@ -23,10 +23,16 @@ const setRating = (state, { payload }) => {
 	return state;
 };
 
+const resetRating = (state) => {
+	return state.set('entities', new Map());
+}
+
 const ratings = (state = initialState(), action) => {
 	switch (action.type) {
 		case ratingTypes.SET_ITEM:
 			return setRating(state, action);
+		case ratingTypes.RESET:
+			return resetRating(state, action);
 		default:
 			return state;
 	}

@@ -1,11 +1,12 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
+import { MdLock } from 'react-icons/md'
 
 const CustomButton = styled.div`
     align-items: center;
-	background-color: red;
     display: flex;
 	font-size: 16px;
+	font-weight: 600;
     justify-content: center;
     height: 80px;
     width: 75px;
@@ -16,7 +17,7 @@ const CustomButton = styled.div`
 `;
 
 export default memo(({ value, disabled, handleRate }) => (
-	disabled ? <div>disabled</div> :
+	disabled ? <CustomButton><MdLock /></CustomButton> :
 		<CustomButton onClick={handleRate}>
 			{value}
 		</CustomButton>

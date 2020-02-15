@@ -14,108 +14,108 @@ import SubTitle from '../_shared/SubTitle';
 
 class Rate extends Component {
 
-    constructor(props) {
-        super(props);
+	constructor(props) {
+		super(props);
 
-        this.initialState = {
-            AMOUNT_OF_RATINGS: 3,
-            pointsGiven: [],
-            isDoneRating: false,
-            redirectToReferrer: false,
-        }
+		this.initialState = {
+			AMOUNT_OF_RATINGS: 3,
+			pointsGiven: [],
+			isDoneRating: false,
+			redirectToReferrer: false,
+		}
 
-        this.state = this.initialState;
-    }
+		this.state = this.initialState;
+	}
 
-    onPlayerRate = (player, point) => {
-        this.setState({ 
-            pointsGiven: [...this.state.pointsGiven, { 
-                toId: player.id, 
-                fromId: this.props.user.id,
-                value: point 
-            }] 
-        });
-    }
+	onPlayerRate = (player, point) => {
+		this.setState({
+			pointsGiven: [...this.state.pointsGiven, {
+				toId: player.id,
+				fromId: this.props.user.id,
+				value: point
+			}]
+		});
+	}
 
-    onDoneRating = () => {
-        try {
-            this.state.pointsGiven.forEach(point => {
-                const player = this.props.players.find(player => player.id === point.toId);
-                const rating = { 
-                    fromId: this.props.user.id, 
-                    toId: player.id, // This will be used to identify the player in the statistics
-                    value: point.value,
-                    ratingOccasionId: this.props.ratingOccasion.id,
-                    createdAt: new Date(),
-                 };
-                this.props.user.ratingOccasions.push(this.props.ratingOccasion.id);
-                player.ratings = player.ratings ? [ ...player.ratings, rating ] : [ rating ];
-                addRate(player, rating);
-            });
-            this.setState({ isDoneRating: true }, this.handleRedirect);
-        } catch(err) {
-            console.log(err);
-        }
-    }
+	onDoneRating = () => {
+		try {
+			this.state.pointsGiven.forEach(point => {
+				const player = this.props.players.find(player => player.id === point.toId);
+				const rating = {
+					fromId: this.props.user.id,
+					toId: player.id, // This will be used to identify the player in the statistics
+					value: point.value,
+					ratingOccasionId: this.props.ratingOccasion.id,
+					createdAt: new Date(),
+				};
+				this.props.user.ratingOccasions.push(this.props.ratingOccasion.id);
+				player.ratings = player.ratings ? [...player.ratings, rating] : [rating];
+				addRate(player, rating);
+			});
+			this.setState({ isDoneRating: true }, this.handleRedirect);
+		} catch (err) {
+			console.log(err);
+		}
+	}
 
-    getRating = player =>  { 
-        const rating = this.state.pointsGiven.find(point => point.toId === player.id);
-        return rating ? rating : {};
-    }
-        
-    checkIfRateValueIsUsed = rateValue => {
-        const rating = this.state.pointsGiven.find(point => point.value === rateValue);
-        return rating ? rating : {}
-    }
+	getRating = player => {
+		const rating = this.state.pointsGiven.find(point => point.toId === player.id);
+		return rating ? rating : {};
+	}
 
-    onReset = () => this.setState(this.initialState);
-    checkIfAllRatesUsed = () => this.state.pointsGiven.length === this.state.AMOUNT_OF_RATINGS;
-    // Let the checkmark-animation finnish before redirecting.
-    handleRedirect = () => setTimeout(() => this.setState({ redirectToReferrer: true }), 1050);
+	checkIfRateValueIsUsed = rateValue => {
+		const rating = this.state.pointsGiven.find(point => point.value === rateValue);
+		return rating ? rating : {}
+	}
 
-    render() {
+	onReset = () => this.setState(this.initialState);
+	checkIfAllRatesUsed = () => this.state.pointsGiven.length === this.state.AMOUNT_OF_RATINGS;
+	// Let the checkmark-animation finnish before redirecting.
+	handleRedirect = () => setTimeout(() => this.setState({ redirectToReferrer: true }), 1050);
 
-        if (this.state.redirectToReferrer)
-            return <Redirect to={'/'} />
+	render() {
 
-        return (
-            <Container brColor={colors.spacegrayish()}>
-                <Fade show={this.state.isDoneRating || this.checkIfAllRatesUsed()}/>
-                <HiddenIcon show={this.state.isDoneRating}>
-                    <MdCheckCircle color={colors.greenish()} /> : 
+		if (this.state.redirectToReferrer)
+			return <Redirect to={'/'} />
+
+		return (
+			<Container brColor={colors.spacegrayish()}>
+				<Fade show={this.state.isDoneRating || this.checkIfAllRatesUsed()} />
+				<HiddenIcon show={this.state.isDoneRating}>
+					<MdCheckCircle color={colors.greenish()} /> :
                 </HiddenIcon>
-                <HiddenIcon show={this.checkIfAllRatesUsed() && !this.state.isDoneRating}>
-                    <SubTitle>Klar?</SubTitle>
-                </HiddenIcon>
-                <Nav title="RÖSTNING" />
-                <Wrapper>
-                    { this.props.ratingOccasion ? <SubTitle>{ this.props.ratingOccasion.opponents }</SubTitle> : '' }
-                    { this.props.players
-                        .sort((a, b) => a.name.localeCompare(b.name))
-                        .map((player, i) => 
-                            <RateRow 
-                                key={player.id} 
-                                onPlayerRate={this.onPlayerRate} 
-                                player={player} 
-                                pos={i + 1} 
-                                rating={this.getRating(player)}
-                                checkIfRateValueIsUsed={this.checkIfRateValueIsUsed}
-                            />) 
-                    }
-                </Wrapper>
-                <HandleRatingButtons show={this.state.pointsGiven.length}>
-                    <Btn danger onClick={this.onReset}>Reset <MdLockOpen /></Btn>
-                    { this.checkIfAllRatesUsed() ? <Btn onClick={this.onDoneRating}>Skicka <MdCheckCircle /></Btn> : '' }
-                </HandleRatingButtons>
-            </Container>
-        )
-    }
+				<HiddenIcon show={this.checkIfAllRatesUsed() && !this.state.isDoneRating}>
+					<SubTitle>Klar?</SubTitle>
+				</HiddenIcon>
+				<Nav title="RÖSTNING" />
+				<Wrapper>
+					{this.props.ratingOccasion ? <SubTitle>{this.props.ratingOccasion.opponents}</SubTitle> : ''}
+					{this.props.players
+						.sort((a, b) => a.name.localeCompare(b.name))
+						.map((player, i) =>
+							<RateRow
+								key={player.id}
+								onPlayerRate={this.onPlayerRate}
+								player={player}
+								pos={i + 1}
+								rating={this.getRating(player)}
+								checkIfRateValueIsUsed={this.checkIfRateValueIsUsed}
+							/>)
+					}
+				</Wrapper>
+				<HandleRatingButtons show={this.state.pointsGiven.length}>
+					<Btn danger onClick={this.onReset}>Reset <MdLockOpen /></Btn>
+					{this.checkIfAllRatesUsed() ? <Btn onClick={this.onDoneRating}>Skicka <MdCheckCircle /></Btn> : ''}
+				</HandleRatingButtons>
+			</Container>
+		)
+	}
 }
 
 const HandleRatingButtons = styled.div`
     align-items: center;
     bottom: 0px;
-    display: ${props=>props.show ? 'flex' : 'none'};
+    display: ${props => props.show ? 'flex' : 'none'};
     height: 75px;
     justify-content: center;
     position: fixed;
@@ -126,7 +126,7 @@ const HandleRatingButtons = styled.div`
 
 const Btn = styled.div`
     align-items: center;
-    background-color: ${props=>props.danger?colors.redish():colors.greenish()};
+    background-color: ${props => props.danger ? colors.redish() : colors.greenish()};
     border-radius: 25px;
     bottom: 20px;
     box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.75);
@@ -135,7 +135,7 @@ const Btn = styled.div`
     height: 50px;
     justify-content: center;
     line-height: 50px;
-    margin-left: ${props=>props.danger?'0':'20px'};
+    margin-left: ${props => props.danger ? '0' : '20px'};
     pointer-events: all;
     text-align: center;
     width: 150px;
@@ -147,7 +147,7 @@ const Btn = styled.div`
 `;
 
 const HiddenIcon = styled.div`
-    left: ${props=>props.show?'50%':'-60px'};
+    left: ${props => props.show ? '50%' : '-60px'};
     top: 50%;
     position: fixed;
     transform: translate(-50%, -50%);
@@ -160,9 +160,9 @@ const HiddenIcon = styled.div`
 `;
 
 Rate.propTypes = {
-    user: PropTypes.object,
-    players: PropTypes.array,
-    ratingOccasion: PropTypes.object,
+	user: PropTypes.object,
+	players: PropTypes.array,
+	ratingOccasion: PropTypes.object,
 }
 
 export default Rate;

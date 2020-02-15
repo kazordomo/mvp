@@ -25,4 +25,5 @@ export const ratingOccasionTypes = {
 
 export const ratingTypes = {
 	SET_ITEM: 'ratings/SET_ITEM',
+	RESET: 'ratings/RESET',
 };

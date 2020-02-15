@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
-export default styled.div `
-    background-color: rgba(0,0,0,0.75);
+export default styled.div`
+    background-color: rgba(0,0,0,0.45);
     bottom: 0;
-    display: ${props=>props.show ? 'block' : 'none'};
     position: fixed;
     left: 0;
     right: 0;
