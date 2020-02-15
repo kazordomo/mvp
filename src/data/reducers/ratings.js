@@ -9,13 +9,24 @@ const initialState = new Record(
 	'ratings',
 );
 
-const setRating = () => { };
+const setRating = (state, { payload }) => {
+	const { value, player } = payload;
+	const prevPlayerRating = Array
+		.from(state.entities.values())
+		.find(rating => rating.player === player);
+
+	if (prevPlayerRating) {
+		state = state.deleteIn(['entities', prevPlayerRating.value]);
+	};
+
+	state = state.setIn(['entities', value], new Rating(payload));
+	return state;
+};
 
 const ratings = (state = initialState(), action) => {
 	switch (action.type) {
 		case ratingTypes.SET_ITEM:
 			return setRating(state, action);
-
 		default:
 			return state;
 	}

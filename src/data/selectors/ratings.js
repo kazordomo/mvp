@@ -1,0 +1,1 @@
+export const getRatings = state => state.ratings.entities;

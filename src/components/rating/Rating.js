@@ -2,7 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getPlayersAsList } from '../../data/selectors/players';
+import selectors from '../../data/selectors'
+
+import { setRating } from '../../data/actions/ratings';
+
+import RatingButton from './RatingButton';
 
 const Row = styled.div`
 	margin: 20px 0;
@@ -24,35 +28,45 @@ const Buttons = styled.div`
 		}
 	}
 `;
-const CustomButton = styled.div`
-    align-items: center;
-	background-color: red;
-    display: flex;
-	font-size: 16px;
-    justify-content: center;
-    height: 80px;
-    width: 75px;
-
-    svg {
-        font-size: 20px;
-    }
-`;
 
 const Rating = () => {
 	const dispatch = useDispatch();
 
-	const players = useSelector(state => getPlayersAsList(state));
+	const players = useSelector(state => selectors.players.getPlayersAsList(state));
+	const ratings = useSelector(state => selectors.ratings.getRatings(state));
 
-	return players.map(player => (
-		<Row key={player.id}>
-			{player.name}
-			<Buttons>
-				<CustomButton>1</CustomButton>
-				<CustomButton>2</CustomButton>
-				<CustomButton>3</CustomButton>
-			</Buttons>
-		</Row>
-	))
+	const getIsRated = (value, player) => ratings.get(value)?.player === player;
+
+	const handleRate = (value, player) => dispatch(setRating({ value, player }));
+
+	return (
+		<div>
+			{players.map(player => (
+				<Row key={player.id}>
+					{player.name}
+					<Buttons>
+						<RatingButton
+							value={1}
+							disabled={getIsRated(1, player.id)}
+							handleRate={() => handleRate(1, player.id)}
+						/>
+						<RatingButton
+							value={2}
+							disabled={getIsRated(2, player.id)}
+							handleRate={() => handleRate(2, player.id)}
+						/>
+						<RatingButton
+							value={3}
+							disabled={getIsRated(3, player.id)}
+							handleRate={() => handleRate(3, player.id)}
+						/>
+					</Buttons>
+				</Row>
+			))}
+
+			{ratings.size === 3 && <div>Rate</div>}
+		</div>
+	)
 }
 
 export default Rating;
