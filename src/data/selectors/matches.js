@@ -14,3 +14,8 @@ export const getSingleMatch = createSelector(
 	getMatches,
 	(_, { id }) => id,
 	(matches, id) => matches.get(id) || emptyMatch);
+
+export const getActiveMatch = createSelector(
+	getMatches,
+	matches => matches.find(match => match.active)
+);

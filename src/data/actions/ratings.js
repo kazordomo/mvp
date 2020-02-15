@@ -1,7 +1,7 @@
 
 import { ratingTypes } from './types';
 
-const setRating = payload => ({
+export const setRating = payload => ({
 	type: ratingTypes.SET_ITEM,
 	payload,
 });

@@ -6,27 +6,20 @@ import CenteredWrapper from '../_shared/CenteredWrapper';
 import HomeNav from './HomeNav';
 import HomeButtons from './HomeButtons';
 
-import { getActiveUser } from '../../data/selectors/app';
-import { getActiveRatingOccasion } from '../../data/selectors/ratingOccasions';
+import selectors from '../../data/selectors';
 
 const Home = () => {
 
-	const activeUser = useSelector(state => getActiveUser(state)); // @todo: change old "user" to "activeUser"
-	const activeRatingOccasion = useSelector(state => getActiveRatingOccasion(state));
-
-	const userAlreadyRated = () => {
-		if (!activeRatingOccasion) return false;
-		const haveRated = activeUser?.ratingOccasions.find(roId => roId === activeRatingOccasion.id);
-		return haveRated ? haveRated : false;
-	}
+	const activeUser = useSelector(state => selectors.app.getActiveUser(state));
+	const activeMatch = useSelector(state => selectors.matches.getActiveMatch(state));
 
 	return (
 		<Container brColor={colors.spacegrayish()}>
 			<HomeNav activeUser={activeUser} />
 			<CenteredWrapper>
 				<HomeButtons
-					ratingOccasion={activeRatingOccasion}
-					userAlreadyRated={userAlreadyRated()}
+					ratingOccasion={activeMatch}
+					userAlreadyRated={activeUser?.matches.includes(activeMatch)}
 					isGuest={null}
 				/>
 			</CenteredWrapper>
