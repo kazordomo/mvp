@@ -12,36 +12,62 @@ const Wrapper = styled.div`
 	height: 100%;
 	transition: transform 300ms ease-in-out; 
 	color: #fff;
+	z-index: 99;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	z-index: 99;
 `;
 
 const Buttons = styled.div`
 	${Button} {
 		min-width: 100px;
-		margin: 0 20px;
 		height: 50%;
 		line-height: 50px;
 
 		&:first-child {
 			background-color: ${colors.greenish()};
+			margin-right: 20px;
 		}
 
 		&:last-child {
 			background-color: ${colors.redish()};
+			margin-left: 20px;
 		}
 	}
 `;
 
-const DoneRating = ({ show, handleDone, handleReset }) =>
+const Ratings = styled.div`
+	margin-bottom: 20px;
+	background-color: rgba(0,0,0,0.55);
+	padding: 20px;
+	border-radius: 2px;
+
+	div {
+		margin-bottom: 5px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+`;
+
+const DoneRating = ({ show, ratings, handleDone, handleReset }) =>
 	(
 		<Wrapper show={show}>
-			<Buttons>
-				<Button onClick={handleDone}>Rate!</Button>
-				<Button onClick={handleReset}>Reset</Button>
-			</Buttons>
+			<div>
+				<Ratings>
+					{
+						ratings.sort((a, b) => b.value - a.value).map(rating =>
+							<div key={rating.value}>
+								{rating.value}: {rating.player.get('name')}
+							</div>)
+					}
+				</Ratings>
+				<Buttons>
+					<Button onClick={handleDone}>Rate!</Button>
+					<Button onClick={handleReset}>Reset</Button>
+				</Buttons>
+			</div>
 		</Wrapper>
 	)
 

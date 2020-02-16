@@ -42,7 +42,7 @@ const Buttons = styled.div`
 const Rating = () => {
 	const dispatch = useDispatch();
 
-	const players = useSelector(state => selectors.players.getPlayersAsList(state));
+	const players = useSelector(state => selectors.players.getPlayers(state));
 	const ratings = useSelector(state => selectors.ratings.getRatings(state));
 
 	const getIsRated = (value, player) => ratings.get(value)?.player === player;
@@ -51,16 +51,22 @@ const Rating = () => {
 	const handleDone = () => { };
 	const handleReset = () => dispatch(resetRating());
 
+	const getRatingsWithPlayer = () =>
+		Array.from(ratings.values()).map(rating => ({
+			value: rating.value, player: players.get(rating.player)
+		}))
+
 	return (
 		<Container brColor={colors.spacegrayish()}>
 			{ratings.size === 3 && <Fade />}
 			<DoneRating
 				show={ratings.size === 3}
+				ratings={getRatingsWithPlayer()}
 				handleDone={handleDone}
 				handleReset={handleReset}
 			/>
 			<Wrapper>
-				{players.map(player => (
+				{players.toList().map(player => (
 					<Row key={player.id}>
 						{player.name}
 						<Buttons>
