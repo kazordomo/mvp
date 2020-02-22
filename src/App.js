@@ -6,18 +6,13 @@ import actions from './data/actions';
 import selectors from './data/selectors';
 import Login from './components/login/Login';
 import Admin from './components/admin/Admin';
-// import Profile from './components/profile/Profile';
 import Profile from './components/profile/Profile';
 import Home from './components/home/Home';
-// @todo: remove rate
-import Rate from './components/rate/Rate';
 import Rating from './components/rating/Rating';
 import Leaderboard from './components/leaderboard/Leaderboard';
 import ListMatch from './components/match/List';
 import SingleMatch from './components/match/Single';
 import Loading from './components/_shared/Loading';
-
-import { getActiveUser } from './data/selectors/app';
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -26,10 +21,6 @@ const App = () => {
 	const isUsersFetching = useSelector(state => selectors.users.getIsFetching(state));
 	const isPlayersFetching = useSelector(state => selectors.players.getIsFetching(state));
 	const isMatchesFetching = useSelector(state => selectors.matches.getIsFetching(state));
-
-	// remove
-	const players = [];
-	const activeUser = useSelector(state => getActiveUser(state)); // @todo: change old "user" to "activeUser"
 
 	useEffect(() => {
 		fetchData();
@@ -67,16 +58,6 @@ const App = () => {
 					path="/rate"
 					component={Rating}
 				/>
-				<Route
-					path="/rate_old"
-					render={() => (
-						<Rate
-							user={activeUser}
-							players={players}
-							ratingOccasion={null}
-						/>
-					)}
-				/>
 				<Route path="/leaderboard" component={Leaderboard} />
 				<Route
 					exact
@@ -86,10 +67,7 @@ const App = () => {
 				<Route
 					exact
 					path="/matches/:id"
-					render={props => (
-						<SingleMatch
-							{...props} />
-					)}
+					render={props => <SingleMatch {...props} />}
 				/>
 				<Route
 					path="/admin"

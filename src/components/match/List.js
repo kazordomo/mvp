@@ -8,12 +8,13 @@ const ListMatch = () => {
 	const matches = useSelector(state => selectors.getMatchesAsList(state));
 
 	return matches.map(match => (
-		<Link
-			key={match.id}
-			to={`/matches/${match.id}`}>
-			{match.opponents}
-		</Link>)
-	)
+		<div key={match.id}>
+			<Link
+				to={`/matches/${match.id}`}>
+				{match.opponents}
+			</Link>
+		</div>
+	))
 }
 
 export default ListMatch;
