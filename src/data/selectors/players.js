@@ -14,6 +14,8 @@ export const getSinglePlayer = createSelector(
 	(_, { id }) => id,
 	(players, id) => players.get(id));
 
+/* @todo: redo with groupBy */
+/* @todo: remove altogether... */
 export const getPlayersRatings = createSelector(
 	getPlayersAsList,
 	getMatchesAsList,
@@ -36,13 +38,12 @@ export const getPlayersRatings = createSelector(
 	}
 )
 
-/* @todo: remove if unused */
 export const getPlayerRatings = createSelector(
 	getMatchesAsList,
-	(_, { playerId }) => playerId,
-	(matches, playerId) =>
+	(_, { id }) => id,
+	(matches, id) =>
 		matches
 			.flatMap(match => match.ratings)
-			.filter(rating => rating.player === playerId)
-
+			.filter(rating => rating.player === id)
+			.groupBy(rating => rating.user)
 )

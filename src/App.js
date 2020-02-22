@@ -6,6 +6,7 @@ import actions from './data/actions';
 import selectors from './data/selectors';
 import Login from './components/login/Login';
 import Admin from './components/admin/Admin';
+// import Profile from './components/profile/Profile';
 import Profile from './components/profile/Profile';
 import Home from './components/home/Home';
 // @todo: remove rate
