@@ -12,6 +12,7 @@ import { setRating, resetRating } from '../../data/actions/ratings';
 import RatingButton from './RatingButton';
 import DoneRating from './DoneRating';
 import Container from '../_shared/Container';
+import Nav from '../_shared/Nav';
 import Wrapper from '../_shared/Wrapper';
 import Fade from '../_shared/Fade';
 
@@ -58,6 +59,7 @@ const Rating = () => {
 
 	return (
 		<Container brColor={colors.spacegrayish()}>
+			<Nav title="RÖSTNING" />
 			{ratings.size === 3 && <Fade />}
 			<DoneRating
 				show={ratings.size === 3}

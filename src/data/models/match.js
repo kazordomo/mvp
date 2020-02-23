@@ -1,4 +1,4 @@
-import { Record, Map } from 'immutable';
+import { Record, List } from 'immutable';
 
 export default Record(
 	{
@@ -6,7 +6,7 @@ export default Record(
 		opponents: '',
 		active: false,
 		round: 0,
-		ratings: [],
+		ratings: new List(),
 	},
 	'match',
 );

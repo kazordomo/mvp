@@ -1,4 +1,4 @@
-import { Record, Map } from 'immutable';
+import { Record, Map, List } from 'immutable';
 import Match from '../models/match';
 import { matchTypes } from '../actions/types';
 
@@ -14,6 +14,10 @@ const addMatch = (state, { payload }) => {
 	let { entities } = state;
 
 	payload.forEach(match => {
+		// why is ratings not converted to list??
+		const convertedRatings = new List(match.ratings);
+		match['ratings'] = convertedRatings;
+
 		entities = entities.set(match.id, new Match(match));
 	});
 

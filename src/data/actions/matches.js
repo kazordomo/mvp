@@ -17,7 +17,7 @@ export const fetchMatches = () => async dispatch => {
 	try {
 		const matches = [];
 		const snapshot = await getAll('matches');
-		snapshot.forEach(doc => matches.push({ id: doc.id, ...doc.data() }));
+		snapshot.forEach(doc => matches.push(({ id: doc.id, ...doc.data() })));
 
 		dispatch(setMatches(matches));
 	} catch (err) {
