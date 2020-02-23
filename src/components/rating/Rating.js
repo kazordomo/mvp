@@ -43,6 +43,8 @@ const Buttons = styled.div`
 const Rating = () => {
 	const dispatch = useDispatch();
 
+	const RATING_VALUES = [1, 2, 3];
+
 	const players = useSelector(state => selectors.players.getPlayers(state));
 	const ratings = useSelector(state => selectors.ratings.getRatings(state));
 
@@ -72,21 +74,14 @@ const Rating = () => {
 					<Row key={player.id}>
 						{player.name}
 						<Buttons>
-							<RatingButton
-								value={1}
-								disabled={getIsRated(1, player.id)}
-								handleRate={() => handleRate(1, player.id)}
-							/>
-							<RatingButton
-								value={2}
-								disabled={getIsRated(2, player.id)}
-								handleRate={() => handleRate(2, player.id)}
-							/>
-							<RatingButton
-								value={3}
-								disabled={getIsRated(3, player.id)}
-								handleRate={() => handleRate(3, player.id)}
-							/>
+							{RATING_VALUES.map(value => (
+								<RatingButton
+									key={value}
+									value={value}
+									disabled={getIsRated(value, player.id)}
+									handleRate={() => handleRate(value, player.id)}
+								/>
+							))}
 						</Buttons>
 					</Row>
 				))}
