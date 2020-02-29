@@ -61,7 +61,7 @@ const SingleMatch = props => {
 
 	return (
 		<Container brColor={colors.spacegrayish()}>
-			<Nav title="STATISTIK" />
+			<Nav title="STATISTIK" goBack={props.history.goBack} />
 			<Wrapper>
 				<PointsInfo />
 				{

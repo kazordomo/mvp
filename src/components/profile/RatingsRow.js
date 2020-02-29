@@ -25,7 +25,7 @@ const Ratings = styled.div`
 	}
 `;
 
-const RatingRow = memo(({ ratings, personId, maxPoint, given }) => {
+const RatingsRow = memo(({ ratings, personId, maxPoint, given }) => {
 
 	const person = useSelector(state =>
 		given
@@ -56,4 +56,4 @@ const RatingRow = memo(({ ratings, personId, maxPoint, given }) => {
 	)
 });
 
-export default RatingRow;
+export default RatingsRow;

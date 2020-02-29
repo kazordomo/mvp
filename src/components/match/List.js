@@ -1,20 +1,28 @@
 import React from 'react';
+import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import colors from '../../assets/colors';
+
 import * as selectors from '../../data/selectors/matches';
+
+import Nav from '../_shared/Nav';
+import Container from '../_shared/Container';
+import Wrapper from '../_shared/Wrapper';
+import MatchRow from './MatchRow';
 
 const ListMatch = () => {
 	const matches = useSelector(state => selectors.getMatchesAsList(state));
 
-	return matches.map(match => (
-		<div key={match.id}>
-			<Link
-				to={`/matches/${match.id}`}>
-				{match.opponents}
-			</Link>
-		</div>
-	))
+	return (
+		<Container brColor={colors.spacegrayish()}>
+			<Nav title="MATCHER" />
+			<Wrapper>
+				{matches.map(match => <MatchRow key={match.id} match={match} />)}
+			</Wrapper>
+		</Container>
+	)
 }
 
 export default ListMatch;

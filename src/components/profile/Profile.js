@@ -23,7 +23,7 @@ const Profile = ({ match, history }) => {
 	);
 
 	const playerRatings = useSelector(state =>
-		selectors.players.getPlayerRatings(state, { id: user.playerNumber })
+		selectors.players.getPlayerRatings(state, { id: user?.playerNumber || parseInt(match.params.id) })
 	);
 
 	const getTotalRatingValues = ratings => ratings
