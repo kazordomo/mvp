@@ -44,13 +44,13 @@ const Ratings = styled.div`
 const SingleMatch = props => {
 	/* @todo: do we really need to fetch ALL users and ALL players? */
 	const match = useSelector(state =>
-		selectors.matches.getSingleMatch(state, { id: props.match.params.id }));
+		selectors.matches.find(state, props.match.params.id));
 
 	const players = useSelector(state =>
-		selectors.players.getPlayers(state)
+		selectors.players.findAll(state)
 	)
 	const users = useSelector(state =>
-		selectors.users.getUsers(state)
+		selectors.users.findAll(state)
 	)
 
 	const ratingsByUser = match.ratings.groupBy(rating => rating.user).toList();

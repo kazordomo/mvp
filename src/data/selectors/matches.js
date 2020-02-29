@@ -6,16 +6,11 @@ const emptyMatch = new Match();
 
 export const getIsFetching = state => state.matches.isFetching;
 
-export const getMatches = state => state.matches.entities;
+export const findAll = state => state.matches.entities;
 
-export const getMatchesAsList = createSelector(getMatches, matches => matches.toList());
+export const find = (state, id) => state.matches.entities.get(id) || emptyMatch;
 
-export const getSingleMatch = createSelector(
-	getMatches,
-	(_, { id }) => id,
-	(matches, id) => matches.get(id) || emptyMatch);
-
-export const getActiveMatch = createSelector(
-	getMatches,
+export const findActive = createSelector(
+	findAll,
 	matches => matches.find(match => match.active)
 );

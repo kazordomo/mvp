@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import * as selectors from '../../data/selectors/players';
+
+import selectors from '../../data/selectors';
+
 import colors from '../../assets/colors';
 import Container from '../_shared/Container';
 import Nav from '../_shared/Nav';
@@ -8,19 +10,19 @@ import LeaderboardRow from './LeaderboardRow';
 
 const Leaderboard = () => {
 	const playerScores = useSelector(state =>
-		selectors.getPlayersRatings(state))
+		selectors.players.findAllRatings(state));
 
 	const players = useSelector(state =>
-		selectors.getPlayersAsList(state)).sort((a, b) =>
+		selectors.players.findAll(state)).sort((a, b) =>
 			playerScores.get(a.id) > playerScores.get(b.id) ? -1 : 1
-		)
+		);
 
 	const maxScore = playerScores.toList().sort().last();
 
 	return (
 		<Container brColor={colors.spacegrayish()}>
 			<Nav title="POÄNGLIGA" />
-			{players.map((player, i) => (
+			{players.toList().map((player, i) => (
 				<LeaderboardRow
 					key={player.name}
 					pos={i + 1}

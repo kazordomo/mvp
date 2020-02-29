@@ -1,29 +1,29 @@
 import { Map } from 'immutable';
 import { createSelector } from 'reselect';
 
-import { getMatchesAsList } from './matches';
+import Player from '../models/player';
+
+import * as matchSelectors from './matches';
+
+const emptyPlayer = new Player();
 
 export const getIsFetching = state => state.players.isFetching;
 
-export const getPlayers = state => state.players.entities;
+export const findAll = state => state.players.entities;
 
-export const getPlayersAsList = createSelector(getPlayers, players => players.toList());
-
-export const getSinglePlayer = createSelector(
-	getPlayers,
-	(_, { id }) => id,
-	(players, id) => players.get(id));
+export const find = (state, id) => state.players.entities.get(id) || emptyPlayer;
 
 /* @todo: redo with groupBy */
 /* @todo: remove altogether... */
-export const getPlayersRatings = createSelector(
-	getPlayersAsList,
-	getMatchesAsList,
+export const findAllRatings = createSelector(
+	findAll,
+	matchSelectors.findAll,
 	(players, matches) => {
 		let playerRatingMap = new Map();
 
-		players.forEach(player => {
+		players.toList().forEach(player => {
 			const ratings = matches
+				.toList()
 				.flatMap(match => match.ratings)
 				.filter(rating => rating.player === player.id)
 				.reduce((a, b) => a + b.value, 0)
@@ -38,11 +38,12 @@ export const getPlayersRatings = createSelector(
 	}
 )
 
-export const getPlayerRatings = createSelector(
-	getMatchesAsList,
+export const findRatings = createSelector(
+	matchSelectors.findAll,
 	(_, { id }) => id,
 	(matches, id) =>
 		matches
+			.toList()
 			.flatMap(match => match.ratings)
 			.filter(rating => rating.player === id)
 			.groupBy(rating => rating.user)

@@ -2,8 +2,6 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
-import colors from '../../assets/colors';
-
 import selectors from '../../data/selectors'
 
 const Row = styled.div`
@@ -29,8 +27,8 @@ const RatingsRow = memo(({ ratings, personId, maxPoint, given }) => {
 
 	const person = useSelector(state =>
 		given
-			? selectors.players.getSinglePlayer(state, { id: personId })
-			: selectors.users.getSingleUser(state, { id: personId })
+			? selectors.players.find(state, personId)
+			: selectors.users.find(state, personId)
 	);
 
 	const totalValue = ratings.reduce((a, b) => a + b.value, 0);

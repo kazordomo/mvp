@@ -10,16 +10,15 @@ import Chart from './Chart';
 import SubTitle from '../_shared/SubTitle';
 import PointsInfo from '../_shared/PointsInfo';
 
-import { getUsersAsList, getSingleUser } from '../../data/selectors/users';
-import { getPlayersAsList, getSinglePlayer } from '../../data/selectors/players';
+import selectors from '../../data/selectors';
 
 const Profile = ({ match, history }) => {
 
-	const users = useSelector(state => getUsersAsList(state));
-	const players = useSelector(state => getPlayersAsList(state));
+	const users = useSelector(state => selectors.users.findAll(state));
+	const players = useSelector(state => selectors.players.findAll(state));
 
-	const user = useSelector(state => getSingleUser(state, { id: match.params.id }));
-	const player = useSelector(state => getSinglePlayer(
+	const user = useSelector(state => selectors.users.find(state, match.params.id));
+	const player = useSelector(state => selectors.players.find(
 		state, { id: user ? user.playerNumber : parseInt(match.params.id) })
 	);
 
@@ -43,13 +42,13 @@ const Profile = ({ match, history }) => {
 		return uniqueArray(player.ratings.map(rating => {
 			const allRatingsFromUser =
 				player.ratings.filter(r => r.fromId === rating.fromId);
-			return convertToRatingObj(findById(users, rating.fromId), allRatingsFromUser);
+			return convertToRatingObj(findById(users.toList(), rating.fromId), allRatingsFromUser);
 		}));
 	}
 
 	const getGivenRatings = () =>
 		uniqueArray(
-			players.map(player =>
+			players.toList().map(player =>
 				convertToRatingObj(player, player.ratings
 					.filter(rating => rating.fromId === user?.id))
 			).filter(ratings => ratings.totalValue !== 0)

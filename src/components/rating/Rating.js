@@ -45,8 +45,8 @@ const Rating = () => {
 
 	const RATING_VALUES = [1, 2, 3];
 
-	const players = useSelector(state => selectors.players.getPlayers(state));
-	const ratings = useSelector(state => selectors.ratings.getRatings(state));
+	const players = useSelector(state => selectors.players.findAll(state));
+	const ratings = useSelector(state => selectors.ratings.findAll(state));
 
 	const getIsRated = (value, player) => ratings.get(value)?.player === player;
 

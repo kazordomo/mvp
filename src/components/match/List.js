@@ -13,13 +13,15 @@ import Wrapper from '../_shared/Wrapper';
 import MatchRow from './MatchRow';
 
 const ListMatch = () => {
-	const matches = useSelector(state => selectors.getMatchesAsList(state));
+	const matches = useSelector(state => selectors.findAll(state));
 
 	return (
 		<Container brColor={colors.spacegrayish()}>
 			<Nav title="MATCHER" />
 			<Wrapper>
-				{matches.map(match => <MatchRow key={match.id} match={match} />)}
+				{matches
+					.toList()
+					.map(match => <MatchRow key={match.id} match={match} />)}
 			</Wrapper>
 		</Container>
 	)

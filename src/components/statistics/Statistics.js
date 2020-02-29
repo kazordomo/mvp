@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import colors from '../../assets/colors';
 
 import { getRatingOccasionsAsList, } from '../../data/selectors/ratingOccasions';
-import { getPlayersAsList } from '../../data/selectors/players';
+import { findAll } from '../../data/selectors/players';
 
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
@@ -13,9 +13,9 @@ import Wrapper from '../_shared/Wrapper';
 
 const RatingOccasions = () => {
 	const ratingOccasions = useSelector(state => getRatingOccasionsAsList(state));
-	const players = useSelector(state => getPlayersAsList(state));
+	const players = useSelector(state => findAll(state));
 
-	const getRatings = ratingOccasionId => players.flatMap(
+	const getRatings = ratingOccasionId => players.toList().flatMap(
 		player => player.ratings.filter(
 			rating => rating.ratingOccasionId === ratingOccasionId
 		)

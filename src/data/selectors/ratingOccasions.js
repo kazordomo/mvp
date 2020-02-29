@@ -1,8 +1,5 @@
 import { createSelector } from 'reselect';
 
-import { getPlayers } from './players';
-import { getUsers } from './users';
-
 export const getIsFetching = state => state.ratingOccasions.isFetching;
 
 export const getRatingOccasions = state => state.ratingOccasions.entities;

@@ -1,1 +1,1 @@
-export const getRatings = state => state.ratings.entities;
+export const findAll = state => state.ratings.entities;

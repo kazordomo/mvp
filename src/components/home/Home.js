@@ -11,7 +11,7 @@ import selectors from '../../data/selectors';
 const Home = () => {
 
 	const activeUser = useSelector(state => selectors.app.getActiveUser(state));
-	const activeMatch = useSelector(state => selectors.matches.getActiveMatch(state));
+	const activeMatch = useSelector(state => selectors.matches.findActive(state));
 
 	return (
 		<Container brColor={colors.spacegrayish()}>

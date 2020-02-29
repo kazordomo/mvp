@@ -12,18 +12,16 @@ import RatingsRow from './RatingsRow';
 
 const Profile = ({ match, history }) => {
 
-	/* @todo: handle none-user profiles */
-
 	const user = useSelector(state =>
-		selectors.users.getSingleUser(state, { id: match.params.id })
+		selectors.users.find(state, match.params.id)
 	);
 
 	const userRatings = useSelector(state =>
-		selectors.users.getUserRatings(state, { id: match.params.id })
+		selectors.users.findRatings(state, match.params.id)
 	);
 
 	const playerRatings = useSelector(state =>
-		selectors.players.getPlayerRatings(state, { id: user?.playerNumber || parseInt(match.params.id) })
+		selectors.players.findRatings(state, { id: user?.playerNumber || parseInt(match.params.id) })
 	);
 
 	const getTotalRatingValues = ratings => ratings
