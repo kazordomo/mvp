@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { MdCheckCircle, MdLockOpen } from 'react-icons/md'
 
 import colors from '../../assets/colors';
 

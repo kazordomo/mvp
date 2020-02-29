@@ -10,14 +10,18 @@ const CustomButton = styled.div`
     justify-content: center;
     height: 80px;
     width: 75px;
+`;
 
-    svg {
-        font-size: 20px;
-    }
+const SelectedButton = styled(CustomButton)`
+	opacity: 0.75;
+
+	svg {
+			font-size: 20px;
+		}
 `;
 
 export default memo(({ value, disabled, handleRate }) => (
-	disabled ? <CustomButton><MdLock /></CustomButton> :
+	disabled ? <SelectedButton><MdLock /></SelectedButton> :
 		<CustomButton onClick={handleRate}>
 			{value}
 		</CustomButton>
