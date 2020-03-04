@@ -7,7 +7,6 @@ export const arrayToObj = arr => {
 
 export const findById = (arr, id) => arr.find(item => item.id === id);
 // Removes duplicated objects from array of object.
-export const uniqueArray = arr => [...new Set(arr.map(o => JSON.stringify(o)))].map(s => JSON.parse(s));
 export const getFormValue = id => document.querySelector(`${id}`).value
 // Returns { input: input.value, ... }
 export const getFormValues = arr => {

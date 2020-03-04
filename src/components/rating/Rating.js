@@ -50,7 +50,7 @@ const Rating = () => {
 	const getIsRated = (value, player) => ratings.get(value)?.player === player;
 
 	const handleRate = (value, player) => dispatch(setRating({ value, player }));
-	const handleDone = () => { };
+	const handleDone = () => console.log('done rating');
 	const handleReset = () => dispatch(resetRating());
 
 	const getRatingsWithPlayer = () =>

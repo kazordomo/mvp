@@ -25,5 +25,6 @@ export const ratingOccasionTypes = {
 
 export const ratingTypes = {
 	SET_ITEM: 'ratings/SET_ITEM',
+	CONFIRM: 'ratings/CONFIRM',
 	RESET: 'ratings/RESET',
 };
