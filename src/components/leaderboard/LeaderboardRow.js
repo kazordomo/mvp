@@ -1,23 +1,25 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { MdGrade } from 'react-icons/md'
 import { getFillWidth, getFillColor } from '../../utils';
-import Animation from '../hoc/Animation';
+import useAnimation from '../hooks/animation';
 
 import selectors from '../../data/selectors';
 
-const LeaderboardRow = ({ activeAnimation, pos, player, maxScore, score }) => {
+const LeaderboardRow = memo(({ pos, player, maxScore, score }) => {
+	const isAnimating = useAnimation(75 * pos);
+
 	const profileId = useSelector(state =>
 		selectors.users.getUserProfileId(state, { playerNumber: player.number }));
 
 	return (
 		<Link to={`/profile/${profileId}`}>
 			<Row>
-				<Fill pos={pos} width={
-					(activeAnimation && score !== 0) ?
-						getFillWidth(maxScore, score) : 0}
+				<Fill
+					pos={pos}
+					width={(!isAnimating && score !== 0) ? getFillWidth(maxScore, score) : 0}
 				/>
 				<Col>
 					<div>{(pos === 1) ? <MdGrade /> : pos}</div>
@@ -29,7 +31,7 @@ const LeaderboardRow = ({ activeAnimation, pos, player, maxScore, score }) => {
 			</Row>
 		</Link>
 	);
-}
+});
 
 const Row = styled.div`
     align-items: center;
@@ -68,4 +70,4 @@ const Points = styled.div`
     line-height: 1.1;
 `;
 
-export default Animation(LeaderboardRow);
+export default LeaderboardRow;
