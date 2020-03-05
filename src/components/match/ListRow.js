@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 const Row = styled.div`
 `;
 
-const MatchRow = ({ match }) => {
+const ListRow = ({ match }) => {
 
 	// const getSortedValues = match.ratings
 
@@ -40,4 +40,4 @@ const MatchRow = ({ match }) => {
 	)
 }
 
-export default MatchRow;
+export default ListRow;

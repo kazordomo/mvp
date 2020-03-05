@@ -10,7 +10,7 @@ import * as selectors from '../../data/selectors/matches';
 import Nav from '../_shared/Nav';
 import Container from '../_shared/Container';
 import Wrapper from '../_shared/Wrapper';
-import MatchRow from './MatchRow';
+import ListRow from './ListRow';
 
 const ListMatch = () => {
 	const matches = useSelector(state => selectors.findAll(state));
@@ -21,7 +21,7 @@ const ListMatch = () => {
 			<Wrapper>
 				{matches
 					.toList()
-					.map(match => <MatchRow key={match.id} match={match} />)}
+					.map(match => <ListRow key={match.id} match={match} />)}
 			</Wrapper>
 		</Container>
 	)
