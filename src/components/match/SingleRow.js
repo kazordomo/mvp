@@ -8,8 +8,8 @@ import useAnimation from '../hooks/animation';
 const Row = styled.div`
 	color: #fff;
 	margin-bottom: 20px;
-	opacity: ${props => props.active ? '1' : '0'};
-	transition: opacity 300ms ease-in-out;
+	transform: translate(${props => props.active ? '0, 0' : '500px, -20px'});
+	transition: transform 450ms ease-in-out;
 
 	&:last-child {
 		margin-bottom: 0;
