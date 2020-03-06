@@ -8,25 +8,27 @@ import RatingButton from './RatingButton';
 const Row = styled.div`
 	color: #fff;
 	margin: 20px 0;
-	transform: translate(${props => props.active ? '0, 0' : '-500px, -35px'});
-	transition: transform 200ms ease-in-out;
+	transform: translateX(${props => props.active ? '0' : '-500px'});
+	transition: transform 450ms ease-in-out;
 `;
 
 const Buttons = styled.div`
 	display: flex;
 	flex-direction: row;
+	align-items: center;
 	margin-top: 5px;
 
 	div {
-		flex: 1;
-		background-color: rgba(232,94,20,1);
-
 		&:first-child {
 			background-color: rgba(232,74,20,1);
+			border-top-left-radius: 3px;
+			border-bottom-left-radius: 3px;
 		}
 
 		&:last-child {
 			background-color: rgba(232,114,20,1);
+			border-top-right-radius: 3px;
+			border-bottom-right-radius: 3px;
 		}
 	}
 `;

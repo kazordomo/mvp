@@ -8,6 +8,43 @@ import useAnimation from '../hooks/animation';
 
 import selectors from '../../data/selectors';
 
+const Row = styled.div`
+    align-items: center;
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+    justify-content: space-between;
+    line-height: 100px;
+    position: relative;
+`;
+
+const Fill = styled.div`
+    background-color: ${props => getFillColor((props.pos >= 12) ? props.pos / 2 : props.pos)};
+    height: 100%;
+    position: absolute;
+    transition: 750ms width ease-in-out;
+    width: ${props => props.width}%;
+`;
+
+const Col = styled.div`
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+`;
+
+const Name = styled.div`
+    margin-left: 20px;
+`;
+
+const Points = styled.div`
+    text-align: center;
+    line-height: 1.1;
+`;
+
 const LeaderboardRow = memo(({ pos, player, maxScore, score }) => {
 	const isAnimating = useAnimation(75 * pos);
 
@@ -32,42 +69,5 @@ const LeaderboardRow = memo(({ pos, player, maxScore, score }) => {
 		</Link>
 	);
 });
-
-const Row = styled.div`
-    align-items: center;
-    color: #fff;
-    display: flex;
-    flex-direction: row;
-    height: 100px;
-    justify-content: space-between;
-    line-height: 100px;
-    position: relative;
-`;
-
-const Fill = styled.div`
-    background-color: ${props => getFillColor((props.pos >= 12) ? props.pos / 2 : props.pos)};
-    height: 100%;
-    position: absolute;
-    transition: 1000ms width ease-in-out;
-    width: ${props => props.width}%;
-`;
-
-const Col = styled.div`
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    padding: 0 20px;
-    position: relative;
-    z-index: 2;
-`;
-
-const Name = styled.div`
-    margin-left: 20px;
-`;
-
-const Points = styled.div`
-    text-align: center;
-    line-height: 1.1;
-`;
 
 export default LeaderboardRow;

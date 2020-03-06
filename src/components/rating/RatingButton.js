@@ -8,13 +8,12 @@ const CustomButton = styled.div`
 	font-size: 16px;
 	font-weight: 600;
     justify-content: center;
-    height: 80px;
-    width: 75px;
+    height: 70px;
+	flex: 1;
+	background-color: rgba(232,94,20,1);
 `;
 
 const SelectedButton = styled(CustomButton)`
-	opacity: 0.75;
-
 	svg {
 			font-size: 20px;
 		}
@@ -25,4 +24,4 @@ export default memo(({ value, disabled, handleRate }) => (
 		<CustomButton onClick={handleRate}>
 			{value}
 		</CustomButton>
-))
+));

@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import colors from '../../assets/colors';
 
@@ -21,7 +20,8 @@ const ListMatch = () => {
 			<Wrapper>
 				{matches
 					.toList()
-					.map(match => <ListRow key={match.id} match={match} />)}
+					.sortBy(match => -match.round)
+					.map((match, i) => <ListRow key={match.id} match={match} index={i} />)}
 			</Wrapper>
 		</Container>
 	)

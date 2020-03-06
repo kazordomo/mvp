@@ -38,6 +38,7 @@ const SingleMatch = props => {
 			<Nav title="STATISTIK" goBack={props.history.goBack} />
 			<Wrapper>
 				<PointsInfo />
+				<div>top three:</div>
 				{
 					ratingsByUser.map((ratings, i) =>
 						<SingleRow
