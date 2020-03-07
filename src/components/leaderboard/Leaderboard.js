@@ -4,13 +4,18 @@ import { useSelector } from 'react-redux';
 import selectors from '../../data/selectors';
 
 import colors from '../../assets/colors';
+
 import Container from '../_shared/Container';
 import Nav from '../_shared/Nav';
 import LeaderboardRow from './LeaderboardRow';
 
 const Leaderboard = () => {
 	const playerScores = useSelector(state =>
-		selectors.players.findAllRatings(state));
+		selectors.players.findAllRatings(state))
+		.groupBy(rating => rating.player)
+		.map(player =>
+			player.reduce((a, b) => a + b.value, 0)
+		);
 
 	const players = useSelector(state =>
 		selectors.players.findAll(state)).sort((a, b) =>

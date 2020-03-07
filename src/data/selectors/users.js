@@ -20,8 +20,6 @@ export const findRatings = createSelector(
 			.toList()
 			.flatMap(match => match.ratings)
 			.filter(rating => rating.user === user.id)
-			.groupBy(rating => rating.player)
-
 )
 
 export const getUserProfileId = createSelector(

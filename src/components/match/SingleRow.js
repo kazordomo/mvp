@@ -27,12 +27,16 @@ const Ratings = styled.div`
 
 		&:nth-child(1) {
 			background-color: ${colors.pointvalueone()};
+			border-top-left-radius: 2px;
+			border-bottom-left-radius: 2px;
 		}
 		&:nth-child(2) {
 			background-color: ${colors.pointvaluetwo()};
 		}
 		&:nth-child(3) {
 			background-color: ${colors.pointvaluethree()};
+			border-top-right-radius: 2px;
+			border-bottom-right-radius: 2px;
 		}
 	}
 `;

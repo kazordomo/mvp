@@ -55,6 +55,6 @@ const RatingRow = ({ player, ratings, onRate, index }) => {
 			</Buttons>
 		</Row>
 	)
-}
+};
 
 export default RatingRow;

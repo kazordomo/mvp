@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import colors from '../../assets/colors';
+
+import selectors from '../../data/selectors';
 
 import useAnimation from '../hooks/animation';
 
@@ -42,7 +45,15 @@ const Stat = styled.div`
 	}
 `;
 
-const ListRow = ({ match, index }) => {
+const ListRow = memo(({ match, index }) => {
+	const players = useSelector(state =>
+		selectors.players.findAll(state)
+	);
+
+	const sortedRatings = useSelector(state =>
+		selectors.matches.findSortedRatings(state, match.id)
+	);
+
 	const isAnimating = useAnimation(75 * index);
 
 	return (
@@ -54,11 +65,14 @@ const ListRow = ({ match, index }) => {
 					<Opponents>{match.opponents}</Opponents>
 					<Stat>Omgång: <span>{match.round}</span></Stat>
 					<Stat>Antal röster: <span>{match.ratings.size}</span></Stat>
-					<Stat>Mvp: <span>Zak</span></Stat>
+					<Stat>Mvp: <span>
+						{players.get(sortedRatings.first().player).name}
+					</span>
+					</Stat>
 				</Row>
 			</Link>
 		</Wrapper>
 	)
-}
+});
 
 export default ListRow;

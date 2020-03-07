@@ -11,18 +11,17 @@ import Wrapper from '../_shared/Wrapper';
 import RatingsRow from './RatingsRow';
 
 const Profile = ({ match, history }) => {
-
 	const user = useSelector(state =>
 		selectors.users.find(state, match.params.id)
 	);
 
-	const userRatings = useSelector(state =>
+	const userRatingsByPlayer = useSelector(state =>
 		selectors.users.findRatings(state, match.params.id)
-	);
+	).groupBy(rating => rating.player);
 
-	const playerRatings = useSelector(state =>
+	const playerRatingsFromUser = useSelector(state =>
 		selectors.players.findRatings(state, { id: user?.playerNumber || parseInt(match.params.id) })
-	);
+	).groupBy(rating => rating.user);
 
 	const getTotalRatingValues = ratings => ratings
 		.toList()
@@ -36,12 +35,12 @@ const Profile = ({ match, history }) => {
 			<Wrapper>
 				<div>
 					{
-						userRatings.toList().map((ratings, i) =>
+						userRatingsByPlayer.toList().map((ratings, i) =>
 							<RatingsRow
 								key={i}
 								personId={ratings.first().player}
 								ratings={ratings}
-								maxPoint={getTotalRatingValues(userRatings).last()}
+								maxPoint={getTotalRatingValues(userRatingsByPlayer).last()}
 								given
 							/>
 						)
@@ -49,12 +48,12 @@ const Profile = ({ match, history }) => {
 				</div>
 				<div>
 					{
-						playerRatings.toList().map((ratings, i) =>
+						playerRatingsFromUser.toList().map((ratings, i) =>
 							<RatingsRow
 								key={i}
 								personId={ratings.first().user}
 								ratings={ratings}
-								maxPoint={getTotalRatingValues(playerRatings).last()}
+								maxPoint={getTotalRatingValues(playerRatingsFromUser).last()}
 							/>
 						)
 					}
