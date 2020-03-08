@@ -38,7 +38,7 @@ const Buttons = styled.div`
 
 const Ratings = styled.div`
 	margin-bottom: 20px;
-	background-color: rgba(0,0,0,0.55);
+	background-color: rgba(0,0,0,0.75);
 	padding: 20px;
 	border-radius: 2px;
 

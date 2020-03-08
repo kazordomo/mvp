@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import actions from './data/actions';
 import selectors from './data/selectors';
-import Login from './components/login/Login';
+import Auth from './components/auth/Auth';
 import Admin from './components/admin/Admin';
 import Profile from './components/profile/Profile';
 import Home from './components/home/Home';
@@ -21,6 +21,8 @@ const App = () => {
 	const isUsersFetching = useSelector(state => selectors.users.getIsFetching(state));
 	const isPlayersFetching = useSelector(state => selectors.players.getIsFetching(state));
 	const isMatchesFetching = useSelector(state => selectors.matches.getIsFetching(state));
+
+	const activeUser = useSelector(state => state.app.activeUser);
 
 	useEffect(() => {
 		fetchData();
@@ -41,6 +43,8 @@ const App = () => {
 		isPlayersFetching ||
 		isMatchesFetching
 	) return <Loading />;
+
+	if (!activeUser) return <Auth />;
 
 	return (
 		<Router>

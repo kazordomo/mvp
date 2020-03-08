@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
-import styled  from 'styled-components';
+import styled from 'styled-components';
 import { MdTrendingFlat } from 'react-icons/md';
 import { setById } from '../../firebase/fetch';
 import { getFormValues, checkIfValuesMatch } from '../../utils';
@@ -16,128 +16,128 @@ import FormInputs from './FormInputs';
 
 class Login extends Component {
 
-    state = {
-        isRegister: true,
-        showInputs: registerInputs,
-        errorMsg: '',
-        infoMsg: '',
-        infoShown: [],
-    }
+	state = {
+		isRegister: true,
+		showInputs: registerInputs,
+		errorMsg: '',
+		infoMsg: '',
+		infoShown: [],
+	}
 
-    onSubmit = e => {
-        e.preventDefault();
-        if (this.state.isRegister)
-            this.register();
-        else
-            this.login();
-    }
+	onSubmit = e => {
+		e.preventDefault();
+		if (this.state.isRegister)
+			this.register();
+		else
+			this.login();
+	}
 
-    register = async () => {
-        const { email, password, retypePassword, firstName, playerNumber } = getFormValues(registerInputs);
+	register = async () => {
+		const { email, password, retypePassword, firstName, playerNumber } = getFormValues(registerInputs);
 
-        if (!checkIfValuesMatch(password, retypePassword))
-            return this.setState({ errorMsg: 'The passwords did not match!' });
+		if (!checkIfValuesMatch(password, retypePassword))
+			return this.setState({ errorMsg: 'The passwords did not match!' });
 
-        try {
-            const cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
-            // Creates a user in the users schema, using the unique ID gotten from the authed user.
-            await setById('users', cred.user.uid, { 
-                id: cred.user.uid,
-                admin: false,
-                name: firstName, 
-                playerNumber: playerNumber ? playerNumber : null ,
-                ratingOccasions: [],
-            });
-        } catch(err) {
-            this.setState({ errorMsg: err.message });
-        }
-    }
+		try {
+			const cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
+			// Creates a user in the users schema, using the unique ID gotten from the authed user.
+			await setById('users', cred.user.uid, {
+				id: cred.user.uid,
+				admin: false,
+				name: firstName,
+				playerNumber: playerNumber ? playerNumber : null,
+				ratingOccasions: [],
+			});
+		} catch (err) {
+			this.setState({ errorMsg: err.message });
+		}
+	}
 
-    login = async () => {
-        const { email, password } = getFormValues(loginInputs);
+	login = async () => {
+		const { email, password } = getFormValues(loginInputs);
 
-        try {
-            await firebase.auth().signInWithEmailAndPassword(email, password);
-        } catch(err) {
-            this.setState({ errorMsg: err.message });
-        }
-    }
+		try {
+			await firebase.auth().signInWithEmailAndPassword(email, password);
+		} catch (err) {
+			this.setState({ errorMsg: err.message });
+		}
+	}
 
-    onChangeAuth = () => {
-        const showInputs = this.state.isRegister ? loginInputs : registerInputs;
+	onChangeAuth = () => {
+		const showInputs = this.state.isRegister ? loginInputs : registerInputs;
 
-        this.setState(prevState => { 
-            return {
-                isRegister: !prevState.isRegister,
-                showInputs,
-                infoMsg: '',
-            }
-        });
-    }
+		this.setState(prevState => {
+			return {
+				isRegister: !prevState.isRegister,
+				showInputs,
+				infoMsg: '',
+			}
+		});
+	}
 
-    // Will not be used in prod.
-    signOut = async e => {
-        e.preventDefault();
-        await firebase.auth().signOut();
-        console.log('The user has signed out');
-    }
+	// Will not be used in prod.
+	signOut = async e => {
+		e.preventDefault();
+		await firebase.auth().signOut();
+		console.log('The user has signed out');
+	}
 
-    // TODO: popup hoc
-    displayInfoText = inputId => {
-        const infoTexts = {
-            playerNumber: `Skriv in det tröjnummer du har på matchtröjan. 
+	// TODO: popup hoc
+	displayInfoText = inputId => {
+		const infoTexts = {
+			playerNumber: `Skriv in det tröjnummer du har på matchtröjan. 
                            Om du inte är en spelare kan du lämna detta tomt.`,
-        }
-        // Get the info message from the infoText object.
-        const infoMsg = infoTexts[inputId];
-        // Only show if there is a info message for the focused input, and that it have not been shown yet.
-        if (infoMsg && !this.state.infoShown.find(info => info === inputId))
-            this.setState({ infoMsg, infoShown: [...this.state.infoShown, inputId] });
-        else
-            this.setState({ infoMsg: '' });
-    }
+		}
+		// Get the info message from the infoText object.
+		const infoMsg = infoTexts[inputId];
+		// Only show if there is a info message for the focused input, and that it have not been shown yet.
+		if (infoMsg && !this.state.infoShown.find(info => info === inputId))
+			this.setState({ infoMsg, infoShown: [...this.state.infoShown, inputId] });
+		else
+			this.setState({ infoMsg: '' });
+	}
 
-    closeInfoPopup = () => {
-        this.setState({ infoMsg: '' }, () => {
-            const { infoShown } = this.state;
-            // The last used input will always be last.
-            const inputId = infoShown[infoShown.length - 1]
-            document.querySelector(`#${inputId}`).focus();
-        });
-    }
+	closeInfoPopup = () => {
+		this.setState({ infoMsg: '' }, () => {
+			const { infoShown } = this.state;
+			// The last used input will always be last.
+			const inputId = infoShown[infoShown.length - 1]
+			document.querySelector(`#${inputId}`).focus();
+		});
+	}
 
-    shouldBeShown = inputId => this.state.showInputs.includes(inputId) ? true : false;
+	shouldBeShown = inputId => this.state.showInputs.includes(inputId) ? true : false;
 
-    render() {
-        const { isRegister, errorMsg, infoMsg, infoShown } = this.state;
+	render() {
+		const { isRegister, errorMsg, infoMsg, infoShown } = this.state;
 
-        return (
-            <Container brColor={colors.spacegrayish()}>
-                <Fade show={infoMsg} />
-                <DisplayError errorMsg={errorMsg} />
-                <DisplayInfo infoMsg={infoMsg} close={this.closeInfoPopup}></DisplayInfo>
-                <CenteredWrapper bigger>
-                    <Title>
-                        <h2>MVP</h2>
-                        <div></div>
-                    </Title>
-                    <form>
-                        <AuthTypes id="changeAuth">
-                            <Type active={isRegister} onClick={this.onChangeAuth}>Registrera</Type>
-                            <Type active={!isRegister} onClick={this.onChangeAuth}>Logga in</Type>
-                        </AuthTypes>
-                        <FormInputs 
-                            shouldBeShown={this.shouldBeShown} 
-                            displayInfoText={this.displayInfoText} 
-                            infoShown={infoShown} 
-                        />
-                        <Button long onClick={this.onSubmit}>{ isRegister ? 'Registrera' : 'Logga in' }</Button>
-                    </form>
-                    <Guest onClick={this.props.onEnterAsGuest}><span>Fortsätt som gäst</span> <MdTrendingFlat /></Guest>
-                </CenteredWrapper>
-            </Container>
-        )
-    }
+		return (
+			<Container brColor={colors.spacegrayish()}>
+				<Fade show={infoMsg} />
+				<DisplayError errorMsg={errorMsg} />
+				<DisplayInfo infoMsg={infoMsg} close={this.closeInfoPopup}></DisplayInfo>
+				<CenteredWrapper bigger>
+					<Title>
+						<h2>MVP</h2>
+						<div></div>
+					</Title>
+					<form>
+						<AuthTypes id="changeAuth">
+							<Type active={isRegister} onClick={this.onChangeAuth}>Registrera</Type>
+							<Type active={!isRegister} onClick={this.onChangeAuth}>Logga in</Type>
+						</AuthTypes>
+						<FormInputs
+							shouldBeShown={this.shouldBeShown}
+							displayInfoText={this.displayInfoText}
+							infoShown={infoShown}
+						/>
+						<Button long onClick={this.onSubmit}>{isRegister ? 'Registrera' : 'Logga in'}</Button>
+					</form>
+					<Guest onClick={this.props.onEnterAsGuest}><span>Fortsätt som gäst</span> <MdTrendingFlat /></Guest>
+				</CenteredWrapper>
+			</Container>
+		)
+	}
 }
 
 const Title = styled.div`
@@ -185,8 +185,8 @@ const Type = styled.div`
     background-color: ${colors.orangeish(120)};
     box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.75);
     color: #fff;
-    margin-top: ${props=>props.active?'-6px':'0'};
-    opacity: ${props=>props.active?'1':'0.35'};
+    margin-top: ${props => props.active ? '-6px' : '0'};
+    opacity: ${props => props.active ? '1' : '0.35'};
     padding: 10px 0;
     text-align: center;
     position: absolute;
@@ -194,7 +194,7 @@ const Type = styled.div`
     width: 50%;
 `;
 
-const Guest = styled.p `
+const Guest = styled.p`
     align-items: center;
     color: #fff;
     display: flex;
