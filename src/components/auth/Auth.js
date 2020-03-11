@@ -1,17 +1,23 @@
 import React, { useState, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import * as firebase from 'firebase';
 import { Map } from 'immutable';
 import styled from 'styled-components';
 import { List } from 'immutable';
 import { MdTrendingFlat, MdFace, MdEmail, MdLock, MdPermIdentity } from 'react-icons/md'
 
+import { setById } from '../../firebase/fetch';
+
 import colors from '../../assets/colors';
+
+import { setUser } from '../../data/actions/app';
 
 import Container from '../_shared/Container'
 import CenteredWrapper from '../_shared/CenteredWrapper';
 import Fade from '../_shared/Fade';
 import DisplayError from '../_shared/DisplayError';
 import DisplayInfo from '../_shared/DisplayInfo';
-import Button from '../_basic/Button';
+import Submit from '../_basic/Submit';
 import Input from '../_basic/Input';
 
 const Title = styled.div`
@@ -85,6 +91,8 @@ const Guest = styled.p`
 `;
 
 const Auth = () => {
+	const dispatch = useDispatch();
+
 	const [isRegister, setIsRegister] = useState(true);
 	const [infoMessage, setInfoMessage] = useState('');
 	const [shownInfos, setShownInfos] = useState(new List());
@@ -121,8 +129,46 @@ const Auth = () => {
 		numberRef.current.focus();
 	}
 
-	const login = () => { };
-	const register = () => { console.log(refs.map(ref => ref.current.value)) };
+	const handleError = msg => {
+		setErrorMessage(msg);
+		setTimeout(() => setErrorMessage(''), 3000);
+	}
+
+	const login = async () => {
+		try {
+			const cred = await firebase
+				.auth()
+				.signInWithEmailAndPassword(emailRef.current.value, passRef.current.value);
+
+			dispatch(setUser(cred.user.uid));
+		} catch (err) {
+			handleError(err.message);
+		}
+	};
+
+	const register = async () => {
+		if (passRef.current.value !== retypePassRef.current.value) {
+			handleError('Passwords do not match.');
+		}
+
+		try {
+			const cred = await firebase
+				.auth()
+				.createUserWithEmailAndPassword(emailRef.current.value, passRef.current.value);
+
+			// Creates a user in the users schema, using the unique ID gotten from the authed user.
+			await setById('users', cred.user.uid, {
+				id: cred.user.uid,
+				admin: false,
+				name: nameRef.current.value,
+				playerNumber: numberRef.current ? numberRef.current.value : null,
+			});
+
+			dispatch(setUser(cred.user.uid));
+		} catch (err) {
+			handleError(err.message);
+		}
+	};
 
 	const handleSubmit = e => {
 		e.preventDefault();
@@ -147,7 +193,7 @@ const Auth = () => {
 					<h2>MVP</h2>
 					<div></div>
 				</Title>
-				<form>
+				<form onSubmit={handleSubmit}>
 					<AuthTypes id="changeAuth">
 						<Type active={isRegister} onClick={handleChangeAuthType}>Registrera</Type>
 						<Type active={!isRegister} onClick={handleChangeAuthType}>Logga in</Type>
@@ -207,11 +253,11 @@ const Auth = () => {
 						/>
 					)}
 
-					<Button
+					<Submit
+						type="submit"
 						long
-						onClick={handleSubmit}>
-						{isRegister ? 'Registrera' : 'Logga in'}
-					</Button>
+						value={isRegister ? 'Registrera' : 'Logga in'}
+					/>
 				</form>
 				<Guest
 					onClick={handleGuest}>

@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { batch, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+
 import actions from './data/actions';
 import selectors from './data/selectors';
+
 import Auth from './components/auth/Auth';
 import Admin from './components/admin/Admin';
 import Profile from './components/profile/Profile';
@@ -22,7 +24,7 @@ const App = () => {
 	const isPlayersFetching = useSelector(state => selectors.players.getIsFetching(state));
 	const isMatchesFetching = useSelector(state => selectors.matches.getIsFetching(state));
 
-	const activeUser = useSelector(state => state.app.activeUser);
+	const activeUserId = useSelector(state => state.app.activeUserId);
 
 	useEffect(() => {
 		fetchData();
@@ -44,7 +46,7 @@ const App = () => {
 		isMatchesFetching
 	) return <Loading />;
 
-	if (!activeUser) return <Auth />;
+	if (!activeUserId) return <Auth />;
 
 	return (
 		<Router>

@@ -15,6 +15,10 @@ const Profile = ({ match, history }) => {
 		selectors.users.find(state, match.params.id)
 	);
 
+	const player = useSelector(state =>
+		selectors.players.find(state, user.playerNumber || parseInt(match.params.id, 10))
+	);
+
 	const userRatingsByPlayer = useSelector(state =>
 		selectors.users.findRatings(state, match.params.id)
 	).groupBy(rating => rating.player);
@@ -31,7 +35,7 @@ const Profile = ({ match, history }) => {
 
 	return (
 		<Container brColor={colors.spacegrayish()}>
-			<Nav title="Profile" goBack={history.goBack} />
+			<Nav title={user.name || player.name} goBack={history.goBack} />
 			<Wrapper>
 				<div>
 					{
