@@ -2,6 +2,12 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
+import { getFillWidth } from '../../utils';
+
+import useAnimation from '../hooks/animation';
+
+import colors from '../../assets/colors';
+
 import selectors from '../../data/selectors'
 
 const Row = styled.div`
@@ -13,17 +19,25 @@ const Row = styled.div`
 `;
 
 const Ratings = styled.div`
+	width: ${props => props.width}%;
 	display: flex;
 	color: #fff;
-
-	div {
-		margin-right: 10px;
-		background-color: black;
-		padding: 5px 10px;
-	}
+	border: 1px solid ${colors.grayish()};
 `;
 
-const RatingsRow = memo(({ ratings, personId, maxPoint, given }) => {
+const Value = styled.div`
+	width: ${props => props.width}%;
+	background-color: ${props => props.color};
+	text-align: center;
+	padding: 3px 0;
+	transition: width 350ms cubic-bezier(.36,.36,.56,.86);
+`;
+
+const RatingsRow = memo(({ ratings, personId, maxPoint, given, index }) => {
+	const isAnimating = useAnimation(75 * index);
+
+	const totalValue = ratings.reduce((a, b) => a + b.value, 0);
+	const totalFillWidthPercent = getFillWidth(maxPoint, totalValue);
 
 	const person = useSelector(state =>
 		given
@@ -31,10 +45,14 @@ const RatingsRow = memo(({ ratings, personId, maxPoint, given }) => {
 			: selectors.users.find(state, personId)
 	);
 
-	const totalValue = ratings.reduce((a, b) => a + b.value, 0);
+	const fillColors = [
+		colors.pointvalueone(),
+		colors.pointvaluetwo(),
+		colors.pointvaluethree()
+	]
 
 	return (
-		<Row>
+		<Row width={totalFillWidthPercent}>
 			<div>{person.name} - {totalValue}</div>
 			<Ratings>
 				{
@@ -43,9 +61,13 @@ const RatingsRow = memo(({ ratings, personId, maxPoint, given }) => {
 						.entries())
 						.map(([key, values]) => {
 							return (
-								<div key={key}>
-									{key}: {values.size} stycken
-								</div>
+								<Value
+									key={key}
+									width={!isAnimating ? getFillWidth(maxPoint, values.size * key || 0) : 0}
+									color={fillColors[key - 1]}
+								>
+									{values.size}st
+								</Value>
 							)
 						})
 				}

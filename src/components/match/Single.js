@@ -30,7 +30,7 @@ const Row = styled.div`
 `;
 
 const Ranking = styled.div`
-	margin-bottom: 20px;
+	margin-bottom: 35px;
 	color: #fff;
 	font-weight: 600;
 	opacity: ${props => props.active ? 1 : 0};
@@ -77,15 +77,15 @@ const SingleMatch = props => {
 		<Container brColor={colors.spacegrayish()}>
 			<Nav title="STATISTIK" goBack={props.history.goBack} />
 			<Wrapper>
-				<PointsInfo />
 				<Ranking active={!isAnimating}>
-					<Subtitle>Top tre</Subtitle>
+					<Subtitle>Topp tre</Subtitle>
 					{
 						topThree.map((player, i) =>
 							<Row key={i}>{i + 1}: <span>{player}</span></Row>
 						)
 					}
 				</Ranking>
+				<PointsInfo />
 				{
 					ratingsByUser.map((ratings, i) =>
 						<SingleRow

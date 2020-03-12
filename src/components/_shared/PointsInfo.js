@@ -3,16 +3,11 @@ import styled from 'styled-components';
 
 import colors from '../../assets/colors';
 
-import useAnimation from '../hooks/animation';
-
 const Info = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 30px;
-    margin-left: ${props => props.active ? '0' : '-200px'};
-    transform: scale(${props => props.active ? '1' : '1.4'});
-    transition: margin 650ms cubic-bezier(.36,.36,.26,.86), transform 650ms ease-out;
+    margin-bottom: 25px;
 `;
 
 const Item = styled.div`
@@ -31,7 +26,7 @@ const ColorBar = styled.div`
 
 
 const PointsInfo = () => (
-	<Info active={!useAnimation()}>
+	<Info>
 		<Item>1p: <ColorBar color={colors.pointvalueone()} /></Item>
 		<Item>2p: <ColorBar color={colors.pointvaluetwo()} /></Item>
 		<Item>3p: <ColorBar color={colors.pointvaluethree()} /></Item>

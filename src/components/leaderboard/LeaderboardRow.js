@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { MdGrade } from 'react-icons/md'
 import { getFillWidth, getFillColor } from '../../utils';
+
 import useAnimation from '../hooks/animation';
 
 import selectors from '../../data/selectors';
