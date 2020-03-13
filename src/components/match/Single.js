@@ -75,7 +75,7 @@ const SingleMatch = props => {
 
 	return (
 		<Container brColor={colors.spacegrayish()}>
-			<Nav title="STATISTIK" goBack={props.history.goBack} />
+			<Nav title={match.opponents} goBack={props.history.goBack} />
 			<Wrapper>
 				<Ranking active={!isAnimating}>
 					<Subtitle>Topp tre</Subtitle>

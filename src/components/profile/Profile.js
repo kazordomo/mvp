@@ -25,7 +25,7 @@ const Section = styled.section`
 
 	h2 {
 		font-size: 20px;
-		margin: 0 0 20px 0;
+		margin: 0 0 25px 0;
 	}
 `;
 
@@ -67,6 +67,7 @@ const Profile = ({ match, history }) => {
 			<Wrapper><PointsInfo /></Wrapper>
 			<Section>
 				<h2>Poäng från andra</h2>
+				{userRatingsByPlayer.size === 0 && <div><i>Spela bättre för att få röster...</i></div>}
 				{
 					sortRatings(userRatingsByPlayer).map((ratings, i) =>
 						<RatingsRow
@@ -82,6 +83,7 @@ const Profile = ({ match, history }) => {
 			</Section>
 			<Section>
 				<h2>Poäng utdelade</h2>
+				{playerRatingsFromUser.size === 0 && <div><i>Inga poäng utdelade...</i></div>}
 				{
 					sortRatings(playerRatingsFromUser).map((ratings, i) =>
 						<RatingsRow

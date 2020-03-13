@@ -11,11 +11,18 @@ import colors from '../../assets/colors';
 import selectors from '../../data/selectors'
 
 const Row = styled.div`
-	margin-bottom: 10px;
+	margin-bottom: 15px;
 
 	&:last-child {
 		margin: 0;
 	}
+`;
+
+const Header = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 2px;
 `;
 
 const Ratings = styled.div`
@@ -53,7 +60,10 @@ const RatingsRow = memo(({ ratings, personId, maxPoint, given, index }) => {
 
 	return (
 		<Row width={totalFillWidthPercent}>
-			<div>{person.name} - {totalValue}</div>
+			<Header>
+				<div>{person.name}</div>
+				<div>{totalValue} poäng</div>
+			</Header>
 			<Ratings>
 				{
 					Array.from(ratings
