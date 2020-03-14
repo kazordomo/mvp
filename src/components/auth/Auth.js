@@ -10,7 +10,7 @@ import { setById } from '../../firebase/fetch';
 
 import colors from '../../assets/colors';
 
-import { setUser } from '../../data/actions/app';
+import { setUser, registerUser, loginUser } from '../../data/actions/app';
 
 import Container from '../_shared/Container'
 import CenteredWrapper from '../_shared/CenteredWrapper';
@@ -136,11 +136,7 @@ const Auth = () => {
 
 	const login = async () => {
 		try {
-			const cred = await firebase
-				.auth()
-				.signInWithEmailAndPassword(emailRef.current.value, passRef.current.value);
-
-			dispatch(setUser(cred.user.uid));
+			await dispatch(loginUser(emailRef.current.value, passRef.current.value));
 		} catch (err) {
 			handleError(err.message);
 		}
@@ -152,19 +148,12 @@ const Auth = () => {
 		}
 
 		try {
-			const cred = await firebase
-				.auth()
-				.createUserWithEmailAndPassword(emailRef.current.value, passRef.current.value);
-
-			// Creates a user in the users schema, using the unique ID gotten from the authed user.
-			await setById('users', cred.user.uid, {
-				id: cred.user.uid,
-				admin: false,
+			await dispatch(registerUser({
+				email: emailRef.current.value,
+				pass: passRef.current.value,
 				name: nameRef.current.value,
 				playerNumber: numberRef.current ? numberRef.current.value : null,
-			});
-
-			dispatch(setUser(cred.user.uid));
+			}));
 		} catch (err) {
 			handleError(err.message);
 		}

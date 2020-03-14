@@ -6,7 +6,7 @@ const requestMatches = () => ({
 	type: matchTypes.FETCH_REQUEST
 });
 
-const setMatches = payload => ({
+export const setMatches = payload => ({
 	type: matchTypes.FETCH_SUCCESS,
 	payload,
 });

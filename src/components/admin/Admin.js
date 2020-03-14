@@ -9,13 +9,12 @@ import Container from '../_shared/Container';
 import CenteredWrapper from '../_shared/CenteredWrapper';
 import Input from '../_basic/Input';
 import Button from '../_basic/Button';
-import { getActiveRatingOccasion } from '../../data/selectors/ratingOccasions';
 
 const Admin = () => {
 	const [admin, setAdmin] = useState('');
 	const [opponents, setOpponents] = useState('');
 
-	const activeRatingOccasion = useSelector(state => getActiveRatingOccasion(state));
+	const activeRatingOccasion = null;
 
 	const onOpponentsChange = ({ target }) => setOpponents(target.value);
 	const onAdminChange = ({ target }) => setAdmin(target.value);

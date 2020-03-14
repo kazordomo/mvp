@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 	color: #fff;
 	margin-bottom: 20px;
 	opacity: ${props => props.active ? '1' : '0'};
-	transition: opacity 750ms ease-in-out;
+	transition: opacity 450ms ease-in-out;
 
 	&:last-child {
 		margin-bottom: 0;

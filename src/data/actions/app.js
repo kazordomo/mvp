@@ -1,6 +1,8 @@
 import * as firebase from 'firebase';
 import keys from '../../config/keys';
-import { getById } from '../../firebase/fetch';
+
+import { getById, setById } from '../../firebase/fetch';
+
 import { appTypes } from './types';
 
 const requestUser = () => ({
@@ -31,4 +33,34 @@ export const dbInit = () => async dispatch => {
 
 		dispatch(setUser(userData.id));
 	});
+}
+
+export const registerUser = userValues => async dispatch => {
+	const cred = await firebase
+		.auth()
+		.createUserWithEmailAndPassword(userValues.email, userValues.pass);
+
+	// Creates a user in the users schema, using the unique ID gotten from the authed user.
+	await setById('users', cred.user.uid, {
+		id: cred.user.uid,
+		admin: false,
+		name: userValues.name,
+		playerNumber: userValues.playerNumber,
+		createdAt: new Date(),
+	});
+
+	dispatch(setUser(cred.user.uid));
+
+	return cred;
+}
+
+
+export const loginUser = (email, pass) => async dispatch => {
+	const cred = await firebase
+		.auth()
+		.signInWithEmailAndPassword(email, pass);
+
+	dispatch(setUser(cred.user.uid));
+
+	return cred;
 }

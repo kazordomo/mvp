@@ -5,7 +5,7 @@ import colors from '../../assets/colors';
 
 import selectors from '../../data/selectors'
 
-import { setRating, resetRating } from '../../data/actions/ratings';
+import { setRating, resetRating, ratingsDone } from '../../data/actions/ratings';
 
 import RatingRow from './Row';
 import DoneRating from './DoneRating';
@@ -21,7 +21,15 @@ const Rating = () => {
 	const ratings = useSelector(state => selectors.ratings.findAll(state));
 
 	const handleRate = (value, player) => dispatch(setRating({ value, player }));
-	const handleDone = () => console.log('done rating');
+	const handleDone = async () => {
+		const response = await dispatch(ratingsDone());
+
+		if (response) {
+			console.log('redirect to start page');
+		} else {
+			console.log('error');
+		}
+	};
 	const handleReset = () => dispatch(resetRating());
 
 	const getRatingsWithPlayer = () =>

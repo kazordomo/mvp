@@ -6,6 +6,7 @@ export default Record(
 		name: '',
 		playerNumber: 0,
 		matches: [],
+		createAt: 0,
 	},
 	'User',
 );
