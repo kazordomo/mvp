@@ -14,6 +14,10 @@ export const setUser = payload => ({
 	payload
 })
 
+export const setGuest = () => ({
+	type: appTypes.ENTER_AS_GUEST,
+});
+
 export const dbInit = () => async dispatch => {
 	dispatch(requestUser());
 
@@ -64,3 +68,5 @@ export const loginUser = (email, pass) => async dispatch => {
 
 	return cred;
 }
+
+export const enterAsGuest = () => async dispatch => dispatch(setGuest());	

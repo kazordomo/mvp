@@ -25,6 +25,7 @@ const App = () => {
 	const isMatchesFetching = useSelector(state => selectors.matches.getIsFetching(state));
 
 	const activeUserId = useSelector(state => state.app.activeUserId);
+	const isGuest = useSelector(state => state.app.isGuest);
 
 	useEffect(() => {
 		fetchData();
@@ -46,7 +47,7 @@ const App = () => {
 		isMatchesFetching
 	) return <Loading />;
 
-	if (!activeUserId) return <Auth />;
+	if (!activeUserId || !isGuest) return <Auth />;
 
 	return (
 		<Router>

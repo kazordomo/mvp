@@ -1,16 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import * as firebase from 'firebase';
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 import styled from 'styled-components';
-import { List } from 'immutable';
 import { MdTrendingFlat, MdFace, MdEmail, MdLock, MdPermIdentity } from 'react-icons/md'
-
-import { setById } from '../../firebase/fetch';
 
 import colors from '../../assets/colors';
 
-import { setUser, registerUser, loginUser } from '../../data/actions/app';
+import { registerUser, loginUser, enterAsGuest } from '../../data/actions/app';
 
 import Container from '../_shared/Container'
 import CenteredWrapper from '../_shared/CenteredWrapper';
@@ -170,7 +166,7 @@ const Auth = () => {
 		setIsRegister(prev => !prev);
 	}
 
-	const handleGuest = () => console.log('enter as guest');
+	const handleGuest = () => dispatch(enterAsGuest());
 
 	return (
 		<Container brColor={colors.spacegrayish()}>

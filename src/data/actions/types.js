@@ -1,6 +1,7 @@
 export const appTypes = {
 	FETCH_USER_REQUEST: 'app/FETCH_USER_REQUEST',
 	FETCH_USER_SUCCESS: 'app/FETCH_USER_SUCCESS',
+	ENTER_AS_GUEST: 'app/ENTER_AS_GUEST',
 };
 
 export const userTypes = {
