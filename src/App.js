@@ -47,7 +47,7 @@ const App = () => {
 		isMatchesFetching
 	) return <Loading />;
 
-	if (!activeUserId || !isGuest) return <Auth />;
+	if (!activeUserId && !isGuest) return <Auth />;
 
 	return (
 		<Router>

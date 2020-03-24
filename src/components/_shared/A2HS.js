@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-/* @todo: pwa add to homescreen */
-
 export default class A2HS extends Component {
 
 	state = {
