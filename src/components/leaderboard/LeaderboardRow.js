@@ -1,35 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { memo } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { MdGrade } from 'react-icons/md'
-import { getTotalValue, getFillWidth, getFillColor } from '../../utils';
-import Animation from '../hoc/Animation';
+import { getFillWidth, getFillColor } from '../../utils';
 
-class LeaderboardRow extends Component {
+import useAnimation from '../hooks/animation';
 
-    render() {
-        const { pos, profileId, player, maxPoint } = this.props;
-        
-        return (
-            <Link to={`/profile/${profileId}`}>
-                <Row>
-                    <Fill pos={pos} width={
-                        (this.props.activeAnimation && getTotalValue(player.ratings) !== 0) ? 
-                            getFillWidth(maxPoint, getTotalValue(player.ratings)) : 0} 
-                    />
-                    <Col>
-                        <div>{ (pos === 1) ? <MdGrade /> : pos }</div>
-                        <Name>{player.name}</Name>
-                    </Col>
-                    <Col>
-                        <Points><div>{getTotalValue(player.ratings)}</div><div>poäng</div></Points>
-                    </Col>
-                </Row>
-            </Link>
-        );
-    }
-}
+import selectors from '../../data/selectors';
 
 const Row = styled.div`
     align-items: center;
@@ -43,11 +21,11 @@ const Row = styled.div`
 `;
 
 const Fill = styled.div`
-    background-color: ${props=>getFillColor((props.pos >= 12) ? props.pos / 2 : props.pos)};
+    background-color: ${props => getFillColor((props.pos >= 12) ? props.pos / 2 : props.pos)};
     height: 100%;
     position: absolute;
-    transition: 1000ms width ease-in-out;
-    width: ${props=>props.width}%;
+    transition: 750ms width ease-in-out;
+    width: ${props => props.width}%;
 `;
 
 const Col = styled.div`
@@ -68,10 +46,29 @@ const Points = styled.div`
     line-height: 1.1;
 `;
 
-LeaderboardRow.propTypes = {
-    pos: PropTypes.number,
-    player: PropTypes.object,
-    maxPoint: PropTypes.number,
-}
+const LeaderboardRow = memo(({ pos, player, maxScore, score }) => {
+	const isAnimating = useAnimation(75 * pos);
 
-export default Animation(LeaderboardRow);
+	const profileId = useSelector(state =>
+		selectors.users.getUserProfileId(state, { playerNumber: player.number }));
+
+	return (
+		<Link to={`/profile/${profileId}`}>
+			<Row>
+				<Fill
+					pos={pos}
+					width={(!isAnimating && score !== 0) ? getFillWidth(maxScore, score) : 0}
+				/>
+				<Col>
+					<div>{(pos === 1) ? <MdGrade /> : pos}</div>
+					<Name>{player.name}</Name>
+				</Col>
+				<Col>
+					<Points><div>{score}</div><div>poäng</div></Points>
+				</Col>
+			</Row>
+		</Link>
+	);
+});
+
+export default LeaderboardRow;

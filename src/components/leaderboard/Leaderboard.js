@@ -1,34 +1,43 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+
+import selectors from '../../data/selectors';
+
 import colors from '../../assets/colors';
-import { getTotalValue } from '../../utils';
+
 import Container from '../_shared/Container';
 import Nav from '../_shared/Nav';
 import LeaderboardRow from './LeaderboardRow';
 
-const Leaderboard = ({ players, getProfileId }) => {
-    const sortedPlayers = players.sort((a, b) => getTotalValue(b.ratings) - getTotalValue(a.ratings));
+const Leaderboard = () => {
+	const playerScores = useSelector(state =>
+		selectors.players.findAllRatings(state))
+		.groupBy(rating => rating.player)
+		.map(player =>
+			player.reduce((a, b) => a + b.value, 0)
+		);
 
-    return (
-        <Container brColor={colors.spacegrayish()}>
-            <Nav title="POÄNGLIGA" />
-            { sortedPlayers.map((player, i) => (
-                <LeaderboardRow 
-                    key={player.name}
-                    pos={i + 1}
-                    player={player}
-                    profileId={getProfileId(player.number)}
-                    maxPoint={getTotalValue(sortedPlayers[0].ratings)}
-                />
-            )) }
-        </Container>
-    )
-}
+	const players = useSelector(state =>
+		selectors.players.findAll(state)).sort((a, b) =>
+			playerScores.get(a.id) > playerScores.get(b.id) ? -1 : 1
+		);
 
-Leaderboard.propTypes = {
-    players: PropTypes.array,
-    getProfileId: PropTypes.func,
-}
+	const maxScore = playerScores.toList().sort().last();
+
+	return (
+		<Container brColor={colors.spacegrayish()}>
+			<Nav title="POÄNGLIGA" />
+			{players.toList().map((player, i) => (
+				<LeaderboardRow
+					key={player.name}
+					pos={i + 1}
+					player={player}
+					score={playerScores.get(player.id)}
+					maxScore={maxScore}
+				/>
+			))}
+		</Container>
+	);
+};
 
 export default Leaderboard;
-
