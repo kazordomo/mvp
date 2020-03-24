@@ -40,19 +40,27 @@ const Home = () => {
 
 	const activeUser = useSelector(state => selectors.app.getActiveUser(state));
 	const activeMatch = useSelector(state => selectors.matches.findActive(state));
+	const alreadyRated = false;
 
-	/* @todo: disable rate button if guest, user already rated or no active match */
+	const ableToRate = activeUser && activeMatch && !alreadyRated;
 
 	return (
 		<Container brColor={colors.spacegrayish()}>
-			<HomeNav activeUser={!activeUser} />
+			<HomeNav activeUser={activeUser} />
 			<CenteredWrapper>
-				<Link to={'/rate'}>
-					<HomeButton danger shadow brColor={colors.orangeish(74)}>
-						<span>Rösta</span>
-						<MdGrade color={colors.dirtpinkish()} />
-					</HomeButton>
-				</Link>
+				{ableToRate ? (
+					<Link to={'/rate'}>
+						<HomeButton shadow brColor={colors.orangeish(74)}>
+							<span>Rösta</span>
+							<MdGrade color={colors.dirtpinkish()} />
+						</HomeButton>
+					</Link>
+				) : (
+						<HomeButton danger shadow brColor={colors.orangeish(74)}>
+							<span>Rösta</span>
+							<MdGrade color={colors.dirtpinkish()} />
+						</HomeButton>
+					)}
 				<Link to={'/leaderboard'}>
 					<HomeButton shadow brColor={colors.orangeish(94)}>
 						<span>Poängliga</span>
@@ -60,7 +68,7 @@ const Home = () => {
 					</HomeButton>
 				</Link>
 				<Link to={'/matches'}>
-					<HomeButton brColor={colors.orangeish(114)} shadow>
+					<HomeButton shadow brColor={colors.orangeish(114)}>
 						<span>Statistik</span>
 						<MdShowChart color={colors.dirtpinkish()} />
 					</HomeButton>
