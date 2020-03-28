@@ -1,10 +1,10 @@
-import { getAll } from '../../firebase/fetch';
+import { getAll } from "../../firebase/fetch";
 
-import { playerTypes } from './types';
+import { playerTypes } from "./types";
 
 const requestPlayers = () => ({
 	type: playerTypes.FETCH_REQUEST,
-})
+});
 
 const setPlayers = payload => ({
 	type: playerTypes.FETCH_SUCCESS,
@@ -16,7 +16,7 @@ export const fetchPlayers = () => async dispatch => {
 
 	try {
 		const players = [];
-		const snapshot = await getAll('players');
+		const snapshot = await getAll("players");
 		snapshot.forEach(doc => {
 			const id = parseInt(doc.id, 10);
 			players.push({ id, ...doc.data() });

@@ -1,5 +1,5 @@
-import { Record } from 'immutable';
-import { appTypes } from '../actions/types';
+import { Record } from "immutable";
+import { appTypes } from "../actions/types";
 
 const initialState = new Record(
 	{
@@ -7,19 +7,18 @@ const initialState = new Record(
 		isGuest: false,
 		activeUserId: 0,
 	},
-	'app',
+	"app"
 );
 
 const addActiveUser = (state, { payload }) =>
-	state.set('activeUserId', payload).set('isFetching', false);
+	state.set("activeUserId", payload).set("isFetching", false);
 
-const setAsGuest = state =>
-	state.set('isGuest', true);
+const setAsGuest = state => state.set("isGuest", true);
 
 const app = (state = initialState(), action) => {
 	switch (action.type) {
 		case appTypes.FETCH_USER_REQUEST:
-			return state.set('isFetching', true);
+			return state.set("isFetching", true);
 		case appTypes.FETCH_USER_SUCCESS:
 			return addActiveUser(state, action);
 		case appTypes.ENTER_AS_GUEST:
@@ -27,6 +26,6 @@ const app = (state = initialState(), action) => {
 		default:
 			return state;
 	}
-}
+};
 
 export default app;

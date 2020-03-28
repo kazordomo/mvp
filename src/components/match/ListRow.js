@@ -1,18 +1,18 @@
-import React, { memo } from 'react';
-import { useSelector } from 'react-redux';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import React, { memo } from "react";
+import { useSelector } from "react-redux";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-import colors from '../../assets/colors';
+import colors from "../../assets/colors";
 
-import selectors from '../../data/selectors';
+import selectors from "../../data/selectors";
 
-import useAnimation from '../hooks/animation';
+import useAnimation from "../hooks/animation";
 
 const Wrapper = styled.div`
 	color: #fff;
 	margin-bottom: 20px;
-	opacity: ${props => props.active ? '1' : '0'};
+	opacity: ${props => (props.active ? "1" : "0")};
 	transition: opacity 450ms ease-in-out;
 
 	&:last-child {
@@ -24,8 +24,7 @@ const Wrapper = styled.div`
 	}
 `;
 
-const Row = styled.div`
-`;
+const Row = styled.div``;
 
 const Opponents = styled.div`
 	font-size: 20px;
@@ -46,9 +45,7 @@ const Stat = styled.div`
 `;
 
 const ListRow = memo(({ match, index }) => {
-	const players = useSelector(state =>
-		selectors.players.findAll(state)
-	);
+	const players = useSelector(state => selectors.players.findAll(state));
 
 	const sortedRatings = useSelector(state =>
 		selectors.matches.findSortedRatings(state, match.id)
@@ -58,21 +55,22 @@ const ListRow = memo(({ match, index }) => {
 
 	return (
 		<Wrapper active={!isAnimating}>
-			<Link
-				key={match.id}
-				to={`/matches/${match.id}`}>
+			<Link key={match.id} to={`/matches/${match.id}`}>
 				<Row>
 					<Opponents>{match.opponents}</Opponents>
-					<Stat>Omgång: <span>{match.round}</span></Stat>
-					<Stat>Antal röster: <span>{match.ratings.size}</span></Stat>
-					<Stat>Mvp: <span>
-						{players.get(sortedRatings.first().player).name}
-					</span>
+					<Stat>
+						Omgång: <span>{match.round}</span>
+					</Stat>
+					<Stat>
+						Antal röster: <span>{match.ratings.size}</span>
+					</Stat>
+					<Stat>
+						Mvp: <span>{players.get(sortedRatings.first().player).name}</span>
 					</Stat>
 				</Row>
 			</Link>
 		</Wrapper>
-	)
+	);
 });
 
 export default ListRow;

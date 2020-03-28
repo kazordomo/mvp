@@ -1,14 +1,14 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import useAnimation from '../hooks/animation';
+import useAnimation from "../hooks/animation";
 
-import RatingButton from './RatingButton';
+import RatingButton from "./RatingButton";
 
 const Row = styled.div`
 	color: #fff;
 	margin: 20px 0;
-	transform: translateX(${props => props.active ? '0' : '-500px'});
+	transform: translateX(${props => (props.active ? "0" : "-500px")});
 	transition: transform 450ms ease-in-out;
 `;
 
@@ -20,13 +20,13 @@ const Buttons = styled.div`
 
 	div {
 		&:first-child {
-			background-color: rgba(232,74,20,1);
+			background-color: rgba(232, 74, 20, 1);
 			border-top-left-radius: 3px;
 			border-bottom-left-radius: 3px;
 		}
 
 		&:last-child {
-			background-color: rgba(232,114,20,1);
+			background-color: rgba(232, 114, 20, 1);
 			border-top-right-radius: 3px;
 			border-bottom-right-radius: 3px;
 		}
@@ -54,7 +54,7 @@ const RatingRow = ({ player, ratings, onRate, index }) => {
 				))}
 			</Buttons>
 		</Row>
-	)
+	);
 };
 
 export default RatingRow;

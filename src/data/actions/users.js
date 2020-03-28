@@ -1,14 +1,14 @@
-import { getAll } from '../../firebase/fetch';
+import { getAll } from "../../firebase/fetch";
 
-import { userTypes } from './types';
+import { userTypes } from "./types";
 
 const requestUsers = () => ({
-	type: userTypes.FETCH_REQUEST
+	type: userTypes.FETCH_REQUEST,
 });
 
 const setUsers = payload => ({
 	type: userTypes.FETCH_SUCCESS,
-	payload
+	payload,
 });
 
 export const fetchUsers = () => async dispatch => {
@@ -16,7 +16,7 @@ export const fetchUsers = () => async dispatch => {
 
 	try {
 		const users = [];
-		const snapshot = await getAll('users');
+		const snapshot = await getAll("users");
 		snapshot.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
 
 		dispatch(setUsers(users));

@@ -1,8 +1,8 @@
-import { createSelector } from 'reselect';
+import { createSelector } from "reselect";
 
-import User from '../models/user';
+import User from "../models/user";
 
-import * as matchSelectors from './matches';
+import * as matchSelectors from "./matches";
 
 const emptyUser = new User();
 
@@ -20,7 +20,7 @@ export const findRatings = createSelector(
 			.toList()
 			.flatMap(match => match.ratings)
 			.filter(rating => rating.user === user.id)
-)
+);
 
 export const getUserProfileId = createSelector(
 	findAll,

@@ -1,14 +1,14 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import colors from '../../assets/colors';
+import colors from "../../assets/colors";
 
-import useAnimation from '../hooks/animation';
+import useAnimation from "../hooks/animation";
 
 const Row = styled.div`
 	color: #fff;
 	margin-bottom: 20px;
-	transform: translate(${props => props.active ? '0, 0' : '500px, -20px'});
+	transform: translate(${props => (props.active ? "0, 0" : "500px, -20px")});
 	transition: transform 450ms ease-in-out;
 
 	&:last-child {
@@ -48,16 +48,14 @@ const SingleRow = ({ ratings, user, getPlayer, index }) => {
 		<Row active={!isAnimating}>
 			<div>{user.name}</div>
 			<Ratings>
-				{
-					ratings.sortBy(rating => rating.value).map(rating =>
-						<div key={rating.value}>
-							{getPlayer(rating.player).name}
-						</div>
-					)
-				}
+				{ratings
+					.sortBy(rating => rating.value)
+					.map(rating => (
+						<div key={rating.value}>{getPlayer(rating.player).name}</div>
+					))}
 			</Ratings>
 		</Row>
-	)
-}
+	);
+};
 
 export default SingleRow;

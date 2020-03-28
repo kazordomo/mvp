@@ -1,18 +1,22 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import colors from '../../assets/colors';
+import colors from "../../assets/colors";
 
-import selectors from '../../data/selectors'
+import selectors from "../../data/selectors";
 
-import { setRating, resetRating, ratingsDone } from '../../data/actions/ratings';
+import {
+	setRating,
+	resetRating,
+	ratingsDone,
+} from "../../data/actions/ratings";
 
-import RatingRow from './Row';
-import DoneRating from './DoneRating';
-import Container from '../_shared/Container';
-import Nav from '../_shared/Nav';
-import Wrapper from '../_shared/Wrapper';
-import Fade from '../_shared/Fade';
+import RatingRow from "./Row";
+import DoneRating from "./DoneRating";
+import Container from "../_shared/Container";
+import Nav from "../_shared/Nav";
+import Wrapper from "../_shared/Wrapper";
+import Fade from "../_shared/Fade";
 
 const Rating = () => {
 	const dispatch = useDispatch();
@@ -25,17 +29,18 @@ const Rating = () => {
 		const response = await dispatch(ratingsDone());
 
 		if (response) {
-			console.log('redirect to start page');
+			console.log("redirect to start page");
 		} else {
-			console.log('error');
+			console.log("error");
 		}
 	};
 	const handleReset = () => dispatch(resetRating());
 
 	const getRatingsWithPlayer = () =>
 		Array.from(ratings.values()).map(rating => ({
-			value: rating.value, player: players.get(rating.player)
-		}))
+			value: rating.value,
+			player: players.get(rating.player),
+		}));
 
 	return (
 		<Container brColor={colors.spacegrayish()}>
@@ -59,7 +64,7 @@ const Rating = () => {
 				))}
 			</Wrapper>
 		</Container>
-	)
-}
+	);
+};
 
 export default Rating;

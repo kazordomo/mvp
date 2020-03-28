@@ -1,9 +1,9 @@
-import { Record } from 'immutable';
+import { Record } from "immutable";
 
 export default Record(
 	{
 		value: 0,
-		player: 0
+		player: 0,
 	},
-	'Rating',
+	"Rating"
 );

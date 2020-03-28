@@ -1,31 +1,31 @@
-import { Record, Map } from 'immutable';
-import Rating from '../models/rating';
-import { ratingTypes } from '../actions/types';
+import { Record, Map } from "immutable";
+import Rating from "../models/rating";
+import { ratingTypes } from "../actions/types";
 
 const initialState = new Record(
 	{
 		entities: new Map(),
 	},
-	'ratings',
+	"ratings"
 );
 
 const setRating = (state, { payload }) => {
 	const { value, player } = payload;
-	const prevPlayerRating = Array
-		.from(state.entities.values())
-		.find(rating => rating.player === player);
+	const prevPlayerRating = Array.from(state.entities.values()).find(
+		rating => rating.player === player
+	);
 
 	if (prevPlayerRating) {
-		state = state.deleteIn(['entities', prevPlayerRating.value]);
-	};
+		state = state.deleteIn(["entities", prevPlayerRating.value]);
+	}
 
-	state = state.setIn(['entities', value], new Rating(payload));
+	state = state.setIn(["entities", value], new Rating(payload));
 	return state;
 };
 
-const resetRating = (state) => {
-	return state.set('entities', new Map());
-}
+const resetRating = state => {
+	return state.set("entities", new Map());
+};
 
 const ratings = (state = initialState(), action) => {
 	switch (action.type) {

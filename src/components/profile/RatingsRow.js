@@ -1,14 +1,14 @@
-import React, { memo } from 'react';
-import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import React, { memo } from "react";
+import styled from "styled-components";
+import { useSelector } from "react-redux";
 
-import { getFillWidth } from '../../utils';
+import { getFillWidth } from "../../utils";
 
-import useAnimation from '../hooks/animation';
+import useAnimation from "../hooks/animation";
 
-import colors from '../../assets/colors';
+import colors from "../../assets/colors";
 
-import selectors from '../../data/selectors'
+import selectors from "../../data/selectors";
 
 const Row = styled.div`
 	margin-bottom: 15px;
@@ -37,7 +37,7 @@ const Value = styled.div`
 	background-color: ${props => props.color};
 	text-align: center;
 	padding: 3px 0;
-	transition: width 350ms cubic-bezier(.36,.36,.56,.86);
+	transition: width 350ms cubic-bezier(0.36, 0.36, 0.56, 0.86);
 `;
 
 const RatingsRow = memo(({ ratings, personId, maxPoint, given, index }) => {
@@ -55,8 +55,8 @@ const RatingsRow = memo(({ ratings, personId, maxPoint, given, index }) => {
 	const fillColors = [
 		colors.pointvalueone(),
 		colors.pointvaluetwo(),
-		colors.pointvaluethree()
-	]
+		colors.pointvaluethree(),
+	];
 
 	return (
 		<Row width={totalFillWidthPercent}>
@@ -65,25 +65,26 @@ const RatingsRow = memo(({ ratings, personId, maxPoint, given, index }) => {
 				<div>{totalValue} poäng</div>
 			</Header>
 			<Ratings>
-				{
-					Array.from(ratings
-						.groupBy(rating => rating.value)
-						.entries())
-						.map(([key, values]) => {
-							return (
-								<Value
-									key={key}
-									width={!isAnimating ? getFillWidth(maxPoint, values.size * key || 0) : 0}
-									color={fillColors[key - 1]}
-								>
-									{values.size}st
-								</Value>
-							)
-						})
-				}
+				{Array.from(ratings.groupBy(rating => rating.value).entries()).map(
+					([key, values]) => {
+						return (
+							<Value
+								key={key}
+								width={
+									!isAnimating
+										? getFillWidth(maxPoint, values.size * key || 0)
+										: 0
+								}
+								color={fillColors[key - 1]}
+							>
+								{values.size}st
+							</Value>
+						);
+					}
+				)}
 			</Ratings>
 		</Row>
-	)
+	);
 });
 
 export default RatingsRow;

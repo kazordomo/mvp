@@ -1,9 +1,9 @@
-import { getAll } from '../../firebase/fetch';
+import { getAll } from "../../firebase/fetch";
 
-import { matchTypes } from './types';
+import { matchTypes } from "./types";
 
 const requestMatches = () => ({
-	type: matchTypes.FETCH_REQUEST
+	type: matchTypes.FETCH_REQUEST,
 });
 
 export const setMatches = payload => ({
@@ -16,8 +16,8 @@ export const fetchMatches = () => async dispatch => {
 
 	try {
 		const matches = [];
-		const snapshot = await getAll('matches');
-		snapshot.forEach(doc => matches.push(({ id: doc.id, ...doc.data() })));
+		const snapshot = await getAll("matches");
+		snapshot.forEach(doc => matches.push({ id: doc.id, ...doc.data() }));
 
 		dispatch(setMatches(matches));
 	} catch (err) {

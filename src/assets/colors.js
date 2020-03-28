@@ -12,4 +12,4 @@ export default {
 	pointvalueone: (a = 1) => `rgba(254,150,119,${a})`,
 	pointvaluetwo: (a = 1) => `rgba(246,70,104,${a})`,
 	pointvaluethree: (a = 1) => `rgba(65,67,106,${a})`,
-}
+};

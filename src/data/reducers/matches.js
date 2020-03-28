@@ -1,13 +1,13 @@
-import { Record, Map, List } from 'immutable';
-import Match from '../models/match';
-import { matchTypes } from '../actions/types';
+import { Record, Map, List } from "immutable";
+import Match from "../models/match";
+import { matchTypes } from "../actions/types";
 
 const initialState = new Record(
 	{
 		isFetching: false,
 		entities: new Map(),
 	},
-	'matches',
+	"matches"
 );
 
 const addMatch = (state, { payload }) => {
@@ -16,18 +16,18 @@ const addMatch = (state, { payload }) => {
 	payload.forEach(match => {
 		// why is ratings not converted to list??
 		const convertedRatings = new List(match.ratings);
-		match['ratings'] = convertedRatings;
+		match.ratings = convertedRatings;
 
 		entities = entities.set(match.id, new Match(match));
 	});
 
-	return state.set('entities', entities).set('isFetching', false);
+	return state.set("entities", entities).set("isFetching", false);
 };
 
 const matches = (state = initialState(), action) => {
 	switch (action.type) {
 		case matchTypes.FETCH_REQUEST:
-			return state.set('isFetching', true);
+			return state.set("isFetching", true);
 		case matchTypes.FETCH_SUCCESS:
 			return addMatch(state, action);
 

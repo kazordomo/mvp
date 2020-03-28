@@ -1,28 +1,29 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
 
-import selectors from '../../data/selectors';
+import selectors from "../../data/selectors";
 
-import colors from '../../assets/colors';
+import colors from "../../assets/colors";
 
-import Container from '../_shared/Container';
-import Nav from '../_shared/Nav';
-import LeaderboardRow from './LeaderboardRow';
+import Container from "../_shared/Container";
+import Nav from "../_shared/Nav";
+import LeaderboardRow from "./LeaderboardRow";
 
 const Leaderboard = () => {
 	const playerScores = useSelector(state =>
-		selectors.players.findAllRatings(state))
+		selectors.players.findAllRatings(state)
+	)
 		.groupBy(rating => rating.player)
-		.map(player =>
-			player.reduce((a, b) => a + b.value, 0)
-		);
+		.map(player => player.reduce((a, b) => a + b.value, 0));
 
 	const players = useSelector(state =>
-		selectors.players.findAll(state)).sort((a, b) =>
-			playerScores.get(a.id) > playerScores.get(b.id) ? -1 : 1
-		);
+		selectors.players.findAll(state)
+	).sort((a, b) => (playerScores.get(a.id) > playerScores.get(b.id) ? -1 : 1));
 
-	const maxScore = playerScores.toList().sort().last();
+	const maxScore = playerScores
+		.toList()
+		.sort()
+		.last();
 
 	return (
 		<Container brColor={colors.spacegrayish()}>

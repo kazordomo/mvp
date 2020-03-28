@@ -1,10 +1,10 @@
-import { Record } from 'immutable';
+import { Record } from "immutable";
 
 export default Record(
 	{
 		id: 0,
-		name: '',
+		name: "",
 		number: 0,
 	},
-	'Player',
+	"Player"
 );

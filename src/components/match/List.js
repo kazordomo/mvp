@@ -1,15 +1,15 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import React from "react";
+import styled from "styled-components";
+import { useSelector } from "react-redux";
 
-import colors from '../../assets/colors';
+import colors from "../../assets/colors";
 
-import * as selectors from '../../data/selectors/matches';
+import * as selectors from "../../data/selectors/matches";
 
-import Nav from '../_shared/Nav';
-import Container from '../_shared/Container';
-import Wrapper from '../_shared/Wrapper';
-import ListRow from './ListRow';
+import Nav from "../_shared/Nav";
+import Container from "../_shared/Container";
+import Wrapper from "../_shared/Wrapper";
+import ListRow from "./ListRow";
 
 const ListMatch = () => {
 	const matches = useSelector(state => selectors.findAll(state));
@@ -21,10 +21,12 @@ const ListMatch = () => {
 				{matches
 					.toList()
 					.sortBy(match => -match.round)
-					.map((match, i) => <ListRow key={match.id} match={match} index={i} />)}
+					.map((match, i) => (
+						<ListRow key={match.id} match={match} index={i} />
+					))}
 			</Wrapper>
 		</Container>
-	)
-}
+	);
+};
 
 export default ListMatch;

@@ -1,10 +1,10 @@
-import * as firebase from 'firebase';
-import { batch } from 'react-redux';
+import * as firebase from "firebase";
+import { batch } from "react-redux";
 
-import { ratingTypes } from './types';
-import { getDoc } from '../../firebase/fetch';
+import { ratingTypes } from "./types";
+import { getDoc } from "../../firebase/fetch";
 
-import { setMatches } from './matches';
+import { setMatches } from "./matches";
 
 export const setRating = payload => ({
 	type: ratingTypes.SET_ITEM,
@@ -25,22 +25,22 @@ export const ratingsDone = () => async (dispatch, getState) => {
 	const ratings = getState().ratings.entities.toList();
 
 	if (!activeMatch) {
-		console.log('No active match!');
+		console.log("No active match!");
 	}
 
 	if (ratings.size !== 3) {
-		console.log('Wrong amount of ratings!');
+		console.log("Wrong amount of ratings!");
 	}
 
 	try {
-		const match = getDoc('match', activeMatch.id);
+		const match = getDoc("match", activeMatch.id);
 
 		ratings.forEach(rating => {
 			console.log(rating.toJS());
 			match.update({
 				ratings: firebase.firestore.FieldValue.arrayUnion(rating.toJS()),
 			});
-		})
+		});
 
 		batch(() => {
 			dispatch(setMatches([match]));
