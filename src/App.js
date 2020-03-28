@@ -56,6 +56,7 @@ const App = () => {
 	)
 		return <Loading />;
 
+	// @todo:
 	if (!activeUserId && !isGuest) return <Auth />;
 
 	return (
